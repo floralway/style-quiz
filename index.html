@@ -1,0 +1,343 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>你的穿搭，該先從哪裡開始？｜Floralway 穿搭方向測驗</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500&family=Noto+Serif+TC:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --orange:#E8784A; --orangeL:#F2A882; --pale:#FAF0E8; --cream:#FAF6F3; --white:#FFFCFA;
+  --deep:#3A2E28; --mid:#6B5A52; --soft:#A08070; --mist:#C4B0A4;
+  --serif:"Georgia","Noto Serif TC",serif; --sans:"Noto Sans TC",system-ui,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--cream);color:var(--mid);font-family:var(--sans);font-weight:400;-webkit-font-smoothing:antialiased}
+body{min-height:100vh;border-top:3px solid var(--orange);position:relative;overflow-x:hidden}
+.deco{position:fixed;pointer-events:none;z-index:0;width:190px;opacity:.7}
+.deco.tr{top:-62px;right:-74px}.deco.bl{bottom:-50px;left:-70px}
+@media(min-width:720px){.deco{width:340px;opacity:.85}.deco.tr{top:-30px;right:-40px}}
+.wrap{position:relative;z-index:1}
+.icon{width:76px;height:76px;display:block;margin:0 0 14px}
+.wrap{max-width:560px;margin:0 auto;padding:28px 20px 56px}
+.eyebrow{font-size:11px;letter-spacing:.3em;color:var(--orange);display:flex;align-items:center;gap:10px}
+.eyebrow:after{content:"";width:36px;height:1px;background:var(--orange);opacity:.5}
+h1{font-family:var(--serif);font-weight:400;color:var(--deep);font-size:28px;line-height:1.45;margin:18px 0 6px}
+h1 em,h2 em{font-style:italic;color:var(--orange)}
+h2{font-family:var(--serif);font-weight:400;color:var(--deep);font-size:21px;line-height:1.5;margin:10px 0 6px}
+p{line-height:1.85;font-size:15px}
+.lead{color:var(--soft);margin:10px 0 26px}
+.rule{width:44px;height:1px;background:var(--orange);margin:22px 0}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:none;cursor:pointer;
+  background:var(--orange);color:#fff;font-family:var(--sans);font-size:15px;letter-spacing:.08em;
+  padding:14px 28px;border-radius:999px;min-width:150px;transition:opacity .2s,transform .1s}
+.btn:active{transform:scale(.98)}
+.btn[disabled]{opacity:.35;cursor:not-allowed}
+.btn.ghost{background:transparent;color:var(--soft);min-width:auto;padding:14px 8px}
+.btn.line{background:var(--white);color:var(--orange);border:1px solid var(--orangeL)}
+.nav{display:flex;justify-content:space-between;align-items:center;margin-top:28px}
+.progress{height:3px;background:#EFE5DE;border-radius:3px;overflow:hidden;margin:6px 0 26px}
+.progress i{display:block;height:100%;background:var(--orange);width:0;transition:width .35s}
+.meta{display:flex;justify-content:space-between;font-size:12px;color:var(--mist);letter-spacing:.1em}
+.hint{font-size:12.5px;color:var(--soft);margin:2px 0 18px}
+.opts{display:flex;flex-direction:column;gap:10px}
+.opt{display:flex;gap:12px;align-items:flex-start;text-align:left;width:100%;cursor:pointer;
+  background:var(--white);border:1px solid #EADCD2;border-radius:14px;padding:15px 16px;
+  font-family:var(--sans);font-size:15px;line-height:1.65;color:var(--deep);transition:border-color .2s,background .2s}
+.opt .mk{flex:0 0 18px;height:18px;margin-top:3px;border:1.5px solid var(--mist);border-radius:50%;position:relative}
+.opt.multi .mk{border-radius:5px}
+.opt.on{border-color:var(--orange);background:var(--pale)}
+.opt.on .mk{border-color:var(--orange);background:var(--orange)}
+.opt.on .mk:after{content:"";position:absolute;left:5px;top:1.5px;width:4px;height:9px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg)}
+.opt.off{opacity:.4;cursor:not-allowed}
+.opt.none{font-size:13.5px;color:var(--soft);padding:11px 16px;background:transparent;border-style:dashed}
+.field{margin-bottom:22px}
+.field label.t{display:block;font-family:var(--serif);color:var(--deep);font-size:16px;margin-bottom:10px}
+.field .req{color:var(--orange);font-size:12px;margin-left:6px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1px solid #EADCD2;background:var(--white);color:var(--deep);border-radius:999px;padding:9px 15px;font-size:14px;cursor:pointer;font-family:var(--sans)}
+.chip.on{border-color:var(--orange);background:var(--pale);color:var(--orange)}
+input[type=text],input[type=email]{width:100%;border:1px solid #EADCD2;background:var(--white);border-radius:12px;padding:13px 14px;font-size:15px;font-family:var(--sans);color:var(--deep)}
+input:focus{outline:none;border-color:var(--orange)}
+.err{color:var(--orange);font-size:13px;margin-top:8px;min-height:18px}
+.card{background:var(--white);border:1px solid #EFE2D8;border-radius:18px;padding:22px 20px;margin-top:14px}
+.card h3{font-size:11px;letter-spacing:.25em;color:var(--orange);font-weight:500;margin-bottom:10px}
+.card p{font-size:14.5px}
+.type-badge{display:inline-block;font-family:var(--serif);font-size:13px;color:var(--orange);border:1px solid var(--orangeL);border-radius:999px;padding:4px 14px;letter-spacing:.15em;margin-top:6px}
+.result-hero{background:#F1E8E0;border:1px solid #E8D9CC;border-radius:22px;padding:20px 22px 26px;margin:18px 0 6px;text-align:center}
+.result-hero img{width:150px;height:150px;display:block;margin:0 auto 4px}
+.result-hero .stage{font-size:12px;letter-spacing:.35em;color:var(--orange)}
+.result-hero .name{font-family:var(--serif);font-size:27px;margin:10px 0 8px;line-height:1.4;color:var(--deep)}
+.result-hero .tag{font-family:var(--serif);font-style:italic;color:#8C7364;font-size:15px;line-height:1.7}
+.ring{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin-top:18px}
+.ring span{font-size:11px;letter-spacing:.1em;padding:4px 9px;border-radius:999px;border:1px solid #D6C4B7;color:var(--soft);background:#FBF6F1}
+.ring span.me{border-color:var(--orange);color:#fff;background:var(--orange)}
+.foot{font-size:12px;color:var(--mist);text-align:center;margin-top:34px;line-height:1.8;letter-spacing:.05em}
+.actions{display:flex;flex-direction:column;gap:10px;margin-top:22px}
+.actions a{text-decoration:none}
+.screen{display:none;animation:fade .4s ease}
+.screen.show{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.sending{color:var(--soft);font-size:13px;text-align:center;margin-top:12px;min-height:18px}
+</style>
+</head>
+<body>
+<img class="deco tr" src="img/corner-tr.png" alt=""><img class="deco bl" src="img/corner-bl.png" alt="">
+<div class="wrap">
+
+  <!-- intro -->
+  <section class="screen show" id="intro">
+    <img class="icon" src="img/icon.png" alt="">
+    <div class="eyebrow">Floralway 穿搭方向測驗</div>
+    <h1>你的穿搭，<br>該先從<em>哪裡</em>開始？</h1>
+    <p class="lead">你已經知道自己卡在哪裡，接下來，該往哪裡努力？花 2 分鐘回答，完整結果會寄到你的信箱，Evelyn 老師也會親自看你的答案。</p>
+    <div class="card">
+      <h3>填寫前</h3>
+      <p>約 2 分鐘，共 7 題。<br>沒有標準答案，選最直覺的那一個就好。</p>
+    </div>
+    <div class="nav"><span></span><button class="btn" id="startBtn">開始</button></div>
+    <p class="foot">質穎形象顏究室® Floralway Image Studio</p>
+  </section>
+
+  <!-- questions -->
+  <section class="screen" id="quiz">
+    <div class="meta"><span id="qnum"></span><span id="qtotal"></span></div>
+    <div class="progress"><i id="bar"></i></div>
+    <h2 id="qtitle"></h2>
+    <p class="hint" id="qhint"></p>
+    <div class="opts" id="qopts"></div>
+    <div class="nav">
+      <button class="btn ghost" id="backBtn">← 上一題</button>
+      <button class="btn" id="nextBtn" disabled>下一題</button>
+    </div>
+  </section>
+
+  <!-- profile -->
+  <section class="screen" id="profile">
+    <div class="meta"><span>最後一步</span><span></span></div>
+    <div class="progress"><i style="width:100%"></i></div>
+    <h2>最後，讓 Evelyn 老師認識你</h2>
+    <p class="hint">結果會寄到你的信箱，老師也會親自看你的答案。</p>
+    <div id="pfields"></div>
+    <div class="err" id="perr"></div>
+    <div class="nav">
+      <button class="btn ghost" id="pBack">← 上一題</button>
+      <button class="btn" id="submitBtn">寄出我的結果</button>
+    </div>
+    <div class="sending" id="sending"></div>
+  </section>
+
+  <!-- thanks -->
+  <section class="screen" id="result">
+    <img class="icon" src="img/icon.png" alt="" style="margin:8px auto 14px">
+    <h1 style="text-align:center;font-size:24px">謝謝你的填寫</h1>
+    <div id="rBrief" style="display:none">
+      <div class="result-hero">
+        <img id="rImg" src="" alt="">
+        <div class="stage" id="rStage"></div>
+        <div class="name" id="rName"></div>
+      </div>
+    </div>
+    <div class="card"><h3>你的結果已寄出</h3><p id="rMail"></p></div>
+    <div id="rClosing"></div>
+    <p class="foot">每個人都在花路上的不同位置，沒有誰比較前面。<br>質穎形象顏究室® Floralway Image Studio</p>
+  </section>
+</div>
+
+<script>
+const VERSION = "website";            // "lecture" | "website"
+const ENDPOINT = "";
+const SHOW_TYPE_ON_PAGE = false;   // 感謝頁是否顯示時期名稱                       // ← 貼上你的 Google Apps Script 網頁應用程式網址
+const LINKS = {
+  ig: "https://www.instagram.com/go_floralway/",
+  site: "https://gofloralway.com",
+  line: "https://lin.ee/V9COsB9",
+  booking: "https://calendly.com/floralway-image/30min"
+};
+
+/* ---------- 題目 ---------- */
+// t: 類型代號 B=萌芽 S=舒枝 H=含苞 C=成束
+const Q = [
+  { id:"q1", title:"照鏡子的時候，最常讓你覺得「怪怪的」是？", multi:2, none:true, opts:[
+    {t:"S", x:"尺寸明明對，比例卻變差，挫挫鈍鈍或像套了布袋"},
+    {t:"H", x:"顏色一上身，氣色就變差、看起來很累"},
+    {t:"C", x:"單看每件都不錯，搭在一起就是不對"},
+    {t:"B", x:"衣服本身好看，但穿在我身上就是不像我"} ]},
+  { id:"q2", title:"買衣服的時候，你最常卡在？", multi:2, none:true, opts:[
+    {t:"B", x:"跟著流行或網紅買，穿上身卻不像自己"},
+    {t:"C", x:"買回家才發現，不知道怎麼跟其他衣服搭"},
+    {t:"H", x:"只敢買黑、白、灰、深藍這些安全色"},
+    {t:"S", x:"同樣的尺碼，有時候好看，有時候很奇怪"} ]},
+  { id:"q3", title:"你最常聽到別人怎麼說你？", opts:[
+    {t:"C", x:"「很整齊、不會出錯，但好像有點普通」"},
+    {t:"H", x:"「你今天看起來好累喔」"},
+    {t:"B", x:"「你看起來好兇」「好孩子氣」或「不太好親近」"},
+    {t:"S", x:"「這件好像有點撐不起來」或「這件有點顯壯」"} ]},
+  { id:"q4", title:"看到別人穿得很好看時，你通常會想？", opts:[
+    {t:"S", x:"換成我的身材，應該穿不出那個效果"},
+    {t:"B", x:"好看是好看，但那不是我想要的樣子"},
+    {t:"H", x:"同樣的顏色，我穿起來大概會沒精神"},
+    {t:"C", x:"我好像也有類似的衣服，只是不知道怎麼搭成那樣"} ]},
+  { id:"q5", title:"如果只能先改變一件事，你最想要？", weight:2, opts:[
+    {t:"H", x:"找到讓氣色變好的顏色"},
+    {t:"C", x:"把現有的衣服和學過的建議，真的用進生活"},
+    {t:"S", x:"讓衣服穿起來更挺、比例更好看"},
+    {t:"B", x:"穿出像自己、也是我想給人的印象"} ]},
+  { id:"q6", title:"關於穿搭，哪一句最像你現在的想法？", score:false, opts:[
+    {t:"自主-需要確認", x:"我大概知道自己適合什麼，但心裡還是覺得不踏實"},
+    {t:"陪伴-判斷力", x:"我想要有自己的判斷力，不再一下就腦波弱"},
+    {t:"自主-享受探索", x:"我喜歡自己慢慢摸索，雖然會踩雷，但對我來說很有樂趣"},
+    {t:"陪伴-推一把", x:"我知道要改變，但需要有人推我一把"} ]},
+  { id:"q7", title:"你目前的穿搭狀態是？", score:false, opts:[
+    {t:"D1", x:"做過色彩或骨架分析，但不知道怎麼用"},
+    {t:"D2", x:"大多是家人、伴侶或朋友幫忙決定"},
+    {t:"D1", x:"很認真看穿搭內容，但越看越亂"},
+    {t:"D2", x:"沒認真試過，覺得自己怎麼穿都差不多"},
+    {t:"D1", x:"知道自己喜歡什麼，但穿起來時好時壞"} ]},
+];
+
+/* ---------- 基本資料 ---------- */
+const PROFILE = [
+  { id:"age", label:"年齡", type:"chips", req:true, opts:["22 歲以下","23–29 歲","30–39 歲","40–49 歲","50 歲以上"] },
+  { id:"gender", label:"性別", type:"chips", req:true, opts:["女","男","不想透露"] },
+  { id:"role", label:"目前身分", type:"chips", req:true, opts:["學生","上班族","自營或創業","其他"] },
+  { id:"analysis", label:"做過的分析", type:"chips", req:true, opts:["做過個人色彩","做過骨架","兩個都做過","都還沒有"] },
+  { id:"region", label:"居住地區", type:"chips", req:true, opts:["北部","中部","南部","東部","海外"] },
+  { id:"name", label:"你希望怎麼被稱呼", type:"text", req:true, ph:"例如：小安" },
+  { id:"email", label:"結果要寄到哪個信箱？", type:"email", req:true, ph:"name@example.com" },
+  { id:"optin", label:"", type:"check", req:false, text:"我願意收到 Evelyn 老師不定期的穿搭分享信" },
+];
+
+/* ---------- 結果 ---------- */
+const TYPES = {
+  B:{ stage:"萌芽期", name:"向光尋路的你" },
+  S:{ stage:"舒枝期", name:"正在舒展姿態的你" },
+  H:{ stage:"含苞期", name:"等待上色的你" },
+  C:{ stage:"成束期", name:"手握繁花的你" },
+};
+const ORDER = ["B","S","H","C"];
+
+/* ---------- 狀態 ---------- */
+const ans = {}; const prof = {}; let qi = 0;
+const $ = s => document.querySelector(s);
+function show(id){ document.querySelectorAll(".screen").forEach(e=>e.classList.remove("show")); $("#"+id).classList.add("show"); window.scrollTo(0,0); }
+
+function renderQ(){
+  const q = Q[qi];
+  $("#qnum").textContent = "第 " + (qi+1) + " 題";
+  $("#qtotal").textContent = (qi+1) + " / " + Q.length;
+  $("#bar").style.width = ((qi)/Q.length*100) + "%";
+  $("#qtitle").textContent = q.title;
+  $("#qhint").textContent = q.multi ? "可複選，最多 " + q.multi + " 項" : "單選";
+  const box = $("#qopts"); box.innerHTML = "";
+  const cur = ans[q.id] || [];
+  q.opts.forEach((o,i)=>{
+    const b = document.createElement("button");
+    b.type="button"; b.className = "opt" + (q.multi?" multi":"");
+    b.innerHTML = '<span class="mk"></span><span>'+o.x+'</span>';
+    if (cur.includes(i)) b.classList.add("on");
+    if (q.multi && !cur.includes(i) && cur.filter(v=>v>=0).length>=q.multi) b.classList.add("off");
+    b.onclick = ()=>pick(i);
+    box.appendChild(b);
+  });
+  if (q.none){
+    const b = document.createElement("button");
+    b.type="button"; b.className="opt multi none"+(cur.includes(-1)?" on":"");
+    b.innerHTML='<span class="mk"></span><span>以上都沒有</span>';
+    b.onclick=()=>pick(-1); box.appendChild(b);
+  }
+  $("#nextBtn").disabled = !(cur.length);
+  $("#nextBtn").textContent = qi===Q.length-1 ? "下一步" : "下一題";
+  $("#backBtn").style.visibility = qi===0 ? "hidden" : "visible";
+}
+function pick(i){
+  const q = Q[qi]; let cur = ans[q.id] || [];
+  if (!q.multi){ cur=[i]; ans[q.id]=cur; renderQ(); setTimeout(()=>{ if(Q[qi]===q) next(); },260); return; }
+  if (i===-1){ cur = cur.includes(-1)?[]:[-1]; }
+  else {
+    cur = cur.filter(v=>v!==-1);
+    if (cur.includes(i)) cur = cur.filter(v=>v!==i);
+    else if (cur.length < q.multi) cur.push(i);
+  }
+  ans[q.id]=cur; renderQ();
+}
+function next(){ if(qi<Q.length-1){qi++;renderQ();} else {renderProfile();show("profile");} }
+$("#startBtn").onclick=()=>{qi=0;renderQ();show("quiz");};
+$("#nextBtn").onclick=next;
+$("#backBtn").onclick=()=>{ if(qi>0){qi--;renderQ();} };
+$("#pBack").onclick=()=>{ qi=Q.length-1; renderQ(); show("quiz"); };
+
+function renderProfile(){
+  const box=$("#pfields"); box.innerHTML="";
+  PROFILE.forEach(f=>{
+    const d=document.createElement("div"); d.className="field";
+    d.innerHTML=f.label?'<label class="t">'+f.label+(f.req?'<span class="req">必填</span>':'')+'</label>':'';
+    if(f.type==="chips"){
+      const c=document.createElement("div"); c.className="chips";
+      f.opts.forEach(o=>{ const b=document.createElement("button"); b.type="button"; b.className="chip"+(prof[f.id]===o?" on":""); b.textContent=o;
+        b.onclick=()=>{prof[f.id]=o; c.querySelectorAll(".chip").forEach(x=>x.classList.remove("on")); b.classList.add("on");};
+        c.appendChild(b); });
+      d.appendChild(c);
+    } else if(f.type==="check"){
+      d.innerHTML="";
+      const b=document.createElement("button"); b.type="button"; b.className="opt multi"+(prof[f.id]?" on":""); b.style.fontSize="13.5px";
+      b.innerHTML='<span class="mk"></span><span>'+f.text+'</span>';
+      b.onclick=()=>{ prof[f.id]=prof[f.id]?"":"願意"; b.classList.toggle("on"); };
+      d.appendChild(b);
+    } else {
+      const inp=document.createElement("input"); inp.type=f.type; inp.placeholder=f.ph||""; inp.value=prof[f.id]||"";
+      inp.oninput=()=>prof[f.id]=inp.value.trim(); d.appendChild(inp);
+    }
+    box.appendChild(d);
+  });
+}
+
+/* ---------- 計分 ---------- */
+function score(){
+  const s={B:0,S:0,H:0,C:0};
+  Q.forEach(q=>{ if(q.score===false) return; (ans[q.id]||[]).forEach(i=>{ if(i>=0) s[q.opts[i].t]+= (q.weight||1); }); });
+  const max=Math.max(...ORDER.map(k=>s[k]));
+  const top=ORDER.filter(k=>s[k]===max);
+  const q5t=Q[4].opts[(ans.q5||[])[0]].t;
+  let type = top.length===1 ? top[0] : (top.includes(q5t) ? q5t : "C");
+  return {s,type};
+}
+function tagOf(id){ const q=Q.find(x=>x.id===id); return (ans[id]||[]).filter(i=>i>=0).map(i=>q.opts[i].t).join("、"); }
+function textOf(id){ const q=Q.find(x=>x.id===id); return (ans[id]||[]).map(i=>i<0?"以上都沒有":q.opts[i].x).join("｜"); }
+
+$("#submitBtn").onclick=async()=>{
+  for(const f of PROFILE){ if(f.req && !prof[f.id]){ $("#perr").textContent="請填寫「"+f.label+"」"; return; } }
+  const em=PROFILE.find(f=>f.type==="email");
+  if(em && prof.email && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(prof.email)){ $("#perr").textContent="Email 格式好像不太對，再確認一下"; return; }
+  $("#perr").textContent="";
+  const {s,type}=score();
+  const q6=tagOf("q6"), q7=tagOf("q7");
+  const payload={ version:VERSION, time:new Date().toISOString(), type,
+    result:TYPES[type].stage, branch: type==="C" ? q7 : "",
+    score_萌芽:s.B, score_舒枝:s.S, score_含苞:s.H, score_成束:s.C,
+    q6_想法:q6, q7_狀態:q7 };
+  Q.forEach(q=>payload[q.id]=textOf(q.id));
+  PROFILE.forEach(f=>payload[f.id]=prof[f.id]||"");
+  if(ENDPOINT){
+    $("#submitBtn").disabled=true; $("#sending").textContent="正在寄出你的結果……";
+    try{ await fetch(ENDPOINT,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(payload)}); }catch(e){}
+  }
+  if(!ENDPOINT) console.warn('尚未設定 ENDPOINT，結果信不會寄出');
+  showResult(type);
+};
+
+function showResult(type){
+  const T=TYPES[type];
+  if(SHOW_TYPE_ON_PAGE){
+    $("#rBrief").style.display="block";
+    $("#rImg").src="img/type-"+type+".png"; $("#rStage").textContent=T.stage; $("#rName").textContent=T.name;
+  }
+  $("#rMail").innerHTML = "完整的結果和建議，已經寄到 <b>"+(prof.email||"")+"</b>。<br>幾分鐘內就會收到；沒看到的話，記得看一下垃圾信件匣或「促銷內容」分類。";
+  $("#rClosing").innerHTML = '<div class="card"><h3>接下來</h3><p>Evelyn 老師會親自看你的答案。想先聊聊自己的狀況，也歡迎預約預諮詢。</p></div>'
+    + '<div class="actions">' + (LINKS.booking ? '<a class="btn " href="'+LINKS.booking+'" target="_blank" rel="noopener">預約預諮詢</a>' : '') + (LINKS.line ? '<a class="btn line" href="'+LINKS.line+'" target="_blank" rel="noopener">加入 LINE 官方帳號</a>' : '') + (LINKS.ig ? '<a class="btn line" href="'+LINKS.ig+'" target="_blank" rel="noopener">追蹤 @go_floralway</a>' : '') + '</div>';
+  show("result");
+}
+</script>
+</body>
+</html>
