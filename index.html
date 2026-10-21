@@ -91,10 +91,10 @@ input:focus{outline:none;border-color:var(--orange)}
     <img class="icon" src="img/icon.png" alt="">
     <div class="eyebrow">Floralway 穿搭方向測驗</div>
     <h1>你的穿搭，<br>該先從<em>哪裡</em>開始？</h1>
-    <p class="lead">你已經知道自己卡在哪裡，接下來，該往哪裡努力？花 2 分鐘回答，完整結果會寄到你的信箱，Evelyn 老師也會親自看你的答案。</p>
+    <p class="lead">你已經知道自己卡在哪裡，接下來，該往哪裡努力？花 3 分鐘回答，完整結果會寄到你的信箱，Evelyn 老師也會親自看你的答案。</p>
     <div class="card">
       <h3>填寫前</h3>
-      <p>約 2 分鐘，共 7 題。<br>沒有標準答案，選最直覺的那一個就好。</p>
+      <p>約 3 分鐘，共 10 題。<br>沒有標準答案，選最直覺的那一個就好。</p>
     </div>
     <div class="nav"><span></span><button class="btn" id="startBtn">開始</button></div>
     <p class="foot">質穎形象顏究室® Floralway Image Studio</p>
@@ -160,7 +160,7 @@ const LINKS = {
 // t: 類型代號 B=萌芽 S=舒枝 H=含苞 C=成束
 const Q = [
   { id:"q1", title:"照鏡子的時候，最常讓你覺得「怪怪的」是？", multi:2, none:true, opts:[
-    {t:"S", x:"尺寸明明對，比例卻變差，挫挫鈍鈍或像套了布袋"},
+    {t:"S", x:"尺寸明明對，穿起來卻顯得呆板、太拘謹，或像套了布袋"},
     {t:"H", x:"顏色一上身，氣色就變差、看起來很累"},
     {t:"C", x:"單看每件都不錯，搭在一起就是不對"},
     {t:"B", x:"衣服本身好看，但穿在我身上就是不像我"} ]},
@@ -179,17 +179,32 @@ const Q = [
     {t:"B", x:"好看是好看，但那不是我想要的樣子"},
     {t:"H", x:"同樣的顏色，我穿起來大概會沒精神"},
     {t:"C", x:"我好像也有類似的衣服，只是不知道怎麼搭成那樣"} ]},
-  { id:"q5", title:"如果只能先改變一件事，你最想要？", weight:2, opts:[
+  { id:"q5", title:"早上出門前，最花你時間的是？", opts:[
+    {t:"B", x:"不知道今天想給人什麼感覺，所以遲遲決定不了"},
+    {t:"H", x:"換了好幾件，還是找不到讓氣色好的那一件"},
+    {t:"C", x:"單品明明很多，卻要想很久才搭得出一套"},
+    {t:"S", x:"一直照鏡子調整，怎麼穿都覺得比例怪怪的"} ]},
+  { id:"q6", title:"穿正式一點的衣服時（襯衫、西裝外套、洋裝），你最常覺得？", opts:[
+    {t:"S", x:"肩線、腰身總是不太合，看起來不夠挺"},
+    {t:"C", x:"就那一兩套，換來換去還是差不多"},
+    {t:"H", x:"顏色太深太重，整個人看起來更累"},
+    {t:"B", x:"太像業務員或太老氣，不像我"} ]},
+  { id:"q7", title:"每到換季整理衣服時，你最常發現？", opts:[
+    {t:"C", x:"衣服不少，常穿的卻只有那幾件"},
+    {t:"B", x:"衣服的風格很雜，看不出自己到底喜歡什麼"},
+    {t:"S", x:"很多衣服其實不合身，買了卻很少穿"},
+    {t:"H", x:"很多衣服穿起來沒精神，卻捨不得丟"} ]},
+  { id:"q8", title:"如果只能先改變一件事，你最想要？", weight:2, opts:[
     {t:"H", x:"找到讓氣色變好的顏色"},
     {t:"C", x:"把現有的衣服和學過的建議，真的用進生活"},
     {t:"S", x:"讓衣服穿起來更挺、比例更好看"},
     {t:"B", x:"穿出像自己、也是我想給人的印象"} ]},
-  { id:"q6", title:"關於穿搭，哪一句最像你現在的想法？", score:false, opts:[
+  { id:"q9", title:"關於穿搭，哪一句最像你現在的想法？", score:false, opts:[
     {t:"自主-需要確認", x:"我大概知道自己適合什麼，但心裡還是覺得不踏實"},
     {t:"陪伴-判斷力", x:"我想要有自己的判斷力，不再一下就腦波弱"},
     {t:"自主-享受探索", x:"我喜歡自己慢慢摸索，雖然會踩雷，但對我來說很有樂趣"},
     {t:"陪伴-推一把", x:"我知道要改變，但需要有人推我一把"} ]},
-  { id:"q7", title:"你目前的穿搭狀態是？", score:false, opts:[
+  { id:"q10", title:"你目前的穿搭狀態是？", score:false, opts:[
     {t:"D1", x:"做過色彩或骨架分析，但不知道怎麼用"},
     {t:"D2", x:"大多是家人、伴侶或朋友幫忙決定"},
     {t:"D1", x:"很認真看穿搭內容，但越看越亂"},
@@ -202,7 +217,6 @@ const PROFILE = [
   { id:"age", label:"年齡", type:"chips", req:true, opts:["22 歲以下","23–29 歲","30–39 歲","40–49 歲","50 歲以上"] },
   { id:"gender", label:"性別", type:"chips", req:true, opts:["女","男","不想透露"] },
   { id:"role", label:"目前身分", type:"chips", req:true, opts:["學生","上班族","自營或創業","其他"] },
-  { id:"analysis", label:"做過的分析", type:"chips", req:true, opts:["做過個人色彩","做過骨架","兩個都做過","都還沒有"] },
   { id:"region", label:"居住地區", type:"chips", req:true, opts:["北部","中部","南部","東部","海外"] },
   { id:"name", label:"你希望怎麼被稱呼", type:"text", req:true, ph:"例如：小安" },
   { id:"email", label:"結果要寄到哪個信箱？", type:"email", req:true, ph:"name@example.com" },
@@ -299,7 +313,7 @@ function score(){
   Q.forEach(q=>{ if(q.score===false) return; (ans[q.id]||[]).forEach(i=>{ if(i>=0) s[q.opts[i].t]+= (q.weight||1); }); });
   const max=Math.max(...ORDER.map(k=>s[k]));
   const top=ORDER.filter(k=>s[k]===max);
-  const q5t=Q[4].opts[(ans.q5||[])[0]].t;
+  const dq=Q.find(q=>q.weight); const q5t=dq.opts[(ans[dq.id]||[])[0]].t;
   let type = top.length===1 ? top[0] : (top.includes(q5t) ? q5t : "C");
   return {s,type};
 }
@@ -312,11 +326,11 @@ $("#submitBtn").onclick=async()=>{
   if(em && prof.email && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(prof.email)){ $("#perr").textContent="Email 格式好像不太對，再確認一下"; return; }
   $("#perr").textContent="";
   const {s,type}=score();
-  const q6=tagOf("q6"), q7=tagOf("q7");
+  const q9=tagOf("q9"), q10=tagOf("q10");
   const payload={ version:VERSION, time:new Date().toISOString(), type,
-    result:TYPES[type].stage, branch: type==="C" ? q7 : "",
+    result:TYPES[type].stage, branch: type==="C" ? q10 : "",
     score_萌芽:s.B, score_舒枝:s.S, score_含苞:s.H, score_成束:s.C,
-    q6_想法:q6, q7_狀態:q7 };
+    q9_想法:q9, q10_狀態:q10 };
   Q.forEach(q=>payload[q.id]=textOf(q.id));
   PROFILE.forEach(f=>payload[f.id]=prof[f.id]||"");
   if(ENDPOINT){
