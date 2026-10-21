@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>你的穿搭，該先從哪裡開始？｜講座版</title>
+<title>你的穿搭，該先從哪裡開始？</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500&family=Noto+Serif+TC:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -20,7 +20,7 @@ body{min-height:100vh;border-top:3px solid var(--orange);position:relative;overf
 @media(min-width:720px){.deco{width:340px;opacity:.85}.deco.tr{top:-30px;right:-40px}}
 .wrap{position:relative;z-index:1}
 .icon{width:76px;height:76px;display:block;margin:0 0 14px}
-.wrap{max-width:560px;margin:0 auto;padding:28px 20px 56px}
+.wrap{max-width:560px;margin:0 auto;padding:58px 20px 56px}
 .eyebrow{font-size:11px;letter-spacing:.3em;color:var(--orange);display:flex;align-items:center;gap:10px}
 .eyebrow:after{content:"";width:36px;height:1px;background:var(--orange);opacity:.5}
 h1{font-family:var(--serif);font-weight:400;color:var(--deep);font-size:28px;line-height:1.45;margin:18px 0 6px}
@@ -80,23 +80,27 @@ input:focus{outline:none;border-color:var(--orange)}
 .screen.show{display:block}
 @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 .sending{color:var(--soft);font-size:13px;text-align:center;margin-top:12px;min-height:18px}
+.langbar{position:absolute;top:14px;right:16px;z-index:5}
+.lang{border:1px solid #E6D6CB;background:rgba(255,252,250,.92);color:var(--soft);border-radius:999px;padding:6px 14px;font-size:12.5px;letter-spacing:.08em;cursor:pointer;font-family:var(--sans)}
+.lang:hover{color:var(--orange);border-color:var(--orangeL)}
 </style>
 </head>
 <body>
 <img class="deco tr" src="img/corner-tr.png" alt=""><img class="deco bl" src="img/corner-bl.png" alt="">
+<div class="langbar"><button type="button" id="langBtn" class="lang"></button></div>
 <div class="wrap">
 
   <!-- intro -->
   <section class="screen show" id="intro">
     <img class="icon" src="img/icon.png" alt="">
-    <div class="eyebrow">穿搭方向測驗 ・ 講座版</div>
-    <h1>你的穿搭，<br>該先從<em>哪裡</em>開始？</h1>
-    <p class="lead">用 3 分鐘，找到你在穿搭上該先努力的方向。填完後，完整結果會寄到你的信箱。</p>
+    <div class="eyebrow" data-i="eyebrow"></div>
+    <h1 data-i="headline" data-html="1"></h1>
+    <p class="lead" data-i="intro"></p>
     <div class="card">
-      <h3>填寫前</h3>
-      <p>約 3 分鐘，共 10 題。<br>沒有標準答案，選最直覺的那一個就好。</p>
+      <h3 data-i="beforeTitle"></h3>
+      <p data-i="beforeText" data-html="1"></p>
     </div>
-    <div class="nav"><span></span><button class="btn" id="startBtn">開始</button></div>
+    <div class="nav"><span></span><button class="btn" id="startBtn" data-i="start"></button></div>
     <p class="foot">質穎形象顏究室® Floralway Image Studio</p>
   </section>
 
@@ -108,22 +112,22 @@ input:focus{outline:none;border-color:var(--orange)}
     <p class="hint" id="qhint"></p>
     <div class="opts" id="qopts"></div>
     <div class="nav">
-      <button class="btn ghost" id="backBtn">← 上一題</button>
-      <button class="btn" id="nextBtn" disabled>下一題</button>
+      <button class="btn ghost" id="backBtn" data-i="back"></button>
+      <button class="btn" id="nextBtn" disabled></button>
     </div>
   </section>
 
   <!-- profile -->
   <section class="screen" id="profile">
-    <div class="meta"><span>最後一步</span><span></span></div>
+    <div class="meta"><span data-i="lastStep"></span><span></span></div>
     <div class="progress"><i style="width:100%"></i></div>
-    <h2>最後，簡單認識你一下</h2>
-    <p class="hint">信箱只用來寄送你的結果，不會另作他用。</p>
+    <h2 data-i="profileTitle"></h2>
+    <p class="hint" data-i="profileHint"></p>
     <div id="pfields"></div>
     <div class="err" id="perr"></div>
     <div class="nav">
-      <button class="btn ghost" id="pBack">← 上一題</button>
-      <button class="btn" id="submitBtn">寄出我的結果</button>
+      <button class="btn ghost" id="pBack" data-i="back"></button>
+      <button class="btn" id="submitBtn" data-i="submit"></button>
     </div>
     <div class="sending" id="sending"></div>
   </section>
@@ -131,7 +135,7 @@ input:focus{outline:none;border-color:var(--orange)}
   <!-- thanks -->
   <section class="screen" id="result">
     <img class="icon" src="img/icon.png" alt="" style="margin:8px auto 14px">
-    <h1 style="text-align:center;font-size:24px">謝謝你的填寫</h1>
+    <h1 style="text-align:center;font-size:24px" data-i="thanks"></h1>
     <div id="rBrief" style="display:none">
       <div class="result-hero">
         <img id="rImg" src="" alt="">
@@ -139,16 +143,16 @@ input:focus{outline:none;border-color:var(--orange)}
         <div class="name" id="rName"></div>
       </div>
     </div>
-    <div class="card"><h3>你的結果已寄出</h3><p id="rMail"></p></div>
+    <div class="card"><h3 data-i="sentTitle"></h3><p id="rMail"></p></div>
     <div id="rClosing"></div>
-    <p class="foot">每個人都在花路上的不同位置，沒有誰比較前面。<br>質穎形象顏究室® Floralway Image Studio</p>
+    <p class="foot"><span data-i="footLine"></span><br>質穎形象顏究室® Floralway Image Studio</p>
   </section>
 </div>
 
 <script>
 const VERSION = "lecture";            // "lecture" | "website"
 const ENDPOINT = "https://script.google.com/macros/s/AKfycbyL-tEuW9J7Rqih7AMNZWwn8RM5N6wCTPhMY_n-bGcKz5uwrtWyD0UvWKyVI023fxTJ/exec";
-const SHOW_TYPE_ON_PAGE = true;   // 感謝頁是否顯示時期名稱                       // ← 貼上你的 Google Apps Script 網頁應用程式網址
+const SHOW_TYPE_ON_PAGE = true;   // 感謝頁是否顯示時期名稱
 const LINKS = {
   ig: "https://www.instagram.com/go_floralway/",
   site: "https://gofloralway.com",
@@ -156,100 +160,150 @@ const LINKS = {
   booking: "https://calendly.com/floralway-image/30min"
 };
 
+/* ---------- 介面文字（中 / 英） ---------- */
+const UI = {
+  zh: Object.assign({
+    headline: "你的穿搭，<br>該先從<em>哪裡</em>開始？",
+    beforeTitle: "填寫前", beforeText: "約 3 分鐘，共 10 題。<br>沒有標準答案，選最直覺的那一個就好。",
+    start: "開始", back: "← 上一題", next: "下一題", nextLast: "下一步",
+    qnum: n => "第 " + n + " 題", single: "單選", multi: n => "可複選，最多 " + n + " 項", none: "以上都沒有",
+    lastStep: "最後一步", required: "必填", submit: "寄出我的結果", sending: "正在寄出你的結果……",
+    errReq: f => "請填寫「" + f + "」", errEmail: "Email 格式好像不太對，再確認一下",
+    thanks: "謝謝你的填寫", sentTitle: "你的結果已寄出",
+    sentText: e => "完整的結果和建議，已經寄到 <b>" + e + "</b>。<br>幾分鐘內就會收到；沒看到的話，記得看一下垃圾信件匣或「促銷內容」分類。",
+    footLine: "每個人都在花路上的不同位置，沒有誰比較前面。",
+    ig: "追蹤 @go_floralway", line: "加入 LINE 官方帳號", booking: "預約預諮詢", langBtn: "English",
+  }, {"title": "你的穿搭，該先從哪裡開始？｜講座版", "eyebrow": "穿搭方向測驗 ・ 講座版", "intro": "用 3 分鐘，找到你在穿搭上該先努力的方向。填完後，完整結果會寄到你的信箱。", "profileTitle": "最後，簡單認識你一下", "profileHint": "信箱只用來寄送你的結果，不會另作他用。", "closeTitle": "等一下", "closeText": "記住你的時期，等一下我們一起看看全場的分布。"}),
+  en: Object.assign({
+    headline: "Where should your<br>style <em>begin</em>?",
+    beforeTitle: "Before you start", beforeText: "About 3 minutes, 10 questions.<br>There are no right answers — go with your first instinct.",
+    start: "Start", back: "← Back", next: "Next", nextLast: "Next step",
+    qnum: n => "Question " + n, single: "Choose one", multi: n => "Choose up to " + n, none: "None of the above",
+    lastStep: "Last step", required: "Required", submit: "Send my result", sending: "Sending your result…",
+    errReq: f => "Please fill in “" + f + "”", errEmail: "That email doesn’t look quite right — please check it.",
+    thanks: "Thank you!", sentTitle: "Your result is on its way",
+    sentText: e => "Your full result and suggestions have been sent to <b>" + e + "</b>.<br>It should arrive within a few minutes — if not, please check your spam or Promotions folder.",
+    footLine: "Everyone is at a different place on their own path — no one is ahead.",
+    ig: "Follow @go_floralway", line: "Add us on LINE", booking: "Book a pre-consultation", langBtn: "中文",
+  }, {"title": "Where should your style begin? | Workshop", "eyebrow": "Style Direction Quiz · Workshop", "intro": "In 3 minutes, find out where to start with your style. Your full result will be emailed to you.", "profileTitle": "Lastly, a little about you", "profileHint": "Your email is only used to send your result.", "closeTitle": "Up next", "closeText": "Remember your stage — we’ll look at the whole room’s results together in a moment."})
+};
+
 /* ---------- 題目 ---------- */
-// t: 類型代號 B=萌芽 S=舒枝 H=含苞 C=成束
+// t: 類型代號 B=萌芽 S=舒枝 H=含苞 C=成束 ； x=中文 e=English
 const Q = [
-  { id:"q1", title:"照鏡子的時候，最常讓你覺得「怪怪的」是？", multi:2, none:true, opts:[
-    {t:"S", x:"尺寸明明對，穿起來卻顯得呆板、太拘謹，或像套了布袋"},
-    {t:"H", x:"顏色一上身，氣色就變差、看起來很累"},
-    {t:"C", x:"單看每件都不錯，搭在一起就是不對"},
-    {t:"B", x:"衣服本身好看，但穿在我身上就是不像我"} ]},
-  { id:"q2", title:"買衣服的時候，你最常卡在？", multi:2, none:true, opts:[
-    {t:"B", x:"跟著流行或網紅買，穿上身卻不像自己"},
-    {t:"C", x:"買回家才發現，不知道怎麼跟其他衣服搭"},
-    {t:"H", x:"只敢買黑、白、灰、深藍這些安全色"},
-    {t:"S", x:"同樣的尺碼，有時候好看，有時候很奇怪"} ]},
-  { id:"q3", title:"你最常聽到別人怎麼說你？", opts:[
-    {t:"C", x:"「很整齊、不會出錯，但好像有點普通」"},
-    {t:"H", x:"「你今天看起來好累喔」"},
-    {t:"B", x:"「你看起來好兇」「好孩子氣」或「不太好親近」"},
-    {t:"S", x:"「這件好像有點撐不起來」或「這件有點顯壯」"} ]},
-  { id:"q4", title:"看到別人穿得很好看時，你通常會想？", opts:[
-    {t:"S", x:"換成我的身材，應該穿不出那個效果"},
-    {t:"B", x:"好看是好看，但那不是我想要的樣子"},
-    {t:"H", x:"同樣的顏色，我穿起來大概會沒精神"},
-    {t:"C", x:"我好像也有類似的衣服，只是不知道怎麼搭成那樣"} ]},
-  { id:"q5", title:"早上出門前，最花你時間的是？", opts:[
-    {t:"B", x:"不知道今天想給人什麼感覺，所以遲遲決定不了"},
-    {t:"H", x:"換了好幾件，還是找不到讓氣色好的那一件"},
-    {t:"C", x:"單品明明很多，卻要想很久才搭得出一套"},
-    {t:"S", x:"一直照鏡子調整，怎麼穿都覺得比例怪怪的"} ]},
-  { id:"q6", title:"穿正式一點的衣服時（襯衫、西裝外套、洋裝），你最常覺得？", opts:[
-    {t:"S", x:"肩線、腰身總是不太合，看起來不夠挺"},
-    {t:"C", x:"就那一兩套，換來換去還是差不多"},
-    {t:"H", x:"顏色太深太重，整個人看起來更累"},
-    {t:"B", x:"太像業務員或太老氣，不像我"} ]},
-  { id:"q7", title:"每到換季整理衣服時，你最常發現？", opts:[
-    {t:"C", x:"衣服不少，常穿的卻只有那幾件"},
-    {t:"B", x:"衣服的風格很雜，看不出自己到底喜歡什麼"},
-    {t:"S", x:"很多衣服其實不合身，買了卻很少穿"},
-    {t:"H", x:"很多衣服穿起來沒精神，卻捨不得丟"} ]},
-  { id:"q8", title:"如果只能先改變一件事，你最想要？", weight:2, opts:[
-    {t:"H", x:"找到讓氣色變好的顏色"},
-    {t:"C", x:"把現有的衣服和學過的建議，真的用進生活"},
-    {t:"S", x:"讓衣服穿起來更挺、比例更好看"},
-    {t:"B", x:"穿出像自己、也是我想給人的印象"} ]},
-  { id:"q9", title:"關於穿搭，哪一句最像你現在的想法？", score:false, opts:[
-    {t:"自主-需要確認", x:"我大概知道自己適合什麼，但心裡還是覺得不踏實"},
-    {t:"陪伴-判斷力", x:"我想要有自己的判斷力，不再一下就腦波弱"},
-    {t:"自主-享受探索", x:"我喜歡自己慢慢摸索，雖然會踩雷，但對我來說很有樂趣"},
-    {t:"陪伴-推一把", x:"我知道要改變，但需要有人推我一把"} ]},
-  { id:"q10", title:"你目前的穿搭狀態是？", score:false, opts:[
-    {t:"D1", x:"做過色彩或骨架分析，但不知道怎麼用"},
-    {t:"D2", x:"大多是家人、伴侶或朋友幫忙決定"},
-    {t:"D1", x:"很認真看穿搭內容，但越看越亂"},
-    {t:"D2", x:"沒認真試過，覺得自己怎麼穿都差不多"},
-    {t:"D1", x:"知道自己喜歡什麼，但穿起來時好時壞"} ]},
+  { id:"q1", title:"照鏡子的時候，最常讓你覺得「怪怪的」是？", en:"When you look in the mirror, what usually feels “off”?", multi:2, none:true, opts:[
+    {t:"S", x:"尺寸明明對，穿起來卻顯得呆板、太拘謹，或像套了布袋", e:"The size is right, yet it looks stiff and boxy — or like a sack"},
+    {t:"H", x:"顏色一上身，氣色就變差、看起來很累", e:"Certain colors make my complexion dull and I look tired"},
+    {t:"C", x:"單看每件都不錯，搭在一起就是不對", e:"Each piece looks fine alone, but together it just doesn’t work"},
+    {t:"B", x:"衣服本身好看，但穿在我身上就是不像我", e:"The clothes look nice, but they don’t feel like me"} ]},
+  { id:"q2", title:"買衣服的時候，你最常卡在？", en:"When shopping for clothes, where do you usually get stuck?", multi:2, none:true, opts:[
+    {t:"B", x:"跟著流行或網紅買，穿上身卻不像自己", e:"I follow trends or influencers, but it doesn’t look like me"},
+    {t:"C", x:"買回家才發現，不知道怎麼跟其他衣服搭", e:"I get home and realize I don’t know what to wear it with"},
+    {t:"H", x:"只敢買黑、白、灰、深藍這些安全色", e:"I only dare to buy safe colors — black, white, gray, navy"},
+    {t:"S", x:"同樣的尺碼，有時候好看，有時候很奇怪", e:"Same size, but sometimes it looks great and sometimes odd"} ]},
+  { id:"q3", title:"別人常怎麼說你？", en:"What do people often say about you?", multi:2, none:true, opts:[
+    {t:"C", x:"「很整齊、不會出錯，但好像有點普通」", e:"“Neat and safe — but a little plain”"},
+    {t:"H", x:"「你今天看起來好累喔」", e:"“You look tired today”"},
+    {t:"B", x:"「你看起來好兇」「好孩子氣」或「不太好親近」", e:"“You look strict,” “young,” or “hard to approach”"},
+    {t:"S", x:"「這件好像有點撐不起來」或「這件有點顯壯」", e:"“That doesn’t quite fit you” or “That makes you look bulky”"} ]},
+  { id:"q4", title:"看到別人穿得很好看時，你通常會想？", en:"When you see someone dressed beautifully, you usually think…", opts:[
+    {t:"S", x:"換成我的身材，應該穿不出那個效果", e:"It wouldn’t look like that on my body"},
+    {t:"B", x:"好看是好看，但那不是我想要的樣子", e:"It’s nice, but it’s not the look I want"},
+    {t:"H", x:"同樣的顏色，我穿起來大概會沒精神", e:"That color would probably make me look washed out"},
+    {t:"C", x:"我好像也有類似的衣服，只是不知道怎麼搭成那樣", e:"I have similar pieces — I just don’t know how to put them together like that"} ]},
+  { id:"q5", title:"早上出門前，最花你時間的是？", en:"Getting ready in the morning, what takes you the longest?", opts:[
+    {t:"B", x:"不知道今天想給人什麼感覺，所以遲遲決定不了", e:"I can’t decide what impression I want to give today"},
+    {t:"H", x:"換了好幾件，還是找不到讓氣色好的那一件", e:"I change several times and still can’t find one that makes me look fresh"},
+    {t:"C", x:"單品明明很多，卻要想很久才搭得出一套", e:"I have plenty of pieces, but it takes forever to put an outfit together"},
+    {t:"S", x:"一直照鏡子調整，怎麼穿都覺得比例怪怪的", e:"I keep adjusting in the mirror — the proportions always look off"} ]},
+  { id:"q6", title:"穿正式一點的衣服時（襯衫、西裝外套、洋裝），你最常覺得？", en:"When you dress more formally (shirts, blazers, dresses), you usually feel…", opts:[
+    {t:"S", x:"肩線、腰身總是不太合，看起來不夠挺", e:"The shoulders or waist never quite fit, so it doesn’t look sharp"},
+    {t:"C", x:"就那一兩套，換來換去還是差不多", e:"I only have one or two outfits, so it always looks the same"},
+    {t:"H", x:"顏色太深太重，整個人看起來更累", e:"The colors are too dark and heavy — I look even more tired"},
+    {t:"B", x:"太像業務員或太老氣，不像我", e:"I look like a salesperson or too old — not like me"} ]},
+  { id:"q7", title:"每到換季整理衣服時，你常發現什麼？", en:"When you sort your wardrobe at the change of season, what do you often find?", multi:2, none:true, opts:[
+    {t:"C", x:"衣服不少，常穿的卻只有那幾件", e:"I have plenty of clothes, but I only wear a few of them"},
+    {t:"B", x:"衣服的風格很雜，看不出自己到底喜歡什麼", e:"My clothes are all over the place — I can’t tell what I actually like"},
+    {t:"S", x:"很多衣服其實不合身，買了卻很少穿", e:"Many pieces don’t really fit, so I barely wear them"},
+    {t:"H", x:"很多衣服穿起來沒精神，卻捨不得丟", e:"Many pieces make me look dull, but I can’t bring myself to let them go"} ]},
+  { id:"q8", title:"如果只能先改變一件事，你最想要？", en:"If you could change just one thing first, what would it be?", weight:2, opts:[
+    {t:"H", x:"找到讓氣色變好的顏色", e:"Find colors that make my complexion glow"},
+    {t:"C", x:"把現有的衣服和學過的建議，真的用進生活", e:"Actually use the clothes and advice I already have"},
+    {t:"S", x:"讓衣服穿起來更挺、比例更好看", e:"Make my clothes look sharper, with better proportions"},
+    {t:"B", x:"穿出像自己、也是我想給人的印象", e:"Dress like myself — and give the impression I want"} ]},
+  { id:"q9", title:"關於穿搭，哪一句最像你現在的想法？", en:"Which sentence sounds most like you right now?", score:false, opts:[
+    {t:"自主-需要確認", x:"我大概知道自己適合什麼，但心裡還是覺得不踏實", e:"I roughly know what suits me, but I still don’t feel sure"},
+    {t:"陪伴-判斷力", x:"我想要有自己的判斷力，不再一下就腦波弱", e:"I want my own judgment, instead of being swayed so easily"},
+    {t:"自主-享受探索", x:"我喜歡自己慢慢摸索，雖然會踩雷，但對我來說很有樂趣", e:"I like figuring it out myself — even the misses are part of the fun"},
+    {t:"陪伴-推一把", x:"我知道要改變，但需要有人推我一把", e:"I know I need to change, but I need someone to give me a push"} ]},
+  { id:"q10", title:"你目前的穿搭狀態是？", en:"Where are you with your style right now?", score:false, opts:[
+    {t:"D1", x:"做過色彩或骨架分析，但不知道怎麼用", e:"I’ve had a color or body analysis, but don’t know how to use it"},
+    {t:"D2", x:"大多是家人、伴侶或朋友幫忙決定", e:"Family, a partner, or friends mostly decide for me"},
+    {t:"D1", x:"很認真看穿搭內容，但越看越亂", e:"I watch a lot of style content, but it only confuses me more"},
+    {t:"D2", x:"沒認真試過，覺得自己怎麼穿都差不多", e:"I’ve never really tried — I feel I look the same in anything"},
+    {t:"D1", x:"知道自己喜歡什麼，但穿起來時好時壞", e:"I know what I like, but the results are hit or miss"} ]},
 ];
 
 /* ---------- 基本資料 ---------- */
+// o: 選項（中文存入資料）；oe: 英文顯示
 const PROFILE = [
-  { id:"age", label:"年齡", type:"chips", req:true, opts:["22 歲以下","23–29 歲","30–39 歲","40–49 歲","50 歲以上"] },
-  { id:"gender", label:"性別", type:"chips", req:true, opts:["女","男","不想透露"] },
-  { id:"role", label:"目前身分", type:"chips", req:true, opts:["學生","上班族","自營或創業","其他"] },
+  { id:"age", label:"年齡", le:"Age", type:"chips", req:true, opts:["22 歲以下","23–29 歲","30–39 歲","40–49 歲","50 歲以上"], oe:["22 or under","23–29","30–39","40–49","50+"] },
+  { id:"gender", label:"性別", le:"Gender", type:"chips", req:true, opts:["女","男","不想透露"], oe:["Female","Male","Prefer not to say"] },
+  { id:"role", label:"目前身分", le:"You are…", type:"chips", req:true, opts:["學生","上班族","自營或創業","其他"], oe:["Student","Employee","Self-employed / founder","Other"] },
   
-  { id:"name", label:"你希望怎麼被稱呼", type:"text", req:true, ph:"例如：小安" },
-  { id:"email", label:"結果要寄到哪個信箱？", type:"email", req:true, ph:"name@example.com" },
-  { id:"optin", label:"", type:"check", req:false, text:"我願意收到 Evelyn 老師不定期的穿搭分享信" },
+  { id:"name", label:"你希望怎麼被稱呼", le:"What should we call you?", type:"text", req:true, ph:"例如：小安", phe:"e.g. Anne" },
+  { id:"email", label:"結果要寄到哪個信箱？", le:"Where should we send your result?", type:"email", req:true, ph:"name@example.com", phe:"name@example.com" },
+  { id:"optin", label:"", type:"check", req:false, text:"我願意收到 Evelyn 老師不定期的穿搭分享信", te:"I’d like to receive occasional style notes from Evelyn" },
 ];
 
-/* ---------- 結果 ---------- */
 const TYPES = {
-  B:{ stage:"萌芽期", name:"向光尋路的你" },
-  S:{ stage:"舒枝期", name:"正在舒展姿態的你" },
-  H:{ stage:"含苞期", name:"等待上色的你" },
-  C:{ stage:"成束期", name:"手握繁花的你" },
+  B:{ stage:"萌芽期", name:"向光尋路的你", es:"Sprouting", en:"Finding Your Way to the Light" },
+  S:{ stage:"舒枝期", name:"正在舒展姿態的你", es:"Unfolding", en:"Stretching Into Your Shape" },
+  H:{ stage:"含苞期", name:"等待上色的你", es:"Budding", en:"Waiting for Your Color" },
+  C:{ stage:"成束期", name:"手握繁花的你", es:"Bouquet", en:"Holding a Handful of Blooms" },
 };
 const ORDER = ["B","S","H","C"];
 
+/* ---------- 語言 ---------- */
+function pickLang(){
+  const p = new URLSearchParams(location.search).get("lang");
+  if (p === "en" || p === "zh") return p;
+  if (VERSION === "website") { const n = (navigator.language||"zh").toLowerCase(); return n.startsWith("zh") ? "zh" : "en"; }
+  return "zh";
+}
+let LANG = pickLang();
+const L = () => UI[LANG];
+function applyLang(){
+  document.documentElement.lang = LANG === "en" ? "en" : "zh-Hant";
+  document.title = L().title;
+  document.querySelectorAll("[data-i]").forEach(el=>{
+    const v = L()[el.dataset.i]; if (v === undefined) return;
+    if (el.dataset.html) el.innerHTML = v; else el.textContent = v;
+  });
+  $("#langBtn").textContent = L().langBtn;
+  if ($("#quiz").classList.contains("show")) renderQ();
+  if ($("#profile").classList.contains("show")) renderProfile();
+  if ($("#result").classList.contains("show") && lastType) showResult(lastType);
+}
+
 /* ---------- 狀態 ---------- */
-const ans = {}; const prof = {}; let qi = 0;
+const ans = {}; const prof = {}; let qi = 0; let lastType = null;
 const $ = s => document.querySelector(s);
 function show(id){ document.querySelectorAll(".screen").forEach(e=>e.classList.remove("show")); $("#"+id).classList.add("show"); window.scrollTo(0,0); }
 
 function renderQ(){
   const q = Q[qi];
-  $("#qnum").textContent = "第 " + (qi+1) + " 題";
+  $("#qnum").textContent = L().qnum(qi+1);
   $("#qtotal").textContent = (qi+1) + " / " + Q.length;
   $("#bar").style.width = ((qi)/Q.length*100) + "%";
-  $("#qtitle").textContent = q.title;
-  $("#qhint").textContent = q.multi ? "可複選，最多 " + q.multi + " 項" : "單選";
+  $("#qtitle").textContent = LANG==="en" ? q.en : q.title;
+  $("#qhint").textContent = q.multi ? L().multi(q.multi) : L().single;
   const box = $("#qopts"); box.innerHTML = "";
   const cur = ans[q.id] || [];
   q.opts.forEach((o,i)=>{
     const b = document.createElement("button");
     b.type="button"; b.className = "opt" + (q.multi?" multi":"");
-    b.innerHTML = '<span class="mk"></span><span>'+o.x+'</span>';
+    b.innerHTML = '<span class="mk"></span><span>'+(LANG==="en"?o.e:o.x)+'</span>';
     if (cur.includes(i)) b.classList.add("on");
     if (q.multi && !cur.includes(i) && cur.filter(v=>v>=0).length>=q.multi) b.classList.add("off");
     b.onclick = ()=>pick(i);
@@ -258,11 +312,11 @@ function renderQ(){
   if (q.none){
     const b = document.createElement("button");
     b.type="button"; b.className="opt multi none"+(cur.includes(-1)?" on":"");
-    b.innerHTML='<span class="mk"></span><span>以上都沒有</span>';
+    b.innerHTML='<span class="mk"></span><span>'+L().none+'</span>';
     b.onclick=()=>pick(-1); box.appendChild(b);
   }
   $("#nextBtn").disabled = !(cur.length);
-  $("#nextBtn").textContent = qi===Q.length-1 ? "下一步" : "下一題";
+  $("#nextBtn").textContent = qi===Q.length-1 ? L().nextLast : L().next;
   $("#backBtn").style.visibility = qi===0 ? "hidden" : "visible";
 }
 function pick(i){
@@ -281,26 +335,27 @@ $("#startBtn").onclick=()=>{qi=0;renderQ();show("quiz");};
 $("#nextBtn").onclick=next;
 $("#backBtn").onclick=()=>{ if(qi>0){qi--;renderQ();} };
 $("#pBack").onclick=()=>{ qi=Q.length-1; renderQ(); show("quiz"); };
+$("#langBtn").onclick=()=>{ LANG = LANG==="en" ? "zh" : "en"; applyLang(); };
 
 function renderProfile(){
   const box=$("#pfields"); box.innerHTML="";
   PROFILE.forEach(f=>{
     const d=document.createElement("div"); d.className="field";
-    d.innerHTML=f.label?'<label class="t">'+f.label+(f.req?'<span class="req">必填</span>':'')+'</label>':'';
+    const lab = LANG==="en" ? f.le : f.label;
+    d.innerHTML=lab?'<label class="t">'+lab+(f.req?'<span class="req">'+L().required+'</span>':'')+'</label>':'';
     if(f.type==="chips"){
       const c=document.createElement("div"); c.className="chips";
-      f.opts.forEach(o=>{ const b=document.createElement("button"); b.type="button"; b.className="chip"+(prof[f.id]===o?" on":""); b.textContent=o;
+      f.opts.forEach((o,i)=>{ const b=document.createElement("button"); b.type="button"; b.className="chip"+(prof[f.id]===o?" on":""); b.textContent= LANG==="en" ? f.oe[i] : o;
         b.onclick=()=>{prof[f.id]=o; c.querySelectorAll(".chip").forEach(x=>x.classList.remove("on")); b.classList.add("on");};
         c.appendChild(b); });
       d.appendChild(c);
     } else if(f.type==="check"){
-      d.innerHTML="";
       const b=document.createElement("button"); b.type="button"; b.className="opt multi"+(prof[f.id]?" on":""); b.style.fontSize="13.5px";
-      b.innerHTML='<span class="mk"></span><span>'+f.text+'</span>';
+      b.innerHTML='<span class="mk"></span><span>'+(LANG==="en"?f.te:f.text)+'</span>';
       b.onclick=()=>{ prof[f.id]=prof[f.id]?"":"願意"; b.classList.toggle("on"); };
       d.appendChild(b);
     } else {
-      const inp=document.createElement("input"); inp.type=f.type; inp.placeholder=f.ph||""; inp.value=prof[f.id]||"";
+      const inp=document.createElement("input"); inp.type=f.type; inp.placeholder=(LANG==="en"?f.phe:f.ph)||""; inp.value=prof[f.id]||"";
       inp.oninput=()=>prof[f.id]=inp.value.trim(); d.appendChild(inp);
     }
     box.appendChild(d);
@@ -313,45 +368,50 @@ function score(){
   Q.forEach(q=>{ if(q.score===false) return; (ans[q.id]||[]).forEach(i=>{ if(i>=0) s[q.opts[i].t]+= (q.weight||1); }); });
   const max=Math.max(...ORDER.map(k=>s[k]));
   const top=ORDER.filter(k=>s[k]===max);
-  const dq=Q.find(q=>q.weight); const q5t=dq.opts[(ans[dq.id]||[])[0]].t;
-  let type = top.length===1 ? top[0] : (top.includes(q5t) ? q5t : "C");
+  const dq=Q.find(q=>q.weight); const dt=dq.opts[(ans[dq.id]||[])[0]].t;
+  let type = top.length===1 ? top[0] : (top.includes(dt) ? dt : "C");
   return {s,type};
 }
 function tagOf(id){ const q=Q.find(x=>x.id===id); return (ans[id]||[]).filter(i=>i>=0).map(i=>q.opts[i].t).join("、"); }
 function textOf(id){ const q=Q.find(x=>x.id===id); return (ans[id]||[]).map(i=>i<0?"以上都沒有":q.opts[i].x).join("｜"); }
 
 $("#submitBtn").onclick=async()=>{
-  for(const f of PROFILE){ if(f.req && !prof[f.id]){ $("#perr").textContent="請填寫「"+f.label+"」"; return; } }
-  const em=PROFILE.find(f=>f.type==="email");
-  if(em && prof.email && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(prof.email)){ $("#perr").textContent="Email 格式好像不太對，再確認一下"; return; }
+  for(const f of PROFILE){ if(f.req && !prof[f.id]){ $("#perr").textContent=L().errReq(LANG==="en"?f.le:f.label); return; } }
+  if(prof.email && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(prof.email)){ $("#perr").textContent=L().errEmail; return; }
   $("#perr").textContent="";
   const {s,type}=score();
   const q9=tagOf("q9"), q10=tagOf("q10");
-  const payload={ version:VERSION, time:new Date().toISOString(), type,
+  const payload={ version:VERSION, lang:LANG, time:new Date().toISOString(), type,
     result:TYPES[type].stage, branch: type==="C" ? q10 : "",
     score_萌芽:s.B, score_舒枝:s.S, score_含苞:s.H, score_成束:s.C,
     q9_想法:q9, q10_狀態:q10 };
   Q.forEach(q=>payload[q.id]=textOf(q.id));
   PROFILE.forEach(f=>payload[f.id]=prof[f.id]||"");
   if(ENDPOINT){
-    $("#submitBtn").disabled=true; $("#sending").textContent="正在寄出你的結果……";
+    $("#submitBtn").disabled=true; $("#sending").textContent=L().sending;
     try{ await fetch(ENDPOINT,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(payload)}); }catch(e){}
   }
-  if(!ENDPOINT) console.warn('尚未設定 ENDPOINT，結果信不會寄出');
   showResult(type);
 };
 
+function linkBtn(href, label, cls){ return href ? '<a class="btn '+(cls||'')+'" href="'+href+'" target="_blank" rel="noopener">'+label+'</a>' : ''; }
 function showResult(type){
+  lastType = type;
   const T=TYPES[type];
   if(SHOW_TYPE_ON_PAGE){
     $("#rBrief").style.display="block";
-    $("#rImg").src="img/type-"+type+".png"; $("#rStage").textContent=T.stage; $("#rName").textContent=T.name;
+    $("#rImg").src="img/type-"+type+".png";
+    $("#rStage").textContent = LANG==="en" ? T.es : T.stage;
+    $("#rName").textContent = LANG==="en" ? T.en : T.name;
   }
-  $("#rMail").innerHTML = "完整的結果和建議，已經寄到 <b>"+(prof.email||"")+"</b>。<br>幾分鐘內就會收到；沒看到的話，記得看一下垃圾信件匣或「促銷內容」分類。";
-  $("#rClosing").innerHTML = '<div class="card"><h3>等一下</h3><p>記住你的時期，等一下我們一起看看全場的分布。</p></div>'
-    + '<div class="actions">' + (LINKS.ig ? '<a class="btn line" href="'+LINKS.ig+'" target="_blank" rel="noopener">追蹤 @go_floralway</a>' : '') + '</div>';
+  $("#rMail").innerHTML = L().sentText(prof.email||"");
+  $("#rClosing").innerHTML = '<div class="card"><h3>'+L().closeTitle+'</h3><p>'+L().closeText+'</p></div><div class="actions">'
+    + (VERSION==="website" ? linkBtn(LINKS.booking, L().booking, '') + linkBtn(LINKS.line, L().line, 'line') : '')
+    + linkBtn(LINKS.ig, L().ig, 'line') + '</div>';
   show("result");
 }
+
+applyLang();
 </script>
 </body>
 </html>

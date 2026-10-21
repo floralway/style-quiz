@@ -29,7 +29,7 @@ const SETTINGS = {
 const HEADER_LABELS = {
   time: '填寫時間', version: '版本', result: '結果類型', branch: '成束支線',
   'score_萌芽': '萌芽分數', 'score_舒枝': '舒枝分數', 'score_含苞': '含苞分數', 'score_成束': '成束分數',
-  type: '類型代號', 'q9_想法': 'Q9 想法分類', 'q10_狀態': 'Q10 狀態分類', optin: '願意收穿搭分享信', mail_sent: '結果信寄出',
+  type: '類型代號', lang: '語言', 'q9_想法': 'Q9 想法分類', 'q10_狀態': 'Q10 狀態分類', optin: '願意收穿搭分享信', mail_sent: '結果信寄出',
   q1: 'Q1 照鏡子', q2: 'Q2 買衣服', q3: 'Q3 別人怎麼說', q4: 'Q4 看到別人', q5: 'Q5 出門前',
   q6: 'Q6 正式穿搭', q7: 'Q7 換季整理', q8: 'Q8 最想改變', q9: 'Q9 想法', q10: 'Q10 狀態',
   age: '年齡', gender: '性別', role: '身分', region: '居住地區',
@@ -137,59 +137,110 @@ const RESULTS = {
     dir: '年度陪跑是一整年的陪伴：從分析開始，一起採購、一起調整，在不同季節、不同場合陪你練習，直到你能自己判斷。' },
 };
 
+
+const STAGE_EN = { '萌芽期': 'Sprouting', '舒枝期': 'Unfolding', '含苞期': 'Budding', '成束期': 'Bouquet' };
+const RESULTS_EN = {
+  B: { name: 'Finding Your Way to the Light', tag: 'You’re discovering who you want to grow into.',
+    now: 'The clothes look good, yet on you they don’t quite feel like you. The way others see you is a little different from the impression you want to give. You’re not short of clothes — you’re missing a direction.',
+    gap: 'A clear sense of “how I want to be remembered.” With a direction, every choice feels more certain, and trends stop pushing you around.',
+    tr: 'Write down three words you’d like people to use for you — say, “gentle, polished, thoughtful.” Before you buy something or take a photo, ask yourself: does this look like those three words?',
+    dir: 'Style positioning combines your body type, face shape and colors to find a style range that both suits you and feels like you — so your direction no longer relies on guesswork.' },
+  S: { name: 'Stretching Into Your Shape', tag: 'Find the lines that suit you, and you’ll stand taller.',
+    now: 'The size is right, yet the result is hit or miss. Styles that look great on others turn stiff and boxy on you, or seem to swallow you up. You may have wondered whether you’re too thin or too broad.',
+    gap: 'The issue is rarely your weight — it’s whether the cut and fabric match your body’s lines, texture and proportions. When they do, the same body looks completely different.',
+    tr: 'Take out the piece you look best in. Notice whether the fabric is crisp or soft, where the length falls, and the shape of the neckline. These are your body’s clues — next time you shop, start with the same features.',
+    dir: 'A body-type (skeletal) analysis helps you understand your lines and proportions, so you know which cuts and fabrics bring out your best.' },
+  H: { name: 'Waiting for Your Color', tag: 'Everything’s already there — you just need the color that makes you glow.',
+    now: 'Certain colors drain your energy the moment you put them on. People ask if you slept badly, even when you slept fine. Over time you’ve settled on black, white and gray — safe, but missing a little light.',
+    gap: 'Not more clothes, but knowing which colors are on your side. Color sits closest to your face; it’s the first thing people see, and the quickest way to brighten your whole look.',
+    tr: 'In natural light, hold two tops in different tones up to your face and compare: which one makes your skin look clearer and your under-eyes lighter? Start with the pieces closest to your face — lipstick, scarves, tops.',
+    dir: 'A personal color analysis finds your most flattering color range — and shows you how to wear the colors you love that fall outside it.' },
+  C_D1: { name: 'Holding a Handful of Blooms', tag: 'You already have plenty of beautiful flowers — they just need to be gathered into a bouquet.',
+    now: 'You’ve done your homework: maybe an analysis, plenty of style content, and you know what you like. But the answers and advice are scattered, and standing at your wardrobe each morning, you still don’t know how to put it all together.',
+    gap: 'A way to turn “knowing” into “doing.” Instead of collecting more advice, gather the flowers you already hold.',
+    tr: 'Pick the piece you wear most and build three different outfits around it, using only what’s already in your wardrobe. Photograph them — that’s the start of your own style notebook.',
+    dir: 'A wardrobe consultation helps you reorganize and pair what you already own; when you need new pieces, a personal shopping session helps you decide on the spot what’s worth buying.' },
+  C_D2: { name: 'Holding a Handful of Blooms', tag: 'You already have plenty of beautiful flowers — they just need to be gathered into a bouquet.',
+    now: 'For you, style may not be about not knowing — it’s about rarely feeling sure. One comment shakes you, resolutions slip back to square one, or family and friends end up deciding for you.',
+    gap: 'A process for slowly building your own judgment — with someone beside you to steady you when you waver.',
+    tr: 'This month, whenever you feel “I look good today,” take a photo and write one line about why. Look back after a month and you’ll start to see a pattern that’s yours.',
+    dir: 'Year-long coaching is a full year of support: starting from analysis, we shop together and adjust together, practicing across seasons and occasions until you can trust your own judgment.' },
+};
+const MAIL_TEXT = {
+  zh: { header: 'FLORALWAY　穿搭方向測驗', hi: n => `${n} 你好，`,
+    introW: s => `謝謝你花時間填寫這份測驗。看完你的答案，你現在在「${s}」。`,
+    introL: s => `謝謝你今天參加講座，也謝謝你填寫這份測驗。你現在在「${s}」。`,
+    now: '現在的你', gap: '你缺的那一塊', tr: '這週可以先試試', dir: '如果想走得更確定',
+    closeW: '如果想先聊聊自己的狀況，歡迎預約預諮詢，我們先認識彼此，再決定下一步。', btnW: '預約預諮詢',
+    closeL: '如果想多認識自己的花路，歡迎追蹤 @go_floralway，我會在那裡分享更多穿搭的小方法。', btnL: '追蹤 @go_floralway',
+    foot: '每個人都在花路上的不同位置，沒有誰比較前面。', subject: n => n + '，你的穿搭可以先從這裡開始', you: '你' },
+  en: { header: 'FLORALWAY　STYLE DIRECTION QUIZ', hi: n => `Hi ${n},`,
+    introW: s => `Thank you for taking the quiz. Based on your answers, you’re in the “${s}” stage.`,
+    introL: s => `Thank you for joining today’s workshop and taking the quiz. You’re in the “${s}” stage.`,
+    now: 'WHERE YOU ARE NOW', gap: 'THE MISSING PIECE', tr: 'TRY THIS WEEK', dir: 'IF YOU’D LIKE MORE CERTAINTY',
+    closeW: 'If you’d like to talk through your situation first, book a pre-consultation — we’ll get to know each other before deciding the next step.', btnW: 'Book a pre-consultation',
+    closeL: 'To keep exploring your own path, follow @go_floralway — I share more simple styling tips there.', btnL: 'Follow @go_floralway',
+    foot: 'Everyone is at a different place on their own path — no one is ahead.', subject: n => n + ', here’s where your style can begin', you: 'there' },
+};
+
 function esc(s) { return String(s || '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c])); }
 
 function sendResultMail(data) {
+  const lang = data.lang === 'en' ? 'en' : 'zh';
+  const M = MAIL_TEXT[lang];
   const type = data.type || 'C';
   const key = type === 'C' ? (data.branch === 'D2' ? 'C_D2' : 'C_D1') : type;
-  const t = RESULTS[key];
-  const name = esc(data.name || '你');
-  const subject = (data.name || '你') + '，你的穿搭可以先從這裡開始';
-  GmailApp.sendEmail(data.email, subject,
-    t.stage + '｜' + t.name + '\n' + t.tag + '\n\n現在的你：' + t.now + '\n\n你缺的那一塊：' + t.gap + '\n\n這週可以先試試：' + t.tr,
-    { htmlBody: buildMailHtml(t, type, data.version, name), name: SETTINGS.SENDER_NAME });
+  const zh = RESULTS[key];
+  const t = lang === 'en'
+    ? Object.assign({}, RESULTS_EN[key], { stage: STAGE_EN[zh.stage], stageZh: zh.stage })
+    : Object.assign({}, zh, { stageZh: zh.stage });
+  const rawName = data.name || M.you;
+  GmailApp.sendEmail(data.email, M.subject(rawName),
+    t.stage + '｜' + t.name + '\n' + t.tag + '\n\n' + M.now + '：' + t.now + '\n\n' + M.gap + '：' + t.gap + '\n\n' + M.tr + '：' + t.tr,
+    { htmlBody: buildMailHtml(t, type, data.version, esc(rawName), lang), name: SETTINGS.SENDER_NAME });
 }
 
-function buildMailHtml(t, type, version, name) {
+function buildMailHtml(t, type, version, name, lang) {
+  const M = MAIL_TEXT[lang || 'zh'];
   const IMG = SETTINGS.IMG_BASE;
-  const sec = (label, text) => `<tr><td style="padding:0 32px 22px"><div style="font-size:11px;letter-spacing:4px;color:#E8784A;margin-bottom:8px">${label}</div><div style="font-size:15px;line-height:1.9;color:#6B5A52">${text}</div></td></tr>`;
-  const intro = version === 'website'
-    ? `謝謝你花時間填寫這份測驗。看完你的答案，你現在在「${t.stage}」。`
-    : `謝謝你今天參加講座，也謝謝你填寫這份測驗。你現在在「${t.stage}」。`;
-  const stages = ['萌芽期', '舒枝期', '含苞期', '成束期'].map(s =>
-    `<td align="center" style="padding:0 3px"><span style="display:inline-block;font-size:11px;padding:4px 9px;border-radius:999px;${s === t.stage ? 'background:#E8784A;color:#FFFFFF;border:1px solid #E8784A' : 'color:#A08070;border:1px solid #D6C4B7;background:#FBF6F1'}">${s}</span></td>`).join('');
-  const dir = version === 'website' ? sec('如果想走得更確定', t.dir) : '';
-  const btn = (href, label, solid) => href ? `<a href="${href}" style="display:inline-block;${solid ? 'background:#E8784A;color:#fff' : 'background:#FFFCFA;color:#E8784A;border:1px solid #F2A882'};text-decoration:none;font-size:15px;letter-spacing:2px;padding:14px 32px;border-radius:999px">${label}</a>` : '';
+  const sp = lang === 'en' ? '2px' : '4px';
+  const sec = (label, text) => `<tr><td style="padding:0 32px 22px"><div style="font-size:11px;letter-spacing:${sp};color:#E8784A;margin-bottom:8px">${label}</div><div style="font-size:15px;line-height:1.9;color:#6B5A52">${text}</div></td></tr>`;
+  const intro = version === 'website' ? M.introW(t.stage) : M.introL(t.stage);
+  const order = ['萌芽期', '舒枝期', '含苞期', '成束期'];
+  const stages = order.map(s =>
+    `<td align="center" style="padding:0 3px"><span style="display:inline-block;font-size:11px;padding:4px 9px;border-radius:999px;${s === t.stageZh ? 'background:#E8784A;color:#FFFFFF;border:1px solid #E8784A' : 'color:#A08070;border:1px solid #D6C4B7;background:#FBF6F1'}">${lang === 'en' ? STAGE_EN[s] : s}</span></td>`).join('');
+  const dir = version === 'website' ? sec(M.dir, t.dir) : '';
+  const btn = (href, label, solid) => href ? `<a href="${href}" style="display:inline-block;${solid ? 'background:#E8784A;color:#fff' : 'background:#FFFCFA;color:#E8784A;border:1px solid #F2A882'};text-decoration:none;font-size:15px;letter-spacing:1px;padding:14px 32px;border-radius:999px">${label}</a>` : '';
   const close = version === 'website'
-    ? `<tr><td style="padding:4px 32px 8px;font-size:15px;line-height:1.9;color:#6B5A52">如果想先聊聊自己的狀況，歡迎預約預諮詢，我們先認識彼此，再決定下一步。</td></tr>
-       <tr><td align="center" style="padding:14px 32px 30px">${btn(SETTINGS.BOOKING_URL, '預約預諮詢', true)}</td></tr>`
-    : `<tr><td style="padding:4px 32px 8px;font-size:15px;line-height:1.9;color:#6B5A52">如果想多認識自己的花路，歡迎追蹤 @go_floralway，我會在那裡分享更多穿搭的小方法。</td></tr>
-       <tr><td align="center" style="padding:14px 32px 30px">${btn(SETTINGS.IG_URL, '追蹤 @go_floralway', false)}</td></tr>`;
+    ? `<tr><td style="padding:4px 32px 8px;font-size:15px;line-height:1.9;color:#6B5A52">${M.closeW}</td></tr>
+       <tr><td align="center" style="padding:14px 32px 30px">${btn(SETTINGS.BOOKING_URL, M.btnW, true)}</td></tr>`
+    : `<tr><td style="padding:4px 32px 8px;font-size:15px;line-height:1.9;color:#6B5A52">${M.closeL}</td></tr>
+       <tr><td align="center" style="padding:14px 32px 30px">${btn(SETTINGS.IG_URL, M.btnL, false)}</td></tr>`;
   return `<!doctype html><html><body style="margin:0;padding:0;background:#FAF6F3">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#FAF6F3;font-family:Georgia,'Noto Serif TC','Noto Sans TC',sans-serif">
 <tr><td align="center" style="padding:28px 12px">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;background:#FFFCFA;border-radius:16px;overflow:hidden;border-top:4px solid #E8784A">
 <tr><td style="padding:0"><img src="${IMG}banner.png" width="600" alt="" style="display:block;width:100%;height:auto;border:0"></td></tr>
-<tr><td style="padding:4px 32px 6px;font-size:11px;letter-spacing:4px;color:#E8784A">FLORALWAY　穿搭方向測驗</td></tr>
-<tr><td style="padding:14px 32px 18px;font-size:15px;line-height:1.9;color:#6B5A52">${name} 你好，<br>${intro}</td></tr>
+<tr><td style="padding:4px 32px 6px;font-size:11px;letter-spacing:${sp};color:#E8784A">${M.header}</td></tr>
+<tr><td style="padding:14px 32px 18px;font-size:15px;line-height:1.9;color:#6B5A52">${M.hi(name)}<br>${intro}</td></tr>
 <tr><td style="padding:0 20px 26px">
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#F1E8E0;border-radius:14px;border:1px solid #E8D9CC"><tr><td align="center" style="padding:22px 18px 26px">
     <img src="${IMG}type-${type}.png" width="150" height="150" alt="" style="display:block;margin:0 auto 4px;border:0">
-    <div style="font-size:12px;letter-spacing:6px;color:#E8784A">${t.stage}</div>
-    <div style="font-size:26px;color:#3A2E28;margin:10px 0 8px">${t.name}</div>
+    <div style="font-size:12px;letter-spacing:${lang === 'en' ? '3px' : '6px'};color:#E8784A">${t.stage}</div>
+    <div style="font-size:${lang === 'en' ? '23px' : '26px'};color:#3A2E28;margin:10px 0 8px">${t.name}</div>
     <div style="font-size:15px;font-style:italic;color:#8C7364;line-height:1.7">${t.tag}</div>
     <table role="presentation" cellpadding="0" cellspacing="0" style="margin-top:18px"><tr>${stages}</tr></table>
   </td></tr></table>
 </td></tr>
-${sec('現在的你', t.now)}
-${sec('你缺的那一塊', t.gap)}
+${sec(M.now, t.now)}
+${sec(M.gap, t.gap)}
 <tr><td style="padding:0 20px 24px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#FAF0E8;border-radius:12px"><tr><td style="padding:20px 22px">
-  <div style="font-size:11px;letter-spacing:4px;color:#E8784A;margin-bottom:8px">這週可以先試試</div>
+  <div style="font-size:11px;letter-spacing:${sp};color:#E8784A;margin-bottom:8px">${M.tr}</div>
   <div style="font-size:15px;line-height:1.9;color:#3A2E28">${t.tr}</div></td></tr></table></td></tr>
 ${dir}
 ${close}
 <tr><td style="padding:0 32px"><div style="height:1px;background:#EFE2D8"></div></td></tr>
-<tr><td align="center" style="padding:22px 32px 30px;font-size:13px;line-height:1.9;color:#A08070;font-style:italic">每個人都在花路上的不同位置，沒有誰比較前面。<br><span style="font-style:normal;color:#3A2E28">Evelyn</span><br><span style="font-style:normal;font-size:12px;color:#C4B0A4;letter-spacing:1px">質穎形象顏究室® Floralway Image Studio</span></td></tr>
+<tr><td align="center" style="padding:22px 32px 30px;font-size:13px;line-height:1.9;color:#A08070;font-style:italic">${M.foot}<br><span style="font-style:normal;color:#3A2E28">Evelyn</span><br><span style="font-style:normal;font-size:12px;color:#C4B0A4;letter-spacing:1px">質穎形象顏究室® Floralway Image Studio</span></td></tr>
 </table></td></tr></table></body></html>`;
 }
 
