@@ -1,0 +1,478 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>你的穿搭，該先從哪裡開始？</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500&family=Noto+Serif+TC:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --orange:#E8784A; --orangeL:#F2A882; --pale:#FAF0E8; --cream:#FAF6F3; --white:#FFFCFA;
+  --deep:#3A2E28; --mid:#6B5A52; --soft:#A08070; --mist:#C4B0A4;
+  --serif:"Georgia","Noto Serif TC",serif; --sans:"Noto Sans TC",system-ui,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--cream);color:var(--mid);font-family:var(--sans);font-weight:400;-webkit-font-smoothing:antialiased}
+body{min-height:100vh;border-top:3px solid var(--orange);position:relative;overflow-x:hidden}
+.deco{position:fixed;pointer-events:none;z-index:0;width:190px;opacity:.7}
+.deco.tr{top:-62px;right:-74px}.deco.bl{bottom:-50px;left:-70px}
+@media(min-width:720px){.deco{width:340px;opacity:.85}.deco.tr{top:-30px;right:-40px}}
+.wrap{position:relative;z-index:1}
+.icon{width:76px;height:76px;display:block;margin:0 0 14px}
+.wrap{max-width:560px;margin:0 auto;padding:58px 20px 56px}
+.eyebrow{font-size:11px;letter-spacing:.3em;color:var(--orange);display:flex;align-items:center;gap:10px}
+.eyebrow:after{content:"";width:36px;height:1px;background:var(--orange);opacity:.5}
+h1{font-family:var(--serif);font-weight:400;color:var(--deep);font-size:28px;line-height:1.45;margin:18px 0 6px}
+h1 em,h2 em{font-style:italic;color:var(--orange)}
+h2{font-family:var(--serif);font-weight:400;color:var(--deep);font-size:21px;line-height:1.5;margin:10px 0 6px}
+p{line-height:1.85;font-size:15px}
+.lead{color:var(--soft);margin:10px 0 26px}
+.rule{width:44px;height:1px;background:var(--orange);margin:22px 0}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:none;cursor:pointer;
+  background:var(--orange);color:#fff;font-family:var(--sans);font-size:15px;letter-spacing:.08em;
+  padding:14px 28px;border-radius:999px;min-width:150px;transition:opacity .2s,transform .1s}
+.btn:active{transform:scale(.98)}
+.btn[disabled]{opacity:.35;cursor:not-allowed}
+.btn.ghost{background:transparent;color:var(--soft);min-width:auto;padding:14px 8px}
+.btn.line{background:var(--white);color:var(--orange);border:1px solid var(--orangeL)}
+.nav{display:flex;justify-content:space-between;align-items:center;margin-top:28px}
+.progress{height:3px;background:#EFE5DE;border-radius:3px;overflow:hidden;margin:6px 0 26px}
+.progress i{display:block;height:100%;background:var(--orange);width:0;transition:width .35s}
+.meta{display:flex;justify-content:space-between;font-size:12px;color:var(--mist);letter-spacing:.1em}
+.hint{font-size:12.5px;color:var(--soft);margin:2px 0 18px}
+.opts{display:flex;flex-direction:column;gap:10px}
+.opt{display:flex;gap:12px;align-items:flex-start;text-align:left;width:100%;cursor:pointer;
+  background:var(--white);border:1px solid #EADCD2;border-radius:14px;padding:15px 16px;
+  font-family:var(--sans);font-size:15px;line-height:1.65;color:var(--deep);transition:border-color .2s,background .2s}
+.opt .mk{flex:0 0 18px;height:18px;margin-top:3px;border:1.5px solid var(--mist);border-radius:50%;position:relative}
+.opt.multi .mk{border-radius:5px}
+.opt.on{border-color:var(--orange);background:var(--pale)}
+.opt.on .mk{border-color:var(--orange);background:var(--orange)}
+.opt.on .mk:after{content:"";position:absolute;left:5px;top:1.5px;width:4px;height:9px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg)}
+.opt.off{opacity:.4;cursor:not-allowed}
+.opt.none{font-size:13.5px;color:var(--soft);padding:11px 16px;background:transparent;border-style:dashed}
+.field{margin-bottom:22px}
+.field label.t{display:block;font-family:var(--serif);color:var(--deep);font-size:16px;margin-bottom:10px}
+.field .req{color:var(--orange);font-size:12px;margin-left:6px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1px solid #EADCD2;background:var(--white);color:var(--deep);border-radius:999px;padding:9px 15px;font-size:14px;cursor:pointer;font-family:var(--sans)}
+.chip.on{border-color:var(--orange);background:var(--pale);color:var(--orange)}
+input[type=text],input[type=email]{width:100%;border:1px solid #EADCD2;background:var(--white);border-radius:12px;padding:13px 14px;font-size:15px;font-family:var(--sans);color:var(--deep)}
+input:focus{outline:none;border-color:var(--orange)}
+.err{color:var(--orange);font-size:13px;margin-top:8px;min-height:18px}
+.card{background:var(--white);border:1px solid #EFE2D8;border-radius:18px;padding:22px 20px;margin-top:14px}
+.card h3{font-size:11px;letter-spacing:.25em;color:var(--orange);font-weight:500;margin-bottom:10px}
+.card p{font-size:14.5px}
+.type-badge{display:inline-block;font-family:var(--serif);font-size:13px;color:var(--orange);border:1px solid var(--orangeL);border-radius:999px;padding:4px 14px;letter-spacing:.15em;margin-top:6px}
+.result-hero{background:#F1E8E0;border:1px solid #E8D9CC;border-radius:22px;padding:20px 22px 26px;margin:18px 0 6px;text-align:center}
+.result-hero img{width:150px;height:150px;display:block;margin:0 auto 4px}
+.result-hero .stage{font-size:12px;letter-spacing:.35em;color:var(--orange)}
+.result-hero .name{font-family:var(--serif);font-size:27px;margin:10px 0 8px;line-height:1.4;color:var(--deep)}
+.result-hero .tag{font-family:var(--serif);font-style:italic;color:#8C7364;font-size:15px;line-height:1.7}
+.ring{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin-top:18px}
+.ring span{font-size:11px;letter-spacing:.1em;padding:4px 9px;border-radius:999px;border:1px solid #D6C4B7;color:var(--soft);background:#FBF6F1}
+.ring span.me{border-color:var(--orange);color:#fff;background:var(--orange)}
+.foot{font-size:12px;color:var(--mist);text-align:center;margin-top:34px;line-height:1.8;letter-spacing:.05em}
+.actions{display:flex;flex-direction:column;gap:10px;margin-top:22px}
+.actions a{text-decoration:none}
+.screen{display:none;animation:fade .4s ease}
+.screen.show{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.sending{color:var(--soft);font-size:13px;text-align:center;margin-top:12px;min-height:18px}
+.langbar{position:absolute;top:14px;right:16px;z-index:5}
+.lang{border:1px solid #E6D6CB;background:rgba(255,252,250,.92);color:var(--soft);border-radius:999px;padding:6px 14px;font-size:12.5px;letter-spacing:.08em;cursor:pointer;font-family:var(--sans)}
+.lang:hover{color:var(--orange);border-color:var(--orangeL)}
+</style>
+</head>
+<body>
+<img class="deco tr" src="img/corner-tr.png" alt=""><img class="deco bl" src="img/corner-bl.png" alt="">
+<div class="langbar"><button type="button" id="langBtn" class="lang"></button></div>
+<div class="wrap">
+
+  <!-- intro -->
+  <section class="screen show" id="intro">
+    <img class="icon" src="img/icon.png" alt="">
+    <div class="eyebrow" data-i="eyebrow"></div>
+    <h1 data-i="headline" data-html="1"></h1>
+    <p class="lead" data-i="intro"></p>
+    <div class="card">
+      <h3 data-i="beforeTitle"></h3>
+      <p data-i="beforeText" data-html="1"></p>
+    </div>
+    <div class="nav"><span></span><button class="btn" id="startBtn" data-i="start"></button></div>
+    <p class="foot">質穎形象顏究室® Floralway Image Studio</p>
+  </section>
+
+  <!-- about you (before questions) -->
+  <section class="screen" id="about">
+    <div class="meta"><span data-i="aboutStep"></span><span></span></div>
+    <div class="progress"><i style="width:0%"></i></div>
+    <h2 data-i="aboutTitle"></h2>
+    <p class="hint" data-i="aboutHint"></p>
+    <div id="afields"></div>
+    <div class="err" id="aerr"></div>
+    <div class="nav">
+      <button class="btn ghost" id="aBack" data-i="back"></button>
+      <button class="btn" id="aNext" data-i="aboutNext"></button>
+    </div>
+  </section>
+
+  <!-- questions -->
+  <section class="screen" id="quiz">
+    <div class="meta"><span id="qnum"></span><span id="qtotal"></span></div>
+    <div class="progress"><i id="bar"></i></div>
+    <h2 id="qtitle"></h2>
+    <p class="hint" id="qhint"></p>
+    <div class="opts" id="qopts"></div>
+    <div class="nav">
+      <button class="btn ghost" id="backBtn" data-i="back"></button>
+      <button class="btn" id="nextBtn" disabled></button>
+    </div>
+  </section>
+
+  <!-- profile -->
+  <section class="screen" id="profile">
+    <div class="meta"><span data-i="lastStep"></span><span></span></div>
+    <div class="progress"><i style="width:100%"></i></div>
+    <h2 data-i="profileTitle"></h2>
+    <p class="hint" data-i="profileHint"></p>
+    <div id="pfields"></div>
+    <div class="err" id="perr"></div>
+    <div class="nav">
+      <button class="btn ghost" id="pBack" data-i="back"></button>
+      <button class="btn" id="submitBtn" data-i="submit"></button>
+    </div>
+    <div class="sending" id="sending"></div>
+  </section>
+
+  <!-- thanks -->
+  <section class="screen" id="result">
+    <img class="icon" src="img/icon.png" alt="" style="margin:8px auto 14px">
+    <h1 style="text-align:center;font-size:24px" data-i="thanks"></h1>
+    <div id="rBrief" style="display:none">
+      <div class="result-hero">
+        <img id="rImg" src="" alt="">
+        <div class="stage" id="rStage"></div>
+        <div class="name" id="rName"></div>
+      </div>
+    </div>
+    <div class="card"><h3 data-i="sentTitle"></h3><p id="rMail"></p></div>
+    <div id="rClosing"></div>
+    <p class="foot"><span data-i="footLine"></span><br>質穎形象顏究室® Floralway Image Studio</p>
+  </section>
+</div>
+
+<script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+<script>
+const VERSION = "line";            // "lecture" | "website"
+const ENDPOINT = "https://script.google.com/macros/s/AKfycbyL-tEuW9J7Rqih7AMNZWwn8RM5N6wCTPhMY_n-bGcKz5uwrtWyD0UvWKyVI023fxTJ/exec";
+const SHOW_TYPE_ON_PAGE = true;   // 感謝頁是否顯示時期名稱
+const LIFF_ID = "2012187840-E1kHm71k";
+const SRC_LABEL = { ig:"IG 首頁", ad:"廣告", fb:"Facebook", web:"官網", threads:"Threads", line:"LINE 圖文選單", qr:"講座 QR" };
+const LINKS = {
+  ig: "https://www.instagram.com/go_floralway/",
+  site: "https://gofloralway.com",
+  line: "https://lin.ee/V9COsB9",
+  booking: "https://calendly.com/floralway-image/30min"
+};
+
+/* ---------- 介面文字（中 / 英） ---------- */
+const UI = {
+  zh: Object.assign({
+    headline: "你的穿搭，<br>該先從<em>哪裡</em>開始？",
+    beforeTitle: "填寫前", beforeText: "約 3 分鐘，共 10 題。<br>沒有標準答案，選最直覺的那一個就好。",
+    aboutStep: "開始之前", aboutTitle: "先認識你一下", aboutHint: "讓結果和建議更貼近你。", aboutNext: "開始作答",
+    start: "開始", back: "← 上一題", next: "下一題", nextLast: "下一步",
+    qnum: n => "第 " + n + " 題", single: "單選", multi: n => "可複選，最多 " + n + " 項", none: "以上都沒有",
+    lastStep: "最後一步", required: "必填", submit: "寄出我的結果", sending: "正在寄出你的結果……",
+    errReq: f => "請填寫「" + f + "」", errEmail: "Email 格式好像不太對，再確認一下",
+    thanks: "謝謝你的填寫", sentTitle: "你的結果已寄出",
+    sentText: e => "完整的結果和建議，已經寄到 <b>" + e + "</b>。<br>幾分鐘內就會收到；沒看到的話，記得看一下垃圾信件匣或「促銷內容」分類。",
+    footLine: "每個人都在花路上的不同位置，沒有誰比較前面。",
+    ig: "追蹤 @go_floralway", line: "加入 LINE 官方帳號", booking: "預約預諮詢", langBtn: "English",
+  }, {"title": "你的穿搭，該先從哪裡開始？｜Floralway 穿搭方向測驗", "eyebrow": "Floralway 穿搭方向測驗", "intro": "你已經知道自己卡在哪裡，接下來，該往哪裡努力？花 3 分鐘回答，完整結果會寄到你的信箱，Evelyn 老師也會親自看你的答案。", "profileTitle": "最後一步", "profileHint": "送出後，結果會直接傳到 LINE 聊天室。", "closeTitle": "接下來", "closeText": "想先聊聊自己的狀況，歡迎直接在 LINE 留言給 Evelyn 老師，或預約預諮詢。"}),
+  en: Object.assign({
+    headline: "Where should your<br>style <em>begin</em>?",
+    beforeTitle: "Before you start", beforeText: "About 3 minutes, 10 questions.<br>There are no right answers — go with your first instinct.",
+    aboutStep: "Before we begin", aboutTitle: "First, a little about you", aboutHint: "So your result and suggestions fit you better.", aboutNext: "Start the quiz",
+    start: "Start", back: "← Back", next: "Next", nextLast: "Next step",
+    qnum: n => "Question " + n, single: "Choose one", multi: n => "Choose up to " + n, none: "None of the above",
+    lastStep: "Last step", required: "Required", submit: "Send my result", sending: "Sending your result…",
+    errReq: f => "Please fill in “" + f + "”", errEmail: "That email doesn’t look quite right — please check it.",
+    thanks: "Thank you!", sentTitle: "Your result is on its way",
+    sentText: e => "Your full result and suggestions have been sent to <b>" + e + "</b>.<br>It should arrive within a few minutes — if not, please check your spam or Promotions folder.",
+    footLine: "Everyone is at a different place on their own path — no one is ahead.",
+    ig: "Follow @go_floralway", line: "Add us on LINE", booking: "Book a pre-consultation", langBtn: "中文",
+  }, {"title": "Where should your style begin? | Floralway Style Direction Quiz", "eyebrow": "Floralway Style Direction Quiz", "intro": "You know where you feel stuck — so where should you go next? Answer in 3 minutes and your full result will be emailed to you. Evelyn will also read your answers personally.", "profileTitle": "Last step", "profileHint": "Once you submit, your result will be sent to the LINE chat.", "closeTitle": "What’s next", "closeText": "If you’d like to talk about your situation, message Evelyn in LINE anytime or book a pre-consultation."})
+};
+
+/* ---------- 題目 ---------- */
+// t: 類型代號 B=萌芽 S=舒枝 H=含苞 C=成束 ； x=中文 e=English
+const Q = [
+  { id:"q1", title:"照鏡子的時候，最常讓你覺得「怪怪的」是？", en:"When you look in the mirror, what usually feels “off”?", multi:2, none:true, opts:[
+    {t:"S", x:"尺寸明明對，穿起來卻顯得呆板、太拘謹，或像套了布袋", e:"The size is right, yet it looks stiff and boxy — or like a sack"},
+    {t:"H", x:"顏色一上身，氣色就變差、看起來很累", e:"Certain colors make my complexion dull and I look tired"},
+    {t:"C", x:"單看每件都不錯，搭在一起就是不對", e:"Each piece looks fine alone, but together it just doesn’t work"},
+    {t:"B", x:"衣服本身好看，但穿在我身上就是不像我", e:"The clothes look nice, but they don’t feel like me"} ]},
+  { id:"q2", title:"買衣服的時候，你最常卡在？", en:"When shopping for clothes, where do you usually get stuck?", multi:2, none:true, opts:[
+    {t:"B", x:"跟著流行或網紅買，穿上身卻不像自己", e:"I follow trends or influencers, but it doesn’t look like me"},
+    {t:"C", x:"買回家才發現，不知道怎麼跟其他衣服搭", e:"I get home and realize I don’t know what to wear it with"},
+    {t:"H", x:"只敢買黑、白、灰、深藍這些安全色", e:"I only dare to buy safe colors — black, white, gray, navy"},
+    {t:"S", x:"同樣的尺碼，有時候好看，有時候很奇怪", e:"Same size, but sometimes it looks great and sometimes odd"} ]},
+  { id:"q3", title:"別人常怎麼說你？", en:"What do people often say about you?", multi:2, none:true, opts:[
+    {t:"C", x:"「很整齊、不會出錯，但好像有點普通」", e:"“Neat and safe — but a little plain”"},
+    {t:"H", x:"「你今天看起來好累喔」", e:"“You look tired today”"},
+    {t:"B", x:"「你看起來好兇」「好孩子氣」或「不太好親近」", e:"“You look strict,” “young,” or “hard to approach”"},
+    {t:"S", x:"「這件好像有點撐不起來」或「這件有點顯壯」", e:"“That doesn’t quite fit you” or “That makes you look bulky”"} ]},
+  { id:"q4", title:"看到別人穿得很好看時，你通常會想？", en:"When you see someone dressed beautifully, you usually think…", opts:[
+    {t:"S", x:"換成我的身材，應該穿不出那個效果", e:"It wouldn’t look like that on my body"},
+    {t:"B", x:"好看是好看，但那不是我想要的樣子", e:"It’s nice, but it’s not the look I want"},
+    {t:"H", x:"同樣的顏色，我穿起來大概會沒精神", e:"That color would probably make me look washed out"},
+    {t:"C", x:"我好像也有類似的衣服，只是不知道怎麼搭成那樣", e:"I have similar pieces — I just don’t know how to put them together like that"} ]},
+  { id:"q5", title:"早上出門前，最花你時間的是？", en:"Getting ready in the morning, what takes you the longest?", opts:[
+    {t:"B", x:"不知道今天想給人什麼感覺，所以遲遲決定不了", e:"I can’t decide what impression I want to give today"},
+    {t:"H", x:"換了好幾件，還是找不到讓氣色好的那一件", e:"I change several times and still can’t find one that makes me look fresh"},
+    {t:"C", x:"單品明明很多，卻要想很久才搭得出一套", e:"I have plenty of pieces, but it takes forever to put an outfit together"},
+    {t:"S", x:"一直照鏡子調整，怎麼穿都覺得比例怪怪的", e:"I keep adjusting in the mirror — the proportions always look off"} ]},
+  { id:"q6", title:"穿正式一點的衣服時（襯衫、西裝外套、洋裝），你最常覺得？", en:"When you dress more formally (shirts, blazers, dresses), you usually feel…",
+    titleM:"穿正式一點的衣服時（襯衫、西裝外套、西裝褲），你最常覺得？", enM:"When you dress more formally (shirts, blazers, suit trousers), you usually feel…", opts:[
+    {t:"S", x:"肩線、腰身總是不太合，看起來不夠挺", e:"The shoulders or waist never quite fit, so it doesn’t look sharp"},
+    {t:"C", x:"就那一兩套，換來換去還是差不多", e:"I only have one or two outfits, so it always looks the same"},
+    {t:"H", x:"顏色太深太重，整個人看起來更累", e:"The colors are too dark and heavy — I look even more tired"},
+    {t:"B", x:"太像業務員或太老氣，不像我", e:"I look like a salesperson or too old — not like me"} ]},
+  { id:"q7", title:"每到換季整理衣服時，你常發現什麼？", en:"When you sort your wardrobe at the change of season, what do you often find?", multi:2, none:true, opts:[
+    {t:"C", x:"衣服不少，常穿的卻只有那幾件", e:"I have plenty of clothes, but I only wear a few of them"},
+    {t:"B", x:"衣服的風格很雜，看不出自己到底喜歡什麼", e:"My clothes are all over the place — I can’t tell what I actually like"},
+    {t:"S", x:"很多衣服其實不合身，買了卻很少穿", e:"Many pieces don’t really fit, so I barely wear them"},
+    {t:"H", x:"很多衣服穿起來沒精神，卻捨不得丟", e:"Many pieces make me look dull, but I can’t bring myself to let them go"} ]},
+  { id:"q8", title:"如果只能先改變一件事，你最想要？", en:"If you could change just one thing first, what would it be?", weight:2, opts:[
+    {t:"H", x:"找到讓氣色變好的顏色", e:"Find colors that make my complexion glow"},
+    {t:"C", x:"把現有的衣服和學過的建議，真的用進生活", e:"Actually use the clothes and advice I already have"},
+    {t:"S", x:"讓衣服穿起來更挺、比例更好看", e:"Make my clothes look sharper, with better proportions"},
+    {t:"B", x:"穿出像自己、也是我想給人的印象", e:"Dress like myself — and give the impression I want"} ]},
+  { id:"q9", title:"關於穿搭，哪一句最像你現在的想法？", en:"Which sentence sounds most like you right now?", score:false, opts:[
+    {t:"自主-需要確認", x:"我大概知道自己適合什麼，但心裡還是覺得不踏實", e:"I roughly know what suits me, but I still don’t feel sure"},
+    {t:"陪伴-判斷力", x:"我想要有自己的判斷力，不再一下就腦波弱", e:"I want my own judgment, instead of being swayed so easily"},
+    {t:"自主-享受探索", x:"我喜歡自己慢慢摸索，雖然會踩雷，但對我來說很有樂趣", e:"I like figuring it out myself — even the misses are part of the fun"},
+    {t:"陪伴-推一把", x:"我知道要改變，但需要有人推我一把", e:"I know I need to change, but I need someone to give me a push"} ]},
+  { id:"q10", title:"你目前的穿搭狀態是？", en:"Where are you with your style right now?", score:false, opts:[
+    {t:"D1", x:"做過色彩或骨架分析，但不知道怎麼用", e:"I’ve had a color or body analysis, but don’t know how to use it"},
+    {t:"D2", x:"大多是家人、伴侶或朋友幫忙決定", e:"Family, a partner, or friends mostly decide for me"},
+    {t:"D1", x:"很認真看穿搭內容，但越看越亂", e:"I watch a lot of style content, but it only confuses me more"},
+    {t:"D2", x:"沒認真試過，覺得自己怎麼穿都差不多", e:"I’ve never really tried — I feel I look the same in anything"},
+    {t:"D1", x:"知道自己喜歡什麼，但穿起來時好時壞", e:"I know what I like, but the results are hit or miss"} ]},
+];
+
+/* ---------- 基本資料 ---------- */
+// o: 選項（中文存入資料）；oe: 英文顯示
+const PRE = [
+  { id:"name", label:"你希望怎麼被稱呼", le:"What should we call you?", type:"text", req:true, ph:"例如：小安", phe:"e.g. Anne" },
+  { id:"gender", label:"性別", le:"Gender", type:"chips", req:true, opts:["女","男","不想透露"], oe:["Female","Male","Prefer not to say"] },
+  { id:"age", label:"年齡", le:"Age", type:"chips", req:true, opts:["22 歲以下","23–29 歲","30–39 歲","40–49 歲","50 歲以上"], oe:["22 or under","23–29","30–39","40–49","50+"] },
+];
+const PROFILE = [
+  { id:"role", label:"目前身分", le:"You are…", type:"chips", req:true, opts:["學生","上班族","自營或創業","其他"], oe:["Student","Employee","Self-employed / founder","Other"] },
+  { id:"region", label:"居住地區", le:"Where do you live?", type:"chips", req:true,
+    opts:["台灣－中部","台灣－北部","台灣－南部","台灣－東部","大陸","港澳","海外"],
+    oe:["Taiwan – Central","Taiwan – North","Taiwan – South","Taiwan – East","Mainland China","Hong Kong / Macau","Overseas"] },
+  { id:"email", label: VERSION==="line" ? "也想收到 email 版的完整結果嗎？（選填）" : "結果要寄到哪個信箱？", le: VERSION==="line" ? "Want the full result by email too? (optional)" : "Where should we send your result?", type:"email", req: VERSION!=="line", ph:"name@example.com", phe:"name@example.com" },
+  { id:"optin", label:"", type:"check", req:false, text:"我願意收到 Evelyn 老師不定期的穿搭分享信", te:"I’d like to receive occasional style notes from Evelyn" },
+];
+
+const TYPES = {
+  B:{ stage:"萌芽期", name:"向光尋路的你", es:"Sprouting", en:"Finding Your Way to the Light" },
+  S:{ stage:"舒枝期", name:"正在舒展姿態的你", es:"Unfolding", en:"Stretching Into Your Shape" },
+  H:{ stage:"含苞期", name:"等待上色的你", es:"Budding", en:"Waiting for Your Color" },
+  C:{ stage:"成束期", name:"手握繁花的你", es:"Bouquet", en:"Holding a Handful of Blooms" },
+};
+const ORDER = ["B","S","H","C"];
+
+/* ---------- 語言 ---------- */
+function pickLang(){
+  const p = new URLSearchParams(location.search).get("lang");
+  if (p === "en" || p === "zh") return p;
+  if (VERSION !== "lecture") { const n = (navigator.language||"zh").toLowerCase(); return n.startsWith("zh") ? "zh" : "en"; }
+  return "zh";
+}
+let LANG = pickLang();
+const L = () => UI[LANG];
+function applyLang(){
+  document.documentElement.lang = LANG === "en" ? "en" : "zh-Hant";
+  document.title = L().title;
+  document.querySelectorAll("[data-i]").forEach(el=>{
+    const v = L()[el.dataset.i]; if (v === undefined) return;
+    if (el.dataset.html) el.innerHTML = v; else el.textContent = v;
+  });
+  $("#langBtn").textContent = L().langBtn;
+  if ($("#quiz").classList.contains("show")) renderQ();
+  if ($("#profile").classList.contains("show")) renderProfile();
+  if ($("#about").classList.contains("show")) renderFields(PRE, "#afields");
+  if ($("#result").classList.contains("show") && lastType) showResult(lastType);
+}
+
+/* ---------- 狀態 ---------- */
+const ans = {}; const prof = {}; let qi = 0; let lastType = null;
+const $ = s => document.querySelector(s);
+function show(id){ document.querySelectorAll(".screen").forEach(e=>e.classList.remove("show")); $("#"+id).classList.add("show"); window.scrollTo(0,0); }
+
+function renderQ(){
+  const q = Q[qi];
+  $("#qnum").textContent = L().qnum(qi+1);
+  $("#qtotal").textContent = (qi+1) + " / " + Q.length;
+  $("#bar").style.width = ((qi)/Q.length*100) + "%";
+  const male = prof.gender==="男" && q.titleM;
+  $("#qtitle").textContent = LANG==="en" ? (male?q.enM:q.en) : (male?q.titleM:q.title);
+  $("#qhint").textContent = q.multi ? L().multi(q.multi) : L().single;
+  const box = $("#qopts"); box.innerHTML = "";
+  const cur = ans[q.id] || [];
+  q.opts.forEach((o,i)=>{
+    const b = document.createElement("button");
+    b.type="button"; b.className = "opt" + (q.multi?" multi":"");
+    b.innerHTML = '<span class="mk"></span><span>'+(LANG==="en"?o.e:o.x)+'</span>';
+    if (cur.includes(i)) b.classList.add("on");
+    if (q.multi && !cur.includes(i) && cur.filter(v=>v>=0).length>=q.multi) b.classList.add("off");
+    b.onclick = ()=>pick(i);
+    box.appendChild(b);
+  });
+  if (q.none){
+    const b = document.createElement("button");
+    b.type="button"; b.className="opt multi none"+(cur.includes(-1)?" on":"");
+    b.innerHTML='<span class="mk"></span><span>'+L().none+'</span>';
+    b.onclick=()=>pick(-1); box.appendChild(b);
+  }
+  $("#nextBtn").disabled = !(cur.length);
+  $("#nextBtn").textContent = qi===Q.length-1 ? L().nextLast : L().next;
+  $("#backBtn").style.visibility = "visible";
+}
+function pick(i){
+  const q = Q[qi]; let cur = ans[q.id] || [];
+  if (!q.multi){ cur=[i]; ans[q.id]=cur; renderQ(); setTimeout(()=>{ if(Q[qi]===q) next(); },260); return; }
+  if (i===-1){ cur = cur.includes(-1)?[]:[-1]; }
+  else {
+    cur = cur.filter(v=>v!==-1);
+    if (cur.includes(i)) cur = cur.filter(v=>v!==i);
+    else if (cur.length < q.multi) cur.push(i);
+  }
+  ans[q.id]=cur; renderQ();
+}
+function next(){ if(qi<Q.length-1){qi++;renderQ();} else {renderProfile();show("profile");} }
+function checkReq(list, errSel){
+  for(const f of list){ if(f.req && !prof[f.id]){ $(errSel).textContent=L().errReq(LANG==="en"?f.le:f.label); return false; } }
+  $(errSel).textContent=""; return true;
+}
+$("#startBtn").onclick=()=>{ renderFields(PRE, "#afields"); show("about"); };
+$("#aBack").onclick=()=>show("intro");
+$("#aNext").onclick=()=>{ if(!checkReq(PRE,"#aerr")) return; qi=0; renderQ(); show("quiz"); };
+$("#nextBtn").onclick=next;
+$("#backBtn").onclick=()=>{ if(qi>0){qi--;renderQ();} else { renderFields(PRE, "#afields"); show("about"); } };
+$("#pBack").onclick=()=>{ qi=Q.length-1; renderQ(); show("quiz"); };
+$("#langBtn").onclick=()=>{ LANG = LANG==="en" ? "zh" : "en"; applyLang(); };
+
+function renderProfile(){ renderFields(PROFILE, "#pfields"); }
+function renderFields(list, sel){
+  const box=$(sel); box.innerHTML="";
+  list.forEach(f=>{
+    const d=document.createElement("div"); d.className="field";
+    const lab = LANG==="en" ? f.le : f.label;
+    d.innerHTML=lab?'<label class="t">'+lab+(f.req?'<span class="req">'+L().required+'</span>':'')+'</label>':'';
+    if(f.type==="chips"){
+      const c=document.createElement("div"); c.className="chips";
+      f.opts.forEach((o,i)=>{ const b=document.createElement("button"); b.type="button"; b.className="chip"+(prof[f.id]===o?" on":""); b.textContent= LANG==="en" ? f.oe[i] : o;
+        b.onclick=()=>{prof[f.id]=o; c.querySelectorAll(".chip").forEach(x=>x.classList.remove("on")); b.classList.add("on");};
+        c.appendChild(b); });
+      d.appendChild(c);
+    } else if(f.type==="check"){
+      const b=document.createElement("button"); b.type="button"; b.className="opt multi"+(prof[f.id]?" on":""); b.style.fontSize="13.5px";
+      b.innerHTML='<span class="mk"></span><span>'+(LANG==="en"?f.te:f.text)+'</span>';
+      b.onclick=()=>{ prof[f.id]=prof[f.id]?"":"願意"; b.classList.toggle("on"); };
+      d.appendChild(b);
+    } else {
+      const inp=document.createElement("input"); inp.type=f.type; inp.placeholder=(LANG==="en"?f.phe:f.ph)||""; inp.value=prof[f.id]||"";
+      inp.oninput=()=>prof[f.id]=inp.value.trim(); d.appendChild(inp);
+    }
+    box.appendChild(d);
+  });
+}
+
+/* ---------- 計分 ---------- */
+function score(){
+  const s={B:0,S:0,H:0,C:0};
+  Q.forEach(q=>{ if(q.score===false) return; (ans[q.id]||[]).forEach(i=>{ if(i>=0) s[q.opts[i].t]+= (q.weight||1); }); });
+  const max=Math.max(...ORDER.map(k=>s[k]));
+  const top=ORDER.filter(k=>s[k]===max);
+  const dq=Q.find(q=>q.weight); const dt=dq.opts[(ans[dq.id]||[])[0]].t;
+  let type = top.length===1 ? top[0] : (top.includes(dt) ? dt : "C");
+  return {s,type};
+}
+function tagOf(id){ const q=Q.find(x=>x.id===id); return (ans[id]||[]).filter(i=>i>=0).map(i=>q.opts[i].t).join("、"); }
+function textOf(id){ const q=Q.find(x=>x.id===id); return (ans[id]||[]).map(i=>i<0?"以上都沒有":q.opts[i].x).join("｜"); }
+
+$("#submitBtn").onclick=async()=>{
+  if(!checkReq(PROFILE,"#perr")) return;
+  if(prof.email && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(prof.email)){ $("#perr").textContent=L().errEmail; return; }
+  $("#perr").textContent="";
+  const {s,type}=score();
+  const q9=tagOf("q9"), q10=tagOf("q10");
+  const payload={ version:VERSION, lang:LANG, time:new Date().toISOString(), type,
+    result:TYPES[type].stage, branch: type==="C" ? q10 : "",
+    score_萌芽:s.B, score_舒枝:s.S, score_含苞:s.H, score_成束:s.C,
+    q9_想法:q9, q10_狀態:q10 };
+  Q.forEach(q=>payload[q.id]=textOf(q.id));
+  PRE.concat(PROFILE).forEach(f=>payload[f.id]=prof[f.id]||"");
+  payload.src = sourceLabel();
+  if (lineProfile){ payload.line_name = lineProfile.displayName||""; payload.line_uid = lineProfile.userId||""; }
+  if(ENDPOINT){
+    $("#submitBtn").disabled=true; $("#sending").textContent=L().sending;
+    try{ await fetch(ENDPOINT,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(payload)}); }catch(e){}
+  }
+  if (VERSION==="line" && window.liff && liff.isInClient && liff.isInClient()){
+    try { await liff.sendMessages([{ type:"text", text: lineKeyword(type) }]); liff.closeWindow(); return; } catch(e){}
+  }
+  showResult(type);
+};
+
+function sourceLabel(){
+  const p = (new URLSearchParams(location.search).get("src")||"").toLowerCase();
+  if (p) return SRC_LABEL[p] || p;
+  if (VERSION==="line") return SRC_LABEL.line;
+  if (VERSION==="lecture") return "講座";
+  return "官網／直接連結";
+}
+function lineKeyword(type){
+  let k = "測驗結果｜" + TYPES[type].stage;
+  if (type==="C") k += (tagOf("q10")==="D2" ? "・陪伴" : "・整合");
+  if (prof.gender==="男") k += "（男）";
+  return k;
+}
+
+/* ---------- LINE（LIFF） ---------- */
+let lineProfile = null;
+if (VERSION==="line" && window.liff){
+  liff.init({ liffId: LIFF_ID }).then(()=>{
+    if (!liff.isLoggedIn()) { liff.login({ redirectUri: location.href }); return; }
+    return liff.getProfile().then(p=>{ lineProfile=p; if(!prof.name){ prof.name=p.displayName; if($("#about").classList.contains("show")) renderFields(PRE,"#afields"); } });
+  }).catch(e=>console.log("LIFF init failed", e));
+}
+
+function linkBtn(href, label, cls){ return href ? '<a class="btn '+(cls||'')+'" href="'+href+'" target="_blank" rel="noopener">'+label+'</a>' : ''; }
+function showResult(type){
+  lastType = type;
+  const T=TYPES[type];
+  if(SHOW_TYPE_ON_PAGE){
+    $("#rBrief").style.display="block";
+    $("#rImg").src="img/type-"+type+".png";
+    $("#rStage").textContent = LANG==="en" ? T.es : T.stage;
+    $("#rName").textContent = LANG==="en" ? T.en : T.name;
+  }
+  $("#rMail").innerHTML = L().sentText(prof.email||"");
+  $("#rClosing").innerHTML = '<div class="card"><h3>'+L().closeTitle+'</h3><p>'+L().closeText+'</p></div><div class="actions">'
+    + (VERSION!=="lecture" ? linkBtn(LINKS.booking, L().booking, '') + (VERSION==='line' ? '' : linkBtn(LINKS.line, L().line, 'line')) : '')
+    + linkBtn(LINKS.ig, L().ig, 'line') + '</div>';
+  show("result");
+}
+
+applyLang();
+</script>
+</body>
+</html>

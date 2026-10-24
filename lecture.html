@@ -167,6 +167,8 @@ input:focus{outline:none;border-color:var(--orange)}
 const VERSION = "lecture";            // "lecture" | "website"
 const ENDPOINT = "https://script.google.com/macros/s/AKfycbyL-tEuW9J7Rqih7AMNZWwn8RM5N6wCTPhMY_n-bGcKz5uwrtWyD0UvWKyVI023fxTJ/exec";
 const SHOW_TYPE_ON_PAGE = true;   // 感謝頁是否顯示時期名稱
+const LIFF_ID = "2012187840-E1kHm71k";
+const SRC_LABEL = { ig:"IG 首頁", ad:"廣告", fb:"Facebook", web:"官網", threads:"Threads", line:"LINE 圖文選單", qr:"講座 QR" };
 const LINKS = {
   ig: "https://www.instagram.com/go_floralway/",
   site: "https://gofloralway.com",
@@ -271,7 +273,7 @@ const PRE = [
 const PROFILE = [
   { id:"role", label:"目前身分", le:"You are…", type:"chips", req:true, opts:["學生","上班族","自營或創業","其他"], oe:["Student","Employee","Self-employed / founder","Other"] },
   
-  { id:"email", label:"結果要寄到哪個信箱？", le:"Where should we send your result?", type:"email", req:true, ph:"name@example.com", phe:"name@example.com" },
+  { id:"email", label: VERSION==="line" ? "也想收到 email 版的完整結果嗎？（選填）" : "結果要寄到哪個信箱？", le: VERSION==="line" ? "Want the full result by email too? (optional)" : "Where should we send your result?", type:"email", req: VERSION!=="line", ph:"name@example.com", phe:"name@example.com" },
   { id:"optin", label:"", type:"check", req:false, text:"我願意收到 Evelyn 老師不定期的穿搭分享信", te:"I’d like to receive occasional style notes from Evelyn" },
 ];
 
@@ -287,7 +289,7 @@ const ORDER = ["B","S","H","C"];
 function pickLang(){
   const p = new URLSearchParams(location.search).get("lang");
   if (p === "en" || p === "zh") return p;
-  if (VERSION === "website") { const n = (navigator.language||"zh").toLowerCase(); return n.startsWith("zh") ? "zh" : "en"; }
+  if (VERSION !== "lecture") { const n = (navigator.language||"zh").toLowerCase(); return n.startsWith("zh") ? "zh" : "en"; }
   return "zh";
 }
 let LANG = pickLang();
@@ -415,12 +417,40 @@ $("#submitBtn").onclick=async()=>{
     q9_想法:q9, q10_狀態:q10 };
   Q.forEach(q=>payload[q.id]=textOf(q.id));
   PRE.concat(PROFILE).forEach(f=>payload[f.id]=prof[f.id]||"");
+  payload.src = sourceLabel();
+  if (lineProfile){ payload.line_name = lineProfile.displayName||""; payload.line_uid = lineProfile.userId||""; }
   if(ENDPOINT){
     $("#submitBtn").disabled=true; $("#sending").textContent=L().sending;
     try{ await fetch(ENDPOINT,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(payload)}); }catch(e){}
   }
+  if (VERSION==="line" && window.liff && liff.isInClient && liff.isInClient()){
+    try { await liff.sendMessages([{ type:"text", text: lineKeyword(type) }]); liff.closeWindow(); return; } catch(e){}
+  }
   showResult(type);
 };
+
+function sourceLabel(){
+  const p = (new URLSearchParams(location.search).get("src")||"").toLowerCase();
+  if (p) return SRC_LABEL[p] || p;
+  if (VERSION==="line") return SRC_LABEL.line;
+  if (VERSION==="lecture") return "講座";
+  return "官網／直接連結";
+}
+function lineKeyword(type){
+  let k = "測驗結果｜" + TYPES[type].stage;
+  if (type==="C") k += (tagOf("q10")==="D2" ? "・陪伴" : "・整合");
+  if (prof.gender==="男") k += "（男）";
+  return k;
+}
+
+/* ---------- LINE（LIFF） ---------- */
+let lineProfile = null;
+if (VERSION==="line" && window.liff){
+  liff.init({ liffId: LIFF_ID }).then(()=>{
+    if (!liff.isLoggedIn()) { liff.login({ redirectUri: location.href }); return; }
+    return liff.getProfile().then(p=>{ lineProfile=p; if(!prof.name){ prof.name=p.displayName; if($("#about").classList.contains("show")) renderFields(PRE,"#afields"); } });
+  }).catch(e=>console.log("LIFF init failed", e));
+}
 
 function linkBtn(href, label, cls){ return href ? '<a class="btn '+(cls||'')+'" href="'+href+'" target="_blank" rel="noopener">'+label+'</a>' : ''; }
 function showResult(type){
@@ -434,7 +464,7 @@ function showResult(type){
   }
   $("#rMail").innerHTML = L().sentText(prof.email||"");
   $("#rClosing").innerHTML = '<div class="card"><h3>'+L().closeTitle+'</h3><p>'+L().closeText+'</p></div><div class="actions">'
-    + (VERSION==="website" ? linkBtn(LINKS.booking, L().booking, '') + linkBtn(LINKS.line, L().line, 'line') : '')
+    + (VERSION!=="lecture" ? linkBtn(LINKS.booking, L().booking, '') + (VERSION==='line' ? '' : linkBtn(LINKS.line, L().line, 'line')) : '')
     + linkBtn(LINKS.ig, L().ig, 'line') + '</div>';
   show("result");
 }

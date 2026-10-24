@@ -33,7 +33,7 @@ const HEADER_LABELS = {
   q1: 'Q1 照鏡子', q2: 'Q2 買衣服', q3: 'Q3 別人怎麼說', q4: 'Q4 看到別人', q5: 'Q5 出門前',
   q6: 'Q6 正式穿搭', q7: 'Q7 換季整理', q8: 'Q8 最想改變', q9: 'Q9 想法', q10: 'Q10 狀態',
   age: '年齡', gender: '性別', role: '身分', region: '居住地區',
-  name: '稱呼', email: 'Email'
+  name: '稱呼', email: 'Email', src: '來源', line_name: 'LINE 名稱', line_uid: 'LINE 用戶 ID'
 };
 
 function doPost(e) {
@@ -42,7 +42,7 @@ function doPost(e) {
   try {
     const data = JSON.parse(e.postData.contents);
     const ss = SpreadsheetApp.getActiveSpreadsheet();
-    const sheetName = data.version === 'website' ? 'website' : 'lecture';
+    const sheetName = data.version === 'lecture' ? 'lecture' : 'website';   // 官網版與 LINE 版同一張表，用「來源」區分
     const sheet = ss.getSheetByName(sheetName) || ss.insertSheet(sheetName);
 
     // 第 1 列存欄位代號（程式用），第 2 列顯示中文欄名
@@ -241,13 +241,13 @@ function buildMailHtml(t, type, version, name, lang) {
   const IMG = SETTINGS.IMG_BASE;
   const sp = lang === 'en' ? '2px' : '4px';
   const sec = (label, text) => `<tr><td style="padding:0 32px 22px"><div style="font-size:11px;letter-spacing:${sp};color:#E8784A;margin-bottom:8px">${label}</div><div style="font-size:15px;line-height:1.9;color:#6B5A52">${text}</div></td></tr>`;
-  const intro = version === 'website' ? M.introW(t.stage) : M.introL(t.stage);
+  const intro = version !== 'lecture' ? M.introW(t.stage) : M.introL(t.stage);
   const order = ['萌芽期', '舒枝期', '含苞期', '成束期'];
   const stages = order.map(s =>
     `<td align="center" style="padding:0 3px"><span style="display:inline-block;font-size:11px;padding:4px 9px;border-radius:999px;${s === t.stageZh ? 'background:#E8784A;color:#FFFFFF;border:1px solid #E8784A' : 'color:#A08070;border:1px solid #D6C4B7;background:#FBF6F1'}">${lang === 'en' ? STAGE_EN[s] : s}</span></td>`).join('');
-  const dir = version === 'website' ? sec(M.dir, t.dir) : '';
+  const dir = version !== 'lecture' ? sec(M.dir, t.dir) : '';
   const btn = (href, label, solid) => href ? `<a href="${href}" style="display:inline-block;${solid ? 'background:#E8784A;color:#fff' : 'background:#FFFCFA;color:#E8784A;border:1px solid #F2A882'};text-decoration:none;font-size:15px;letter-spacing:1px;padding:14px 32px;border-radius:999px">${label}</a>` : '';
-  const close = version === 'website'
+  const close = version !== 'lecture'
     ? `<tr><td style="padding:4px 32px 8px;font-size:15px;line-height:1.9;color:#6B5A52">${M.closeW}</td></tr>
        <tr><td align="center" style="padding:14px 32px 30px">${btn(SETTINGS.BOOKING_URL, M.btnW, true)}</td></tr>`
     : `<tr><td style="padding:4px 32px 8px;font-size:15px;line-height:1.9;color:#6B5A52">${M.closeL}</td></tr>
