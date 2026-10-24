@@ -104,6 +104,20 @@ input:focus{outline:none;border-color:var(--orange)}
     <p class="foot">質穎形象顏究室® Floralway Image Studio</p>
   </section>
 
+  <!-- about you (before questions) -->
+  <section class="screen" id="about">
+    <div class="meta"><span data-i="aboutStep"></span><span></span></div>
+    <div class="progress"><i style="width:0%"></i></div>
+    <h2 data-i="aboutTitle"></h2>
+    <p class="hint" data-i="aboutHint"></p>
+    <div id="afields"></div>
+    <div class="err" id="aerr"></div>
+    <div class="nav">
+      <button class="btn ghost" id="aBack" data-i="back"></button>
+      <button class="btn" id="aNext" data-i="aboutNext"></button>
+    </div>
+  </section>
+
   <!-- questions -->
   <section class="screen" id="quiz">
     <div class="meta"><span id="qnum"></span><span id="qtotal"></span></div>
@@ -165,6 +179,7 @@ const UI = {
   zh: Object.assign({
     headline: "你的穿搭，<br>該先從<em>哪裡</em>開始？",
     beforeTitle: "填寫前", beforeText: "約 3 分鐘，共 10 題。<br>沒有標準答案，選最直覺的那一個就好。",
+    aboutStep: "開始之前", aboutTitle: "先認識你一下", aboutHint: "讓結果和建議更貼近你。", aboutNext: "開始作答",
     start: "開始", back: "← 上一題", next: "下一題", nextLast: "下一步",
     qnum: n => "第 " + n + " 題", single: "單選", multi: n => "可複選，最多 " + n + " 項", none: "以上都沒有",
     lastStep: "最後一步", required: "必填", submit: "寄出我的結果", sending: "正在寄出你的結果……",
@@ -173,10 +188,11 @@ const UI = {
     sentText: e => "完整的結果和建議，已經寄到 <b>" + e + "</b>。<br>幾分鐘內就會收到；沒看到的話，記得看一下垃圾信件匣或「促銷內容」分類。",
     footLine: "每個人都在花路上的不同位置，沒有誰比較前面。",
     ig: "追蹤 @go_floralway", line: "加入 LINE 官方帳號", booking: "預約預諮詢", langBtn: "English",
-  }, {"title": "你的穿搭，該先從哪裡開始？｜Floralway 穿搭方向測驗", "eyebrow": "Floralway 穿搭方向測驗", "intro": "你已經知道自己卡在哪裡，接下來，該往哪裡努力？花 3 分鐘回答，完整結果會寄到你的信箱，Evelyn 老師也會親自看你的答案。", "profileTitle": "最後，讓 Evelyn 老師認識你", "profileHint": "結果會寄到你的信箱，老師也會親自看你的答案。", "closeTitle": "接下來", "closeText": "Evelyn 老師會親自看你的答案。想先聊聊自己的狀況，也歡迎預約預諮詢。"}),
+  }, {"title": "你的穿搭，該先從哪裡開始？｜Floralway 穿搭方向測驗", "eyebrow": "Floralway 穿搭方向測驗", "intro": "你已經知道自己卡在哪裡，接下來，該往哪裡努力？花 3 分鐘回答，完整結果會寄到你的信箱，Evelyn 老師也會親自看你的答案。", "profileTitle": "最後一步，結果要寄到哪裡？", "profileHint": "結果會寄到你的信箱，老師也會親自看你的答案。", "closeTitle": "接下來", "closeText": "Evelyn 老師會親自看你的答案。想先聊聊自己的狀況，也歡迎預約預諮詢。"}),
   en: Object.assign({
     headline: "Where should your<br>style <em>begin</em>?",
     beforeTitle: "Before you start", beforeText: "About 3 minutes, 10 questions.<br>There are no right answers — go with your first instinct.",
+    aboutStep: "Before we begin", aboutTitle: "First, a little about you", aboutHint: "So your result and suggestions fit you better.", aboutNext: "Start the quiz",
     start: "Start", back: "← Back", next: "Next", nextLast: "Next step",
     qnum: n => "Question " + n, single: "Choose one", multi: n => "Choose up to " + n, none: "None of the above",
     lastStep: "Last step", required: "Required", submit: "Send my result", sending: "Sending your result…",
@@ -185,7 +201,7 @@ const UI = {
     sentText: e => "Your full result and suggestions have been sent to <b>" + e + "</b>.<br>It should arrive within a few minutes — if not, please check your spam or Promotions folder.",
     footLine: "Everyone is at a different place on their own path — no one is ahead.",
     ig: "Follow @go_floralway", line: "Add us on LINE", booking: "Book a pre-consultation", langBtn: "中文",
-  }, {"title": "Where should your style begin? | Floralway Style Direction Quiz", "eyebrow": "Floralway Style Direction Quiz", "intro": "You know where you feel stuck — so where should you go next? Answer in 3 minutes and your full result will be emailed to you. Evelyn will also read your answers personally.", "profileTitle": "Lastly, let Evelyn get to know you", "profileHint": "Your result will be emailed to you, and Evelyn will read your answers personally.", "closeTitle": "What’s next", "closeText": "Evelyn will read your answers personally. If you’d like to talk about your situation first, feel free to book a pre-consultation."})
+  }, {"title": "Where should your style begin? | Floralway Style Direction Quiz", "eyebrow": "Floralway Style Direction Quiz", "intro": "You know where you feel stuck — so where should you go next? Answer in 3 minutes and your full result will be emailed to you. Evelyn will also read your answers personally.", "profileTitle": "Last step — where should we send your result?", "profileHint": "Your result will be emailed to you, and Evelyn will read your answers personally.", "closeTitle": "What’s next", "closeText": "Evelyn will read your answers personally. If you’d like to talk about your situation first, feel free to book a pre-consultation."})
 };
 
 /* ---------- 題目 ---------- */
@@ -216,7 +232,8 @@ const Q = [
     {t:"H", x:"換了好幾件，還是找不到讓氣色好的那一件", e:"I change several times and still can’t find one that makes me look fresh"},
     {t:"C", x:"單品明明很多，卻要想很久才搭得出一套", e:"I have plenty of pieces, but it takes forever to put an outfit together"},
     {t:"S", x:"一直照鏡子調整，怎麼穿都覺得比例怪怪的", e:"I keep adjusting in the mirror — the proportions always look off"} ]},
-  { id:"q6", title:"穿正式一點的衣服時（襯衫、西裝外套、洋裝），你最常覺得？", en:"When you dress more formally (shirts, blazers, dresses), you usually feel…", opts:[
+  { id:"q6", title:"穿正式一點的衣服時（襯衫、西裝外套、洋裝），你最常覺得？", en:"When you dress more formally (shirts, blazers, dresses), you usually feel…",
+    titleM:"穿正式一點的衣服時（襯衫、西裝外套、西裝褲），你最常覺得？", enM:"When you dress more formally (shirts, blazers, suit trousers), you usually feel…", opts:[
     {t:"S", x:"肩線、腰身總是不太合，看起來不夠挺", e:"The shoulders or waist never quite fit, so it doesn’t look sharp"},
     {t:"C", x:"就那一兩套，換來換去還是差不多", e:"I only have one or two outfits, so it always looks the same"},
     {t:"H", x:"顏色太深太重，整個人看起來更累", e:"The colors are too dark and heavy — I look even more tired"},
@@ -246,14 +263,16 @@ const Q = [
 
 /* ---------- 基本資料 ---------- */
 // o: 選項（中文存入資料）；oe: 英文顯示
-const PROFILE = [
-  { id:"age", label:"年齡", le:"Age", type:"chips", req:true, opts:["22 歲以下","23–29 歲","30–39 歲","40–49 歲","50 歲以上"], oe:["22 or under","23–29","30–39","40–49","50+"] },
+const PRE = [
+  { id:"name", label:"你希望怎麼被稱呼", le:"What should we call you?", type:"text", req:true, ph:"例如：小安", phe:"e.g. Anne" },
   { id:"gender", label:"性別", le:"Gender", type:"chips", req:true, opts:["女","男","不想透露"], oe:["Female","Male","Prefer not to say"] },
+  { id:"age", label:"年齡", le:"Age", type:"chips", req:true, opts:["22 歲以下","23–29 歲","30–39 歲","40–49 歲","50 歲以上"], oe:["22 or under","23–29","30–39","40–49","50+"] },
+];
+const PROFILE = [
   { id:"role", label:"目前身分", le:"You are…", type:"chips", req:true, opts:["學生","上班族","自營或創業","其他"], oe:["Student","Employee","Self-employed / founder","Other"] },
   { id:"region", label:"居住地區", le:"Where do you live?", type:"chips", req:true,
     opts:["台灣－中部","台灣－北部","台灣－南部","台灣－東部","大陸","港澳","海外"],
     oe:["Taiwan – Central","Taiwan – North","Taiwan – South","Taiwan – East","Mainland China","Hong Kong / Macau","Overseas"] },
-  { id:"name", label:"你希望怎麼被稱呼", le:"What should we call you?", type:"text", req:true, ph:"例如：小安", phe:"e.g. Anne" },
   { id:"email", label:"結果要寄到哪個信箱？", le:"Where should we send your result?", type:"email", req:true, ph:"name@example.com", phe:"name@example.com" },
   { id:"optin", label:"", type:"check", req:false, text:"我願意收到 Evelyn 老師不定期的穿搭分享信", te:"I’d like to receive occasional style notes from Evelyn" },
 ];
@@ -285,6 +304,7 @@ function applyLang(){
   $("#langBtn").textContent = L().langBtn;
   if ($("#quiz").classList.contains("show")) renderQ();
   if ($("#profile").classList.contains("show")) renderProfile();
+  if ($("#about").classList.contains("show")) renderFields(PRE, "#afields");
   if ($("#result").classList.contains("show") && lastType) showResult(lastType);
 }
 
@@ -298,7 +318,8 @@ function renderQ(){
   $("#qnum").textContent = L().qnum(qi+1);
   $("#qtotal").textContent = (qi+1) + " / " + Q.length;
   $("#bar").style.width = ((qi)/Q.length*100) + "%";
-  $("#qtitle").textContent = LANG==="en" ? q.en : q.title;
+  const male = prof.gender==="男" && q.titleM;
+  $("#qtitle").textContent = LANG==="en" ? (male?q.enM:q.en) : (male?q.titleM:q.title);
   $("#qhint").textContent = q.multi ? L().multi(q.multi) : L().single;
   const box = $("#qopts"); box.innerHTML = "";
   const cur = ans[q.id] || [];
@@ -319,7 +340,7 @@ function renderQ(){
   }
   $("#nextBtn").disabled = !(cur.length);
   $("#nextBtn").textContent = qi===Q.length-1 ? L().nextLast : L().next;
-  $("#backBtn").style.visibility = qi===0 ? "hidden" : "visible";
+  $("#backBtn").style.visibility = "visible";
 }
 function pick(i){
   const q = Q[qi]; let cur = ans[q.id] || [];
@@ -333,15 +354,22 @@ function pick(i){
   ans[q.id]=cur; renderQ();
 }
 function next(){ if(qi<Q.length-1){qi++;renderQ();} else {renderProfile();show("profile");} }
-$("#startBtn").onclick=()=>{qi=0;renderQ();show("quiz");};
+function checkReq(list, errSel){
+  for(const f of list){ if(f.req && !prof[f.id]){ $(errSel).textContent=L().errReq(LANG==="en"?f.le:f.label); return false; } }
+  $(errSel).textContent=""; return true;
+}
+$("#startBtn").onclick=()=>{ renderFields(PRE, "#afields"); show("about"); };
+$("#aBack").onclick=()=>show("intro");
+$("#aNext").onclick=()=>{ if(!checkReq(PRE,"#aerr")) return; qi=0; renderQ(); show("quiz"); };
 $("#nextBtn").onclick=next;
-$("#backBtn").onclick=()=>{ if(qi>0){qi--;renderQ();} };
+$("#backBtn").onclick=()=>{ if(qi>0){qi--;renderQ();} else { renderFields(PRE, "#afields"); show("about"); } };
 $("#pBack").onclick=()=>{ qi=Q.length-1; renderQ(); show("quiz"); };
 $("#langBtn").onclick=()=>{ LANG = LANG==="en" ? "zh" : "en"; applyLang(); };
 
-function renderProfile(){
-  const box=$("#pfields"); box.innerHTML="";
-  PROFILE.forEach(f=>{
+function renderProfile(){ renderFields(PROFILE, "#pfields"); }
+function renderFields(list, sel){
+  const box=$(sel); box.innerHTML="";
+  list.forEach(f=>{
     const d=document.createElement("div"); d.className="field";
     const lab = LANG==="en" ? f.le : f.label;
     d.innerHTML=lab?'<label class="t">'+lab+(f.req?'<span class="req">'+L().required+'</span>':'')+'</label>':'';
@@ -378,7 +406,7 @@ function tagOf(id){ const q=Q.find(x=>x.id===id); return (ans[id]||[]).filter(i=
 function textOf(id){ const q=Q.find(x=>x.id===id); return (ans[id]||[]).map(i=>i<0?"以上都沒有":q.opts[i].x).join("｜"); }
 
 $("#submitBtn").onclick=async()=>{
-  for(const f of PROFILE){ if(f.req && !prof[f.id]){ $("#perr").textContent=L().errReq(LANG==="en"?f.le:f.label); return; } }
+  if(!checkReq(PROFILE,"#perr")) return;
   if(prof.email && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(prof.email)){ $("#perr").textContent=L().errEmail; return; }
   $("#perr").textContent="";
   const {s,type}=score();
@@ -388,7 +416,7 @@ $("#submitBtn").onclick=async()=>{
     score_萌芽:s.B, score_舒枝:s.S, score_含苞:s.H, score_成束:s.C,
     q9_想法:q9, q10_狀態:q10 };
   Q.forEach(q=>payload[q.id]=textOf(q.id));
-  PROFILE.forEach(f=>payload[f.id]=prof[f.id]||"");
+  PRE.concat(PROFILE).forEach(f=>payload[f.id]=prof[f.id]||"");
   if(ENDPOINT){
     $("#submitBtn").disabled=true; $("#sending").textContent=L().sending;
     try{ await fetch(ENDPOINT,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(payload)}); }catch(e){}
