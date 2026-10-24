@@ -171,27 +171,27 @@ const PLAN = {
   zh: {
     F: {
       B: '建議從<b>全方位分析（色彩＋風格）</b>開始。方向要從了解自己的底子開始：先找出適合你的顏色，再整理出適合你、也像你的風格範圍，之後每一次選擇都有依據。',
-      S: '建議從<b>風格定位分析</b>開始，內容包含骨骼 12 分類、顏體平衡、臉診斷與穿搭限度定位。你缺的是線條與比例這一塊，一次把適合的版型、材質和風格範圍看清楚。',
+      S: '建議從<b>風格定位分析</b>開始，內容包含骨骼 12 分類、顏體平衡、臉診斷與風格限度定位®。你缺的是線條與比例這一塊，一次把適合的版型、材質和風格範圍看清楚。',
       H: '建議從<b>個人色彩診斷</b>開始，這是最快讓整個人亮起來的一步。如果之後也想調整風格與版型，可以再進階到<b>全方位分析</b>。',
       C_D1: '建議從<b>衣櫃諮詢</b>開始，把現有的衣服重新整理、配對；需要補單品時，<b>陪同採購</b>可以陪你在現場判斷什麼值得買。',
       C_D2: '建議參考<b>年度陪跑</b>：從分析開始，一起採購、一起調整，在不同季節、不同場合陪你練習，直到你能自己判斷。' },
     M: {
       B: '建議參考<b>男士形象陪跑</b>：先透過分析找到適合你的方向，再陪你把方向變成衣櫃裡真正會穿的衣服。',
-      S: '建議從<b>風格定位分析</b>開始，內容包含骨骼 12 分類、顏體平衡、臉診斷與穿搭限度定位，先看懂哪些版型和材質讓你穿起來更挺。',
-      H: '建議參考<b>男士形象陪跑＋個人色彩診斷</b>。對男生來說，換對襯衫和外套的顏色，是最省力的改變；陪跑會再陪你把顏色用進每天的穿搭。',
+      S: '建議從<b>風格定位分析</b>開始，內容包含骨骼 12 分類、顏體平衡、臉診斷與風格限度定位®，先看懂哪些版型和材質讓你穿起來更挺。',
+      H: '如果你願意嘗試多樣的顏色，可以從<b>個人色彩診斷</b>開始，找出讓你氣色變好的顏色。如果你比較害羞、不想一下子穿得太亮，也可以直接做<b>風格定位分析</b>，透過材質和版型，創造出不同的感覺。',
       C_D1: '建議從<b>陪同採購</b>開始。你其實知道很多，現場陪你挑、陪你試，直接把知道變成做到。',
       C_D2: '建議參考<b>男士形象陪跑</b>：一段時間的陪伴，在你拿不定主意的時候，有人幫你判斷。' } },
   en: {
     F: {
       B: 'We suggest starting with a <b>Full Analysis (Color + Style)</b>. Direction starts with knowing your foundation: first find the colors that suit you, then map out a style range that suits you and feels like you — so every choice has a reason.',
-      S: 'We suggest starting with a <b>Style Positioning Analysis</b>, covering 12-type body analysis, color–body balance, face analysis and style limit positioning. What you’re missing is line and proportion — this shows you the cuts, fabrics and style range that work for you.',
+      S: 'We suggest starting with a <b>Style Positioning Analysis</b>, covering 12-type body analysis, color–body balance, face analysis and Style Limit Positioning®. What you’re missing is line and proportion — this shows you the cuts, fabrics and style range that work for you.',
       H: 'We suggest starting with a <b>Personal Color Analysis</b> — the quickest way to brighten your whole look. If you later want to refine your style and cuts too, you can move on to a <b>Full Analysis</b>.',
       C_D1: 'We suggest starting with a <b>Wardrobe Consultation</b> to reorganize and pair what you already own; when you need new pieces, <b>Personal Shopping</b> helps you decide on the spot what’s worth buying.',
       C_D2: 'Take a look at <b>Year-long Coaching</b>: starting from analysis, we shop together and adjust together, practicing across seasons and occasions until you can trust your own judgment.' },
     M: {
       B: 'Take a look at <b>Men’s Image Coaching</b>: we start with analysis to find the direction that suits you, then turn that direction into clothes you’ll actually wear.',
-      S: 'We suggest starting with a <b>Style Positioning Analysis</b>, covering 12-type body analysis, color–body balance, face analysis and style limit positioning — so you know which cuts and fabrics make you look sharper.',
-      H: 'Take a look at <b>Men’s Image Coaching + Personal Color Analysis</b>. For men, getting the color of your shirts and jackets right is the easiest change to make; the coaching then helps you use those colors every day.',
+      S: 'We suggest starting with a <b>Style Positioning Analysis</b>, covering 12-type body analysis, color–body balance, face analysis and Style Limit Positioning® — so you know which cuts and fabrics make you look sharper.',
+      H: 'If you’re open to trying a range of colors, start with a <b>Personal Color Analysis</b> to find the colors that bring your complexion to life. If you’d rather not go bold just yet, go straight to a <b>Style Positioning Analysis</b> and create a different feel through fabrics and cuts.',
       C_D1: 'We suggest starting with <b>Personal Shopping</b>. You already know a lot — choosing and trying on together turns knowing into doing.',
       C_D2: 'Take a look at <b>Men’s Image Coaching</b>: ongoing support, so someone can help you decide whenever you’re unsure.' } },
 };
