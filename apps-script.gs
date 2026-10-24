@@ -195,6 +195,11 @@ const PLAN = {
       C_D1: 'We suggest starting with <b>Personal Shopping</b>. You already know a lot — choosing and trying on together turns knowing into doing.',
       C_D2: 'Take a look at <b>Men’s Image Coaching</b>: ongoing support, so someone can help you decide whenever you’re unsure.' } },
 };
+/* 男生版「這週可以先試試」：只覆寫有女性用語的時期 */
+const TR_M = {
+  zh: { H: '找一個有自然光的地方，拿兩件不同色調的上衣放在臉旁輪流比對，看哪一件讓膚色更透亮、黑眼圈更淡。先從襯衫、Polo 衫、外套這些靠近臉的單品開始換。' },
+  en: { H: 'In natural light, hold two tops in different tones up to your face and compare: which one makes your skin look clearer and your under-eyes lighter? Start with the pieces closest to your face — shirts, polos, jackets.' },
+};
 const MAIL_TEXT = {
   zh: { header: 'FLORALWAY　穿搭方向測驗', hi: n => `${n} 你好，`,
     introW: s => `謝謝你花時間填寫這份測驗。看完你的答案，你現在在「${s}」。`,
@@ -224,6 +229,7 @@ function sendResultMail(data) {
     ? Object.assign({}, RESULTS_EN[key], { stage: STAGE_EN[zh.stage], stageZh: zh.stage })
     : Object.assign({}, zh, { stageZh: zh.stage });
   t.dir = PLAN[lang][data.gender === '男' ? 'M' : 'F'][key];
+  if (data.gender === '男' && TR_M[lang][key]) t.tr = TR_M[lang][key];
   const rawName = data.name || M.you;
   GmailApp.sendEmail(data.email, M.subject(rawName),
     t.stage + '｜' + t.name + '\n' + t.tag + '\n\n' + M.now + '：' + t.now + '\n\n' + M.gap + '：' + t.gap + '\n\n' + M.tr + '：' + t.tr,
