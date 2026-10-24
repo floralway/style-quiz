@@ -83,6 +83,11 @@ input:focus{outline:none;border-color:var(--orange)}
 .langbar{position:absolute;top:14px;right:16px;z-index:5}
 .lang{border:1px solid #E6D6CB;background:rgba(255,252,250,.92);color:var(--soft);border-radius:999px;padding:6px 14px;font-size:12.5px;letter-spacing:.08em;cursor:pointer;font-family:var(--sans)}
 .lang:hover{color:var(--orange);border-color:var(--orangeL)}
+/* embed mode: used when the quiz is shown inside gofloralway.com */
+html.embed,html.embed body{background:transparent}
+html.embed body{min-height:0;border-top:none}
+html.embed .deco{display:none}
+html.embed .wrap{padding:28px 20px 36px}
 </style>
 </head>
 <body>
@@ -165,6 +170,12 @@ input:focus{outline:none;border-color:var(--orange)}
 
 <script>
 const VERSION = "website";            // "lecture" | "website"
+const EMBED = new URLSearchParams(location.search).get("embed")==="1" || window.self!==window.top;
+const SOURCE = new URLSearchParams(location.search).get("src") || (EMBED ? "website-embed" : "direct");
+if(EMBED) document.documentElement.classList.add("embed");
+function postHeight(){ if(!EMBED) return; try{ parent.postMessage({floralwayQuizHeight: Math.ceil(document.querySelector(".wrap").getBoundingClientRect().height) + 8}, "*"); }catch(e){} }
+window.addEventListener("load", postHeight);
+if(window.ResizeObserver) window.addEventListener("DOMContentLoaded",()=>new ResizeObserver(postHeight).observe(document.querySelector(".wrap")));
 const ENDPOINT = "https://script.google.com/macros/s/AKfycbyL-tEuW9J7Rqih7AMNZWwn8RM5N6wCTPhMY_n-bGcKz5uwrtWyD0UvWKyVI023fxTJ/exec";
 const SHOW_TYPE_ON_PAGE = false;   // 感謝頁是否顯示時期名稱
 const LINKS = {
@@ -311,7 +322,7 @@ function applyLang(){
 /* ---------- 狀態 ---------- */
 const ans = {}; const prof = {}; let qi = 0; let lastType = null;
 const $ = s => document.querySelector(s);
-function show(id){ document.querySelectorAll(".screen").forEach(e=>e.classList.remove("show")); $("#"+id).classList.add("show"); window.scrollTo(0,0); }
+function show(id){ document.querySelectorAll(".screen").forEach(e=>e.classList.remove("show")); $("#"+id).classList.add("show"); window.scrollTo(0,0); if(EMBED){ postHeight(); try{ parent.postMessage({floralwayQuizScrollTop:true}, "*"); }catch(e){} } }
 
 function renderQ(){
   const q = Q[qi];
@@ -411,7 +422,7 @@ $("#submitBtn").onclick=async()=>{
   $("#perr").textContent="";
   const {s,type}=score();
   const q9=tagOf("q9"), q10=tagOf("q10");
-  const payload={ version:VERSION, lang:LANG, time:new Date().toISOString(), type,
+  const payload={ version:VERSION, lang:LANG, source:SOURCE, time:new Date().toISOString(), type,
     result:TYPES[type].stage, branch: type==="C" ? q10 : "",
     score_萌芽:s.B, score_舒枝:s.S, score_含苞:s.H, score_成束:s.C,
     q9_想法:q9, q10_狀態:q10 };
