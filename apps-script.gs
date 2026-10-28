@@ -138,9 +138,9 @@ const RESULTS = {
     gap: '把分析結果變成現場的判斷。知道「適合什麼」和「看到這件該不該買」，中間差的是有人陪你練習一次。',
     tr: '拿出你的分析報告，對照衣櫃裡最常穿的五件衣服，標出哪些符合、哪些不符合。符合的那幾件，就是你下次挑衣服的參考樣本。' },
   C_PR: { stage: '成束期', name: '手握繁花的你', tag: '你身上已經有很多好花，只差把它們束成一束。',
-    why: '你已經做過分析，但結果沒有真正落地到你的衣櫃和生活裡。',
+    why: '你做過的分析還沒有落地到你的生活裡，中間一定有什麼地方卡住了。',
     now: '你做過分析，也很認真想照著做。只是結果跟你現有的衣櫃對不上、太像一個結論，或做完之後覺得好像什麼都沒變，心裡有點空。',
-    gap: '一個從你的衣櫃和生活出發的方法，而不是只給一個結論。分析要能回答「為什麼」和「怎麼用」，才會真的留在你身上。',
+    gap: '找出卡住的那一點。你曾經走過的路不會白費，只要把卡住的地方理清楚，就能接著往下走。',
     tr: '回想分析之後，你最想穿、卻一直沒穿出去的那件衣服。寫下你沒穿它的原因，這通常就是卡住你的地方。' },
 };
 RESULTS.C_PGPR = Object.assign({}, RESULTS.C_PG, { why: '你已經做過分析，卡住的是「怎麼挑、怎麼用」，而且你也希望有人在旁邊陪你判斷。' });
@@ -173,9 +173,9 @@ const RESULTS_EN = {
     gap: 'Turning your results into on-the-spot judgment. Between “what suits me” and “should I buy this?” is one round of practice with someone beside you.',
     tr: 'Take your analysis report and compare it with the five pieces you wear most. Mark which match and which don’t — the matches are your reference for what to choose next.' },
   C_PR: { name: 'Holding a Handful of Blooms', tag: 'You already have plenty of beautiful flowers — they just need to be gathered into a bouquet.',
-    why: 'You’ve had an analysis, but the results never really landed in your wardrobe and life.',
+    why: 'The analysis you did hasn’t landed in your life yet — something along the way got you stuck.',
     now: 'You had an analysis and genuinely wanted to follow it. But the results didn’t match your wardrobe, felt like a verdict, or left you feeling nothing had changed.',
-    gap: 'A method that starts from your wardrobe and your life, not just a conclusion. An analysis only stays with you when it explains “why” and “how to use it.”',
+    gap: 'Finding the point where you got stuck. The path you’ve already walked isn’t wasted — once that point is clear, you can keep going.',
     tr: 'Think of the piece you most wanted to wear after your analysis but never did. Write down why — that’s usually where you’re stuck.' },
 };
 RESULTS_EN.C_PGPR = Object.assign({}, RESULTS_EN.C_PG, { why: 'You’ve had an analysis; what’s stuck is choosing and using it — and you’d like someone beside you to help judge.' });
@@ -189,7 +189,7 @@ const PLAN = {
       S: '建議從<b>風格定位分析</b>開始，內容包含骨骼 12 分類、顏體平衡、臉診斷與風格限度定位®。一次把適合的版型、材質和風格範圍看清楚。',
       C: '建議從<b>陪同採購</b>開始：我會先依你的預算和需求走過一輪，當天你只要試穿、做決定，買回來的每一件都知道怎麼跟原本的衣服搭。',
       C_PG: '建議從<b>陪同採購</b>開始：帶著你的分析結果一起逛，在現場練習「看到這件，該不該買」，把結果真正用出來。',
-      C_PR: '建議從<b>客製陪跑</b>開始。陪跑的分析比一般骨骼分析更細，而且是從你現有的衣櫃和生活出發，陪你在不同季節、不同場合一步步落地。',
+      C_PR: '建議從<b>客製陪跑</b>開始。我們先一起聊聊，根據你現在的狀態和需求，幫你客製最適合的下一步。',
       C_PGPR: '你可以從<b>陪同採購</b>開始，先把分析結果用在挑衣服上；如果你希望有人一路陪你判斷，也可以直接選擇<b>客製陪跑</b>。' },
     M: {
       B: '建議參考<b>男士形象陪跑</b>：先透過分析找到適合你的方向，再陪你把方向變成衣櫃裡真正會穿的衣服。',
@@ -197,7 +197,7 @@ const PLAN = {
       S: '建議從<b>風格定位分析</b>開始，內容包含骨骼 12 分類、顏體平衡、臉診斷與風格限度定位®，先看懂哪些版型和材質讓你穿起來更挺。',
       C: '建議從<b>陪同採購</b>開始。你其實知道很多，現場陪你挑、陪你試，直接把知道變成做到。',
       C_PG: '建議從<b>陪同採購</b>開始：帶著你的分析結果一起逛，現場陪你挑、陪你試，一次買對。',
-      C_PR: '建議參考<b>男士形象陪跑</b>。陪跑的分析比一般骨骼分析更細，而且從你現有的衣櫃和生活出發，在你拿不定主意的時候，有人幫你判斷。',
+      C_PR: '建議參考<b>男士形象陪跑</b>。我們先一起聊聊，根據你現在的狀態和需求，幫你客製最適合的下一步。',
       C_PGPR: '你可以從<b>陪同採購</b>開始；如果你希望有人一路陪你判斷，也可以直接選擇<b>男士形象陪跑</b>。' } },
   en: {
     F: {
@@ -206,7 +206,7 @@ const PLAN = {
       S: 'We suggest starting with a <b>Style Positioning Analysis</b>, covering 12-type body analysis, color–body balance, face analysis and Style Limit Positioning®.',
       C: 'We suggest starting with <b>Personal Shopping</b>: I walk the stores ahead based on your budget and needs, so on the day you just try on and decide — and know how every new piece works with what you own.',
       C_PG: 'We suggest starting with <b>Personal Shopping</b>: we bring your analysis results to the store and practice “should I buy this?” on the spot.',
-      C_PR: 'We suggest starting with <b>Custom Coaching</b>. The coaching analysis goes deeper than a typical body-type analysis and starts from your current wardrobe and life, helping you apply it step by step across seasons and occasions.',
+      C_PR: 'We suggest starting with <b>Custom Coaching</b>. Let’s talk first, and tailor the next step that fits where you are and what you need right now.',
       C_PGPR: 'You can start with <b>Personal Shopping</b> to put your results to use; or, if you’d like someone beside you all the way, go straight to <b>Custom Coaching</b>.' },
     M: {
       B: 'Take a look at <b>Men’s Image Coaching</b>: we start with analysis to find the direction that suits you, then turn it into clothes you’ll actually wear.',
@@ -214,7 +214,7 @@ const PLAN = {
       S: 'We suggest starting with a <b>Style Positioning Analysis</b>, covering 12-type body analysis, color–body balance, face analysis and Style Limit Positioning®.',
       C: 'We suggest starting with <b>Personal Shopping</b>. You already know a lot — choosing and trying on together turns knowing into doing.',
       C_PG: 'We suggest starting with <b>Personal Shopping</b>: we bring your analysis results to the store and get it right the first time.',
-      C_PR: 'Take a look at <b>Men’s Image Coaching</b>. It goes deeper than a typical body-type analysis and starts from your wardrobe and life — someone to help you decide whenever you’re unsure.',
+      C_PR: 'Take a look at <b>Men’s Image Coaching</b>. Let’s talk first, and tailor the next step that fits where you are and what you need right now.',
       C_PGPR: 'You can start with <b>Personal Shopping</b>; or, if you’d like someone beside you all the way, choose <b>Men’s Image Coaching</b>.' } },
 };
 
