@@ -209,59 +209,70 @@ const UI = {
 /* ---------- 題目 ---------- */
 // t: 類型代號 B=萌芽 S=舒枝 H=含苞 C=成束 ； x=中文 e=English
 const Q = [
-  { id:"q1", title:"照鏡子的時候，最常讓你覺得「怪怪的」是？", en:"When you look in the mirror, what usually feels “off”?", multi:2, none:true, opts:[
-    {t:"S", x:"尺寸明明對，穿起來卻顯得呆板、太拘謹，或像套了布袋", e:"The size is right, yet it looks stiff and boxy — or like a sack"},
-    {t:"H", x:"顏色一上身，氣色就變差、看起來很累", e:"Certain colors make my complexion dull and I look tired"},
+  { id:"q0", route:"AB", title:"你做過色彩、骨架或風格分析嗎？", en:"Have you ever had a color, body-type or style analysis?", score:false, opts:[
+    {t:"A", x:"沒做過，或只做過網路上的小測驗", e:"No — or only online quizzes"},
+    {t:"B", x:"做過（任何一種都算）", e:"Yes (any kind counts)"} ]},
+  { id:"b1", route:"B", title:"做完分析之後，你最卡的是？", en:"Since your analysis, where do you feel most stuck?", score:false, opts:[
+    {t:"PG", x:"知道自己適合什麼，但逛街時還是不知道怎麼挑", e:"I know what suits me, but I still don’t know what to pick when shopping"},
+    {t:"PG", x:"不確定怎麼把結果用在每天的穿搭上", e:"I’m not sure how to use the results in my everyday outfits"},
+    {t:"PR", x:"結果跟現有的衣櫃對不上，又不想全部重買", e:"The results don’t match my wardrobe, and I don’t want to rebuy everything"},
+    {t:"PR", x:"結果太像一個結論，沒辦法落地到生活裡", e:"The results felt like a verdict — hard to apply to real life"},
+    {t:"PR", x:"做了跟沒做差不多，有點空虛", e:"It feels like nothing changed — a bit empty"} ]},
+  { id:"b2", route:"B", title:"你做過哪些分析？", en:"Which analyses have you had?", score:false, multi:5, opts:[
+    {t:"色彩", x:"個人色彩", e:"Personal color"},
+    {t:"骨架", x:"骨架／骨骼", e:"Body type (skeletal)"},
+    {t:"臉型", x:"臉型", e:"Face shape"},
+    {t:"風格", x:"風格", e:"Style"},
+    {t:"其他", x:"其他", e:"Other"} ]},
+  { id:"q1", route:"AB", title:"照鏡子的時候，最常讓你想換掉衣服的原因是？", en:"Looking in the mirror, what most often makes you want to change?", multi:2, none:true, opts:[
+    {t:"S", x:"肩膀、腰、腿的比例怪怪的，看起來比實際胖或矮", e:"My shoulders, waist or legs look off — I look heavier or shorter than I am"},
+    {t:"H", x:"臉色看起來暗沉、很累，像沒睡飽", e:"My face looks dull and tired, like I didn’t sleep"},
     {t:"C", x:"單看每件都不錯，搭在一起就是不對", e:"Each piece looks fine alone, but together it just doesn’t work"},
-    {t:"B", x:"衣服本身好看，但穿在我身上就是不像我", e:"The clothes look nice, but they don’t feel like me"} ]},
-  { id:"q2", title:"買衣服的時候，你最常卡在？", en:"When shopping for clothes, where do you usually get stuck?", multi:2, none:true, opts:[
+    {t:"B", x:"衣服很好看，但穿上去不像平常的自己，像在扮演別人", e:"The clothes are nice, but I don’t look like myself — like I’m playing someone else"} ]},
+  { id:"q2", route:"AB", title:"買衣服的時候，你最常卡在？", en:"When shopping for clothes, where do you usually get stuck?", multi:2, none:true, opts:[
     {t:"B", x:"跟著流行或網紅買，穿上身卻不像自己", e:"I follow trends or influencers, but it doesn’t look like me"},
     {t:"C", x:"買回家才發現，不知道怎麼跟其他衣服搭", e:"I get home and realize I don’t know what to wear it with"},
     {t:"H", x:"只敢買黑、白、灰、深藍這些安全色", e:"I only dare to buy safe colors — black, white, gray, navy"},
-    {t:"S", x:"同樣的尺碼，有時候好看，有時候很奇怪", e:"Same size, but sometimes it looks great and sometimes odd"} ]},
-  { id:"q3", title:"別人常怎麼說你？", en:"What do people often say about you?", multi:2, none:true, opts:[
+    {t:"S", x:"版型很難選：寬鬆的顯胖，合身的又太緊繃", e:"Cuts are hard: loose looks bulky, fitted feels too tight"} ]},
+  { id:"q3", route:"A", title:"別人常怎麼說你？", en:"What do people often say about you?", multi:2, none:true, opts:[
     {t:"C", x:"「很整齊、不會出錯，但好像有點普通」", e:"“Neat and safe — but a little plain”"},
     {t:"H", x:"「你今天看起來好累喔」", e:"“You look tired today”"},
     {t:"B", x:"「你看起來好兇」「好孩子氣」或「不太好親近」", e:"“You look strict,” “young,” or “hard to approach”"},
     {t:"S", x:"「這件好像有點撐不起來」或「這件有點顯壯」", e:"“That doesn’t quite fit you” or “That makes you look bulky”"} ]},
-  { id:"q4", title:"看到別人穿得很好看時，你通常會想？", en:"When you see someone dressed beautifully, you usually think…", opts:[
+  { id:"q4", route:"A", title:"看到別人穿得很好看時，你通常會想？", en:"When you see someone dressed beautifully, you usually think…", opts:[
     {t:"S", x:"換成我的身材，應該穿不出那個效果", e:"It wouldn’t look like that on my body"},
     {t:"B", x:"好看是好看，但那不是我想要的樣子", e:"It’s nice, but it’s not the look I want"},
     {t:"H", x:"同樣的顏色，我穿起來大概會沒精神", e:"That color would probably make me look washed out"},
-    {t:"C", x:"我好像也有類似的衣服，只是不知道怎麼搭成那樣", e:"I have similar pieces — I just don’t know how to put them together like that"} ]},
-  { id:"q5", title:"早上出門前，最花你時間的是？", en:"Getting ready in the morning, what takes you the longest?", opts:[
-    {t:"B", x:"不知道今天想給人什麼感覺，所以遲遲決定不了", e:"I can’t decide what impression I want to give today"},
+    {t:"C", x:"會想用自己衣櫃的衣服搭搭看，但不確定搭出來是不是一樣好看", e:"I’d try to recreate it with my own clothes, but I’m not sure it would look as good"} ]},
+  { id:"q5", route:"AB", title:"早上出門前，最花你時間的是？", en:"Getting ready in the morning, what takes you the longest?", opts:[
+    {t:"B", x:"重要場合前一晚就開始煩惱，不知道該穿得正式還是輕鬆", e:"Before important days I start worrying the night before — formal or casual?"},
     {t:"H", x:"換了好幾件，還是找不到讓氣色好的那一件", e:"I change several times and still can’t find one that makes me look fresh"},
     {t:"C", x:"單品明明很多，卻要想很久才搭得出一套", e:"I have plenty of pieces, but it takes forever to put an outfit together"},
     {t:"S", x:"一直照鏡子調整，怎麼穿都覺得比例怪怪的", e:"I keep adjusting in the mirror — the proportions always look off"} ]},
-  { id:"q6", title:"穿正式一點的衣服時（襯衫、西裝外套、洋裝），你最常覺得？", en:"When you dress more formally (shirts, blazers, dresses), you usually feel…",
+  { id:"q6", route:"AB", title:"穿正式一點的衣服時（襯衫、西裝外套、洋裝），你最常覺得？", en:"When you dress more formally (shirts, blazers, dresses), you usually feel…",
     titleM:"穿正式一點的衣服時（襯衫、西裝外套、西裝褲），你最常覺得？", enM:"When you dress more formally (shirts, blazers, suit trousers), you usually feel…", opts:[
     {t:"S", x:"肩線、腰身總是不太合，看起來不夠挺", e:"The shoulders or waist never quite fit, so it doesn’t look sharp"},
     {t:"C", x:"就那一兩套，換來換去還是差不多", e:"I only have one or two outfits, so it always looks the same"},
     {t:"H", x:"顏色太深太重，整個人看起來更累", e:"The colors are too dark and heavy — I look even more tired"},
     {t:"B", x:"太像業務員或太老氣，不像我", e:"I look like a salesperson or too old — not like me"} ]},
-  { id:"q7", title:"每到換季整理衣服時，你常發現什麼？", en:"When you sort your wardrobe at the change of season, what do you often find?", multi:2, none:true, opts:[
+  { id:"q7", route:"AB", title:"每到換季整理衣服時，你常發現什麼？", en:"When you sort your wardrobe at the change of season, what do you often find?", multi:2, none:true, opts:[
     {t:"C", x:"衣服不少，常穿的卻只有那幾件", e:"I have plenty of clothes, but I only wear a few of them"},
     {t:"B", x:"衣服的風格很雜，看不出自己到底喜歡什麼", e:"My clothes are all over the place — I can’t tell what I actually like"},
     {t:"S", x:"很多衣服其實不合身，買了卻很少穿", e:"Many pieces don’t really fit, so I barely wear them"},
     {t:"H", x:"很多衣服穿起來沒精神，卻捨不得丟", e:"Many pieces make me look dull, but I can’t bring myself to let them go"} ]},
-  { id:"q8", title:"如果只能先改變一件事，你最想要？", en:"If you could change just one thing first, what would it be?", weight:2, opts:[
+  { id:"q8", route:"AB", title:"如果只能先改變一件事，你最想要？", en:"If you could change just one thing first, what would it be?", weight:2, opts:[
     {t:"H", x:"找到讓氣色變好的顏色", e:"Find colors that make my complexion glow"},
     {t:"C", x:"把現有的衣服和學過的建議，真的用進生活", e:"Actually use the clothes and advice I already have"},
     {t:"S", x:"讓衣服穿起來更挺、比例更好看", e:"Make my clothes look sharper, with better proportions"},
-    {t:"B", x:"穿出像自己、也是我想給人的印象", e:"Dress like myself — and give the impression I want"} ]},
-  { id:"q9", title:"關於穿搭，哪一句最像你現在的想法？", en:"Which sentence sounds most like you right now?", score:false, opts:[
+    {t:"B", x:"讓別人一眼就感覺到我想給的印象，例如專業、親切、有質感", e:"Let people instantly sense the impression I want — professional, warm, refined"} ]},
+  { id:"q9", route:"AB", title:"關於穿搭，哪一句最像你現在的想法？", en:"Which sentence sounds most like you right now?", score:false, opts:[
     {t:"自主-需要確認", x:"我大概知道自己適合什麼，但心裡還是覺得不踏實", e:"I roughly know what suits me, but I still don’t feel sure"},
     {t:"陪伴-判斷力", x:"我想要有自己的判斷力，不再一下就腦波弱", e:"I want my own judgment, instead of being swayed so easily"},
     {t:"自主-享受探索", x:"我喜歡自己慢慢摸索，雖然會踩雷，但對我來說很有樂趣", e:"I like figuring it out myself — even the misses are part of the fun"},
     {t:"陪伴-推一把", x:"我知道要改變，但需要有人推我一把", e:"I know I need to change, but I need someone to give me a push"} ]},
-  { id:"q10", title:"你目前的穿搭狀態是？", en:"Where are you with your style right now?", score:false, opts:[
-    {t:"D1", x:"做過色彩或骨架分析，但不知道怎麼用", e:"I’ve had a color or body analysis, but don’t know how to use it"},
-    {t:"D2", x:"大多是家人、伴侶或朋友幫忙決定", e:"Family, a partner, or friends mostly decide for me"},
-    {t:"D1", x:"很認真看穿搭內容，但越看越亂", e:"I watch a lot of style content, but it only confuses me more"},
-    {t:"D2", x:"沒認真試過，覺得自己怎麼穿都差不多", e:"I’ve never really tried — I feel I look the same in anything"},
-    {t:"D1", x:"知道自己喜歡什麼，但穿起來時好時壞", e:"I know what I like, but the results are hit or miss"} ]},
 ];
+const route = () => { const a = ans.q0; return a && a.length ? Q[0].opts[a[0]].t : "A"; };
+const ACTIVE = () => Q.filter(q => q.id==="q0" || q.route.includes(route()));
 
 /* ---------- 基本資料 ---------- */
 // o: 選項（中文存入資料）；oe: 英文顯示
@@ -279,11 +290,11 @@ const PROFILE = [
 
 const TYPES = {
   B:{ stage:"萌芽期", name:"向光尋路的你", es:"Sprouting", en:"Finding Your Way to the Light" },
-  S:{ stage:"舒枝期", name:"正在舒展姿態的你", es:"Unfolding", en:"Stretching Into Your Shape" },
-  H:{ stage:"含苞期", name:"等待上色的你", es:"Budding", en:"Waiting for Your Color" },
+  H:{ stage:"初綻期", name:"等待上色的你", es:"First Bloom", en:"Waiting for Your Color" },
+  S:{ stage:"含苞期", name:"正在舒展姿態的你", es:"Budding", en:"Stretching Into Your Shape" },
   C:{ stage:"成束期", name:"手握繁花的你", es:"Bouquet", en:"Holding a Handful of Blooms" },
 };
-const ORDER = ["B","S","H","C"];
+const ORDER = ["B","H","S","C"];
 
 /* ---------- 語言 ---------- */
 function pickLang(){
@@ -314,10 +325,10 @@ const $ = s => document.querySelector(s);
 function show(id){ document.querySelectorAll(".screen").forEach(e=>e.classList.remove("show")); $("#"+id).classList.add("show"); window.scrollTo(0,0); }
 
 function renderQ(){
-  const q = Q[qi];
+  const QA = ACTIVE(); const q = QA[qi];
   $("#qnum").textContent = L().qnum(qi+1);
-  $("#qtotal").textContent = (qi+1) + " / " + Q.length;
-  $("#bar").style.width = ((qi)/Q.length*100) + "%";
+  $("#qtotal").textContent = (qi+1) + " / " + QA.length;
+  $("#bar").style.width = ((qi)/QA.length*100) + "%";
   const male = prof.gender==="男" && q.titleM;
   $("#qtitle").textContent = LANG==="en" ? (male?q.enM:q.en) : (male?q.titleM:q.title);
   $("#qhint").textContent = q.multi ? L().multi(q.multi) : L().single;
@@ -339,12 +350,12 @@ function renderQ(){
     b.onclick=()=>pick(-1); box.appendChild(b);
   }
   $("#nextBtn").disabled = !(cur.length);
-  $("#nextBtn").textContent = qi===Q.length-1 ? L().nextLast : L().next;
+  $("#nextBtn").textContent = qi===QA.length-1 ? L().nextLast : L().next;
   $("#backBtn").style.visibility = "visible";
 }
 function pick(i){
-  const q = Q[qi]; let cur = ans[q.id] || [];
-  if (!q.multi){ cur=[i]; ans[q.id]=cur; renderQ(); setTimeout(()=>{ if(Q[qi]===q) next(); },260); return; }
+  const q = ACTIVE()[qi]; let cur = ans[q.id] || [];
+  if (!q.multi){ cur=[i]; ans[q.id]=cur; renderQ(); setTimeout(()=>{ if(ACTIVE()[qi]===q) next(); },260); return; }
   if (i===-1){ cur = cur.includes(-1)?[]:[-1]; }
   else {
     cur = cur.filter(v=>v!==-1);
@@ -353,7 +364,7 @@ function pick(i){
   }
   ans[q.id]=cur; renderQ();
 }
-function next(){ if(qi<Q.length-1){qi++;renderQ();} else {renderProfile();show("profile");} }
+function next(){ if(qi<ACTIVE().length-1){qi++;renderQ();} else {renderProfile();show("profile");} }
 function checkReq(list, errSel){
   for(const f of list){ if(f.req && !prof[f.id]){ $(errSel).textContent=L().errReq(LANG==="en"?f.le:f.label); return false; } }
   $(errSel).textContent=""; return true;
@@ -363,7 +374,7 @@ $("#aBack").onclick=()=>show("intro");
 $("#aNext").onclick=()=>{ if(!checkReq(PRE,"#aerr")) return; qi=0; renderQ(); show("quiz"); };
 $("#nextBtn").onclick=next;
 $("#backBtn").onclick=()=>{ if(qi>0){qi--;renderQ();} else { renderFields(PRE, "#afields"); show("about"); } };
-$("#pBack").onclick=()=>{ qi=Q.length-1; renderQ(); show("quiz"); };
+$("#pBack").onclick=()=>{ qi=ACTIVE().length-1; renderQ(); show("quiz"); };
 $("#langBtn").onclick=()=>{ LANG = LANG==="en" ? "zh" : "en"; applyLang(); };
 
 function renderProfile(){ renderFields(PROFILE, "#pfields"); }
@@ -394,13 +405,24 @@ function renderFields(list, sel){
 
 /* ---------- 計分 ---------- */
 function score(){
-  const s={B:0,S:0,H:0,C:0};
-  Q.forEach(q=>{ if(q.score===false) return; (ans[q.id]||[]).forEach(i=>{ if(i>=0) s[q.opts[i].t]+= (q.weight||1); }); });
-  const max=Math.max(...ORDER.map(k=>s[k]));
+  const s={B:0,S:0,H:0,C:0}; const QA=ACTIVE();
+  QA.forEach(q=>{ if(q.score===false) return; (ans[q.id]||[]).forEach(i=>{ if(i>=0) s[q.opts[i].t]+= (q.weight||1); }); });
+  const sorted=ORDER.map(k=>s[k]).sort((x,y)=>y-x);
+  const max=sorted[0];
   const top=ORDER.filter(k=>s[k]===max);
-  const dq=Q.find(q=>q.weight); const dt=dq.opts[(ans[dq.id]||[])[0]].t;
-  let type = top.length===1 ? top[0] : (top.includes(dt) ? dt : "C");
-  return {s,type};
+  const dq=Q.find(q=>q.weight); const dt=dq.opts[(ans[dq.id]||[0])[0]].t;
+  const focus = top.length===1 ? top[0] : (top.includes(dt) ? dt : top[0]);
+  const companion = tagOf("q9").startsWith("陪伴");
+  let type, plan, strong;
+  if (route()==="B"){
+    type="C";
+    const b2=tagOf("b2");
+    plan = tagOf("b1")==="PR" ? "PR" : ((!b2.includes("色彩") || !b2.includes("骨架")) ? "PR" : (companion ? "PGPR" : "PG"));
+    strong = true;
+  } else {
+    type = focus; plan = "A"; strong = companion || (sorted[0]-sorted[1] <= 1);
+  }
+  return {s,type,focus,plan,companion,strong};
 }
 function tagOf(id){ const q=Q.find(x=>x.id===id); return (ans[id]||[]).filter(i=>i>=0).map(i=>q.opts[i].t).join("、"); }
 function textOf(id){ const q=Q.find(x=>x.id===id); return (ans[id]||[]).map(i=>i<0?"以上都沒有":q.opts[i].x).join("｜"); }
@@ -409,13 +431,15 @@ $("#submitBtn").onclick=async()=>{
   if(!checkReq(PROFILE,"#perr")) return;
   if(prof.email && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(prof.email)){ $("#perr").textContent=L().errEmail; return; }
   $("#perr").textContent="";
-  const {s,type}=score();
-  const q9=tagOf("q9"), q10=tagOf("q10");
+  const R=score(); const {s,type}=R;
+  const PLAN_LABEL={A:"", PG:"陪同採購", PR:"客製陪跑", PGPR:"陪同採購＋客製陪跑"};
   const payload={ version:VERSION, lang:LANG, time:new Date().toISOString(), type,
-    result:TYPES[type].stage, branch: type==="C" ? q10 : "",
-    score_萌芽:s.B, score_舒枝:s.S, score_含苞:s.H, score_成束:s.C,
-    q9_想法:q9, q10_狀態:q10 };
-  Q.forEach(q=>payload[q.id]=textOf(q.id));
+    route: route()==="B" ? "B 做過分析" : "A 未做過分析",
+    result:TYPES[type].stage, branch: PLAN_LABEL[R.plan], plan:R.plan,
+    focus: TYPES[R.focus].stage, companion: R.companion ? "陪伴型" : "自主型", strong: R.strong ? "是" : "",
+    score_萌芽:s.B, score_初綻:s.H, score_含苞:s.S, score_成束:s.C,
+    q9_想法:tagOf("q9") };
+  const ids=ACTIVE().map(q=>q.id); Q.forEach(q=>payload[q.id]= (ids.includes(q.id) && ans[q.id]) ? textOf(q.id) : "");
   PRE.concat(PROFILE).forEach(f=>payload[f.id]=prof[f.id]||"");
   payload.src = sourceLabel();
   if (lineProfile){ payload.line_name = lineProfile.displayName||""; payload.line_uid = lineProfile.userId||""; }
@@ -424,7 +448,7 @@ $("#submitBtn").onclick=async()=>{
     try{ await fetch(ENDPOINT,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(payload)}); }catch(e){}
   }
   if (VERSION==="line" && window.liff && liff.isInClient && liff.isInClient()){
-    try { await liff.sendMessages([{ type:"text", text: lineKeyword(type) }]); liff.closeWindow(); return; } catch(e){}
+    try { await liff.sendMessages([{ type:"text", text: lineKeyword(R) }]); liff.closeWindow(); return; } catch(e){}
   }
   showResult(type);
 };
@@ -436,9 +460,13 @@ function sourceLabel(){
   if (VERSION==="lecture") return "講座";
   return "官網／直接連結";
 }
-function lineKeyword(type){
-  let k = "測驗結果｜" + TYPES[type].stage;
-  if (type==="C") k += (tagOf("q10")==="D2" ? "・陪伴" : "・整合");
+function lineKeyword(R){
+  let k = "測驗結果｜" + TYPES[R.type].stage;
+  if (R.plan==="PG") k += "・陪購";
+  else if (R.plan==="PR") k += "・陪跑";
+  else if (R.plan==="PGPR") k += "・陪購陪跑";
+  else if (R.companion) k += "・陪伴";
+  else if (R.strong) k += "・諮詢";
   if (prof.gender==="男") k += "（男）";
   return k;
 }
