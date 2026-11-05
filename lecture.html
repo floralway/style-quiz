@@ -60,6 +60,9 @@ p{line-height:1.85;font-size:15px}
 .chip.on{border-color:var(--orange);background:var(--pale);color:var(--orange)}
 input[type=text],input[type=email]{width:100%;border:1px solid #EADCD2;background:var(--white);border-radius:12px;padding:13px 14px;font-size:15px;font-family:var(--sans);color:var(--deep)}
 input:focus{outline:none;border-color:var(--orange)}
+.otherbox{width:100%;margin-top:2px;border:1px solid #EADCD2;background:var(--white);border-radius:12px;padding:12px 14px;font-size:15px;font-family:var(--sans);color:var(--deep);min-height:70px;resize:vertical}
+.otherbox:focus{outline:none;border-color:var(--orange)}
+.notice{font-size:12.5px;color:var(--soft);line-height:1.7;margin-top:-4px}
 .err{color:var(--orange);font-size:13px;margin-top:8px;min-height:18px}
 .card{background:var(--white);border:1px solid #EFE2D8;border-radius:18px;padding:22px 20px;margin-top:14px}
 .card h3{font-size:11px;letter-spacing:.25em;color:var(--orange);font-weight:500;margin-bottom:10px}
@@ -183,7 +186,7 @@ const UI = {
     beforeTitle: "填寫前", beforeText: "約 3 分鐘，共 10 題。<br>沒有標準答案，選最直覺的那一個就好。",
     aboutStep: "開始之前", aboutTitle: "先認識你一下", aboutHint: "讓結果和建議更貼近你。", aboutNext: "開始作答",
     start: "開始", back: "← 上一題", next: "下一題", nextLast: "下一步",
-    qnum: n => "第 " + n + " 題", single: "單選", multi: n => "可複選，最多 " + n + " 項", none: "以上都沒有",
+    qnum: n => "第 " + n + " 題", single: "單選", multi: n => "可複選，最多 " + n + " 項", none: "以上都沒有", other: "其他（自己寫）", otherPh: "簡單寫下你的狀況就好",
     lastStep: "最後一步", required: "必填", submit: "寄出我的結果", sending: "正在寄出你的結果……",
     errReq: f => "請填寫「" + f + "」", errEmail: "Email 格式好像不太對，再確認一下",
     thanks: "謝謝你的填寫", sentTitle: "你的結果已寄出",
@@ -196,7 +199,7 @@ const UI = {
     beforeTitle: "Before you start", beforeText: "About 3 minutes, 10 questions.<br>There are no right answers — go with your first instinct.",
     aboutStep: "Before we begin", aboutTitle: "First, a little about you", aboutHint: "So your result and suggestions fit you better.", aboutNext: "Start the quiz",
     start: "Start", back: "← Back", next: "Next", nextLast: "Next step",
-    qnum: n => "Question " + n, single: "Choose one", multi: n => "Choose up to " + n, none: "None of the above",
+    qnum: n => "Question " + n, single: "Choose one", multi: n => "Choose up to " + n, none: "None of the above", other: "Other (write your own)", otherPh: "Just a few words about your situation",
     lastStep: "Last step", required: "Required", submit: "Send my result", sending: "Sending your result…",
     errReq: f => "Please fill in “" + f + "”", errEmail: "That email doesn’t look quite right — please check it.",
     thanks: "Thank you!", sentTitle: "Your result is on its way",
@@ -224,38 +227,39 @@ const Q = [
     {t:"臉型", x:"臉型", e:"Face shape"},
     {t:"風格", x:"風格", e:"Style"},
     {t:"其他", x:"其他", e:"Other"} ]},
-  { id:"q1", route:"AB", title:"照鏡子的時候，最常讓你想換掉衣服的原因是？", en:"Looking in the mirror, what most often makes you want to change?", multi:2, none:true, opts:[
+  { id:"q1", route:"AB", title:"照鏡子的時候，最常讓你想換掉衣服的原因是？", en:"Looking in the mirror, what most often makes you want to change?", multi:2, none:true, other:true, opts:[
     {t:"S", x:"肩膀、腰、腿的比例怪怪的，看起來比實際胖或矮", e:"My shoulders, waist or legs look off — I look heavier or shorter than I am"},
     {t:"H", x:"臉色看起來暗沉、很累，像沒睡飽", e:"My face looks dull and tired, like I didn’t sleep"},
     {t:"C", x:"單看每件都不錯，搭在一起就是不對", e:"Each piece looks fine alone, but together it just doesn’t work"},
     {t:"B", x:"衣服很好看，但穿上去不像平常的自己，像在扮演別人", e:"The clothes are nice, but I don’t look like myself — like I’m playing someone else"} ]},
-  { id:"q2", route:"AB", title:"買衣服的時候，你最常卡在？", en:"When shopping for clothes, where do you usually get stuck?", multi:2, none:true, opts:[
+  { id:"q2", route:"AB", title:"買衣服的時候，你最常卡在？", en:"When shopping for clothes, where do you usually get stuck?", multi:2, none:true, other:true, opts:[
     {t:"B", x:"跟著流行或網紅買，穿上身卻不像自己", e:"I follow trends or influencers, but it doesn’t look like me"},
     {t:"C", x:"買回家才發現，不知道怎麼跟其他衣服搭", e:"I get home and realize I don’t know what to wear it with"},
     {t:"H", x:"只敢買黑、白、灰、深藍這些安全色", e:"I only dare to buy safe colors — black, white, gray, navy"},
     {t:"S", x:"版型很難選：寬鬆的顯胖，合身的又太緊繃", e:"Cuts are hard: loose looks bulky, fitted feels too tight"} ]},
-  { id:"q3", route:"A", title:"別人常怎麼說你？", en:"What do people often say about you?", multi:2, none:true, opts:[
+  { id:"q3", route:"A", title:"別人常怎麼說你？", en:"What do people often say about you?", multi:2, none:true, other:true, opts:[
     {t:"C", x:"「很整齊、不會出錯，但好像有點普通」", e:"“Neat and safe — but a little plain”"},
     {t:"H", x:"「你今天看起來好累喔」", e:"“You look tired today”"},
     {t:"B", x:"「你看起來好兇」「好孩子氣」或「不太好親近」", e:"“You look strict,” “young,” or “hard to approach”"},
     {t:"S", x:"「這件好像有點撐不起來」或「這件有點顯壯」", e:"“That doesn’t quite fit you” or “That makes you look bulky”"} ]},
-  { id:"q4", route:"A", title:"看到別人穿得很好看時，你通常會想？", en:"When you see someone dressed beautifully, you usually think…", opts:[
+  { id:"q4", route:"A", title:"看到別人穿得很好看時，你通常會想？", en:"When you see someone dressed beautifully, you usually think…", other:true, opts:[
     {t:"S", x:"換成我的身材，應該穿不出那個效果", e:"It wouldn’t look like that on my body"},
     {t:"B", x:"好看是好看，但那不是我想要的樣子", e:"It’s nice, but it’s not the look I want"},
     {t:"H", x:"同樣的顏色，我穿起來大概會沒精神", e:"That color would probably make me look washed out"},
     {t:"C", x:"會想用自己衣櫃的衣服搭搭看，但不確定搭出來是不是一樣好看", e:"I’d try to recreate it with my own clothes, but I’m not sure it would look as good"} ]},
-  { id:"q5", route:"AB", title:"早上出門前，最花你時間的是？", en:"Getting ready in the morning, what takes you the longest?", opts:[
+  { id:"q5", route:"AB", title:"早上出門前，最花你時間的是？", en:"Getting ready in the morning, what takes you the longest?", other:true, opts:[
     {t:"B", x:"重要場合前一晚就開始煩惱，不知道該穿得正式還是輕鬆", e:"Before important days I start worrying the night before — formal or casual?"},
     {t:"H", x:"換了好幾件，還是找不到讓氣色好的那一件", e:"I change several times and still can’t find one that makes me look fresh"},
     {t:"C", x:"單品明明很多，卻要想很久才搭得出一套", e:"I have plenty of pieces, but it takes forever to put an outfit together"},
-    {t:"S", x:"一直照鏡子調整，怎麼穿都覺得比例怪怪的", e:"I keep adjusting in the mirror — the proportions always look off"} ]},
+    {t:"S", x:"一直照鏡子調整，怎麼穿都覺得比例怪怪的", e:"I keep adjusting in the mirror — the proportions always look off"},
+    {t:"-", ns:true, x:"其實不太花時間，通常隨手拿了就出門", e:"Not much, honestly — I usually grab something and go"} ]},
   { id:"q6", route:"AB", title:"穿正式一點的衣服時（襯衫、西裝外套、洋裝），你最常覺得？", en:"When you dress more formally (shirts, blazers, dresses), you usually feel…",
-    titleM:"穿正式一點的衣服時（襯衫、西裝外套、西裝褲），你最常覺得？", enM:"When you dress more formally (shirts, blazers, suit trousers), you usually feel…", opts:[
+    titleM:"穿正式一點的衣服時（襯衫、西裝外套、西裝褲），你最常覺得？", enM:"When you dress more formally (shirts, blazers, suit trousers), you usually feel…", other:true, opts:[
     {t:"S", x:"肩線、腰身總是不太合，看起來不夠挺", e:"The shoulders or waist never quite fit, so it doesn’t look sharp"},
     {t:"C", x:"就那一兩套，換來換去還是差不多", e:"I only have one or two outfits, so it always looks the same"},
     {t:"H", x:"顏色太深太重，整個人看起來更累", e:"The colors are too dark and heavy — I look even more tired"},
     {t:"B", x:"太像業務員或太老氣，不像我", e:"I look like a salesperson or too old — not like me"} ]},
-  { id:"q7", route:"AB", title:"每到換季整理衣服時，你常發現什麼？", en:"When you sort your wardrobe at the change of season, what do you often find?", multi:2, none:true, opts:[
+  { id:"q7", route:"AB", title:"每到換季整理衣服時，你常發現什麼？", en:"When you sort your wardrobe at the change of season, what do you often find?", multi:2, none:true, other:true, opts:[
     {t:"C", x:"衣服不少，常穿的卻只有那幾件", e:"I have plenty of clothes, but I only wear a few of them"},
     {t:"B", x:"衣服的風格很雜，看不出自己到底喜歡什麼", e:"My clothes are all over the place — I can’t tell what I actually like"},
     {t:"S", x:"很多衣服其實不合身，買了卻很少穿", e:"Many pieces don’t really fit, so I barely wear them"},
@@ -265,7 +269,7 @@ const Q = [
     {t:"C", x:"把現有的衣服和學過的建議，真的用進生活", e:"Actually use the clothes and advice I already have"},
     {t:"S", x:"讓衣服穿起來更挺、比例更好看", e:"Make my clothes look sharper, with better proportions"},
     {t:"B", x:"讓別人一眼就感覺到我想給的印象，例如專業、親切、有質感", e:"Let people instantly sense the impression I want — professional, warm, refined"} ]},
-  { id:"q9", route:"AB", title:"關於穿搭，哪一句最像你現在的想法？", en:"Which sentence sounds most like you right now?", score:false, opts:[
+  { id:"q9", route:"AB", title:"關於穿搭，哪一句最像你現在的想法？", en:"Which sentence sounds most like you right now?", score:false, other:true, opts:[
     {t:"自主-需要確認", x:"我大概知道自己適合什麼，但心裡還是覺得不踏實", e:"I roughly know what suits me, but I still don’t feel sure"},
     {t:"陪伴-判斷力", x:"我想要有自己的判斷力，不再一下就腦波弱", e:"I want my own judgment, instead of being swayed so easily"},
     {t:"自主-享受探索", x:"我喜歡自己慢慢摸索，雖然會踩雷，但對我來說很有樂趣", e:"I like figuring it out myself — even the misses are part of the fun"},
@@ -285,7 +289,7 @@ const PROFILE = [
   { id:"role", label:"目前身分", le:"You are…", type:"chips", req:true, opts:["學生","上班族","自營或創業","其他"], oe:["Student","Employee","Self-employed / founder","Other"] },
   
   { id:"email", label: VERSION==="line" ? "也想收到 email 版的完整結果嗎？（選填）" : "結果要寄到哪個信箱？", le: VERSION==="line" ? "Want the full result by email too? (optional)" : "Where should we send your result?", type:"email", req: VERSION!=="line", ph:"name@example.com", phe:"name@example.com" },
-  { id:"optin", label:"", type:"check", req:false, text:"我願意收到 Evelyn 老師不定期的穿搭分享信", te:"I’d like to receive occasional style notes from Evelyn" },
+  { id:"optin", type:"notice", text:"填寫 Email 後，除了測驗結果，也會收到 Evelyn 老師每月約 2 封的穿搭分享信；每封信都可以一鍵取消訂閱。", te:"Along with your result, you’ll receive about 2 style notes a month from Evelyn. You can unsubscribe from any email in one click." },
 ];
 
 const TYPES = {
@@ -343,6 +347,18 @@ function renderQ(){
     b.onclick = ()=>pick(i);
     box.appendChild(b);
   });
+  if (q.other){
+    const b = document.createElement("button");
+    b.type="button"; b.className="opt"+(q.multi?" multi":"")+" none"+(cur.includes(-2)?" on":"");
+    if (q.multi && !cur.includes(-2) && cur.filter(v=>v!==-1).length>=q.multi) b.classList.add("off");
+    b.innerHTML='<span class="mk"></span><span>'+L().other+'</span>';
+    b.onclick=()=>pick(-2); box.appendChild(b);
+    if (cur.includes(-2)){
+      const t=document.createElement("textarea"); t.className="otherbox"; t.placeholder=L().otherPh; t.value=ans[q.id+"_o"]||"";
+      t.oninput=()=>{ ans[q.id+"_o"]=t.value.trim(); }; box.appendChild(t);
+      setTimeout(()=>t.focus(),50);
+    }
+  }
   if (q.none){
     const b = document.createElement("button");
     b.type="button"; b.className="opt multi none"+(cur.includes(-1)?" on":"");
@@ -355,7 +371,7 @@ function renderQ(){
 }
 function pick(i){
   const q = ACTIVE()[qi]; let cur = ans[q.id] || [];
-  if (!q.multi){ cur=[i]; ans[q.id]=cur; renderQ(); setTimeout(()=>{ if(ACTIVE()[qi]===q) next(); },260); return; }
+  if (!q.multi){ cur=[i]; ans[q.id]=cur; renderQ(); if(i!==-2) setTimeout(()=>{ if(ACTIVE()[qi]===q) next(); },260); return; }
   if (i===-1){ cur = cur.includes(-1)?[]:[-1]; }
   else {
     cur = cur.filter(v=>v!==-1);
@@ -390,6 +406,8 @@ function renderFields(list, sel){
         b.onclick=()=>{prof[f.id]=o; c.querySelectorAll(".chip").forEach(x=>x.classList.remove("on")); b.classList.add("on");};
         c.appendChild(b); });
       d.appendChild(c);
+    } else if(f.type==="notice"){
+      d.innerHTML='<div class="notice">'+(LANG==="en"?f.te:f.text)+'</div>';
     } else if(f.type==="check"){
       const b=document.createElement("button"); b.type="button"; b.className="opt multi"+(prof[f.id]?" on":""); b.style.fontSize="13.5px";
       b.innerHTML='<span class="mk"></span><span>'+(LANG==="en"?f.te:f.text)+'</span>';
@@ -406,7 +424,7 @@ function renderFields(list, sel){
 /* ---------- 計分 ---------- */
 function score(){
   const s={B:0,S:0,H:0,C:0}; const QA=ACTIVE();
-  QA.forEach(q=>{ if(q.score===false) return; (ans[q.id]||[]).forEach(i=>{ if(i>=0) s[q.opts[i].t]+= (q.weight||1); }); });
+  QA.forEach(q=>{ if(q.score===false) return; (ans[q.id]||[]).forEach(i=>{ if(i>=0 && !q.opts[i].ns) s[q.opts[i].t]+= (q.weight||1); }); });
   const sorted=ORDER.map(k=>s[k]).sort((x,y)=>y-x);
   const max=sorted[0];
   const top=ORDER.filter(k=>s[k]===max);
@@ -425,7 +443,7 @@ function score(){
   return {s,type,focus,plan,companion,strong};
 }
 function tagOf(id){ const q=Q.find(x=>x.id===id); return (ans[id]||[]).filter(i=>i>=0).map(i=>q.opts[i].t).join("、"); }
-function textOf(id){ const q=Q.find(x=>x.id===id); return (ans[id]||[]).map(i=>i<0?"以上都沒有":q.opts[i].x).join("｜"); }
+function textOf(id){ const q=Q.find(x=>x.id===id); return (ans[id]||[]).map(i=>i===-1?"以上都沒有":(i===-2?"其他："+(ans[id+"_o"]||"（未填寫）"):q.opts[i].x)).join("｜"); }
 
 $("#submitBtn").onclick=async()=>{
   if(!checkReq(PROFILE,"#perr")) return;
@@ -441,6 +459,7 @@ $("#submitBtn").onclick=async()=>{
     q9_想法:tagOf("q9") };
   const ids=ACTIVE().map(q=>q.id); Q.forEach(q=>payload[q.id]= (ids.includes(q.id) && ans[q.id]) ? textOf(q.id) : "");
   PRE.concat(PROFILE).forEach(f=>payload[f.id]=prof[f.id]||"");
+  payload.optin = prof.email ? "是（填寫時已告知，可取消）" : "";
   payload.src = sourceLabel();
   if (lineProfile){ payload.line_name = lineProfile.displayName||""; payload.line_uid = lineProfile.userId||""; }
   if(ENDPOINT){
