@@ -492,6 +492,7 @@ function lineKeyword(R){
   else if (R.plan==="PR") k += "・陪跑";
   else if (R.plan==="PGPR") k += "・陪購陪跑";
   else if (R.companion) k += "・陪伴";
+  else if (R.other) k += "・其他";
   else if (R.strong) k += "・諮詢";
   if (prof.gender==="男") k += "（男）";
   return k;
