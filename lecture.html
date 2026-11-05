@@ -215,7 +215,7 @@ const Q = [
   { id:"q0", route:"AB", title:"你做過色彩、骨架或風格分析嗎？", en:"Have you ever had a color, body-type or style analysis?", score:false, opts:[
     {t:"A", x:"沒做過，或只做過網路上的小測驗", e:"No — or only online quizzes"},
     {t:"B", x:"做過（任何一種都算）", e:"Yes (any kind counts)"} ]},
-  { id:"b1", route:"B", title:"做完分析之後，你最卡的是？", en:"Since your analysis, where do you feel most stuck?", score:false, opts:[
+  { id:"b1", route:"B", title:"做完分析之後，你最卡的是？", en:"Since your analysis, where do you feel most stuck?", score:false, other:true, opts:[
     {t:"PG", x:"知道自己適合什麼，但逛街時還是不知道怎麼挑", e:"I know what suits me, but I still don’t know what to pick when shopping"},
     {t:"PG", x:"不確定怎麼把結果用在每天的穿搭上", e:"I’m not sure how to use the results in my everyday outfits"},
     {t:"PR", x:"結果跟現有的衣櫃對不上，又不想全部重買", e:"The results don’t match my wardrobe, and I don’t want to rebuy everything"},
@@ -264,7 +264,7 @@ const Q = [
     {t:"B", x:"衣服的風格很雜，看不出自己到底喜歡什麼", e:"My clothes are all over the place — I can’t tell what I actually like"},
     {t:"S", x:"很多衣服其實不合身，買了卻很少穿", e:"Many pieces don’t really fit, so I barely wear them"},
     {t:"H", x:"很多衣服穿起來沒精神，卻捨不得丟", e:"Many pieces make me look dull, but I can’t bring myself to let them go"} ]},
-  { id:"q8", route:"AB", title:"如果只能先改變一件事，你最想要？", en:"If you could change just one thing first, what would it be?", weight:2, opts:[
+  { id:"q8", route:"AB", title:"如果只能先改變一件事，你最想要？", en:"If you could change just one thing first, what would it be?", weight:2, other:true, opts:[
     {t:"H", x:"找到讓氣色變好的顏色", e:"Find colors that make my complexion glow"},
     {t:"C", x:"把現有的衣服和學過的建議，真的用進生活", e:"Actually use the clothes and advice I already have"},
     {t:"S", x:"讓衣服穿起來更挺、比例更好看", e:"Make my clothes look sharper, with better proportions"},
@@ -289,7 +289,7 @@ const PROFILE = [
   { id:"role", label:"目前身分", le:"You are…", type:"chips", req:true, opts:["學生","上班族","自營或創業","其他"], oe:["Student","Employee","Self-employed / founder","Other"] },
   
   { id:"email", label: VERSION==="line" ? "也想收到 email 版的完整結果嗎？（選填）" : "結果要寄到哪個信箱？", le: VERSION==="line" ? "Want the full result by email too? (optional)" : "Where should we send your result?", type:"email", req: VERSION!=="line", ph:"name@example.com", phe:"name@example.com" },
-  { id:"optin", type:"notice", text:"填寫 Email 後，除了測驗結果，也會收到 Evelyn 老師每月約 2 封的穿搭分享信；每封信都可以一鍵取消訂閱。", te:"Along with your result, you’ll receive about 2 style notes a month from Evelyn. You can unsubscribe from any email in one click." },
+  { id:"optin", type:"notice", text:"填寫 Email 後，除了測驗結果，也會收到 Evelyn 老師每月約 2 封的穿搭分享信；每封信底下都可以隨時取消訂閱。", te:"Along with your result, you’ll receive about 2 style notes a month from Evelyn. You can unsubscribe at the bottom of any email." },
 ];
 
 const TYPES = {
@@ -428,19 +428,22 @@ function score(){
   const sorted=ORDER.map(k=>s[k]).sort((x,y)=>y-x);
   const max=sorted[0];
   const top=ORDER.filter(k=>s[k]===max);
-  const dq=Q.find(q=>q.weight); const dt=dq.opts[(ans[dq.id]||[0])[0]].t;
+  const dq=Q.find(q=>q.weight); const dv=(ans[dq.id]||[0])[0]; const dt= dv>=0 ? dq.opts[dv].t : null;
   const focus = top.length===1 ? top[0] : (top.includes(dt) ? dt : top[0]);
   const companion = tagOf("q9").startsWith("陪伴");
+  const otherQs = QA.filter(q=>(ans[q.id]||[]).includes(-2));
+  const other = otherQs.length>0;
+  const otherNotes = otherQs.map(q=>ans[q.id+"_o"]).filter(Boolean);
   let type, plan, strong;
   if (route()==="B"){
     type="C";
     const b2=tagOf("b2");
-    plan = tagOf("b1")==="PR" ? "PR" : ((!b2.includes("色彩") || !b2.includes("骨架")) ? "PR" : (companion ? "PGPR" : "PG"));
+    plan = (tagOf("b1")==="PR" || (ans.b1||[]).includes(-2)) ? "PR" : ((!b2.includes("色彩") || !b2.includes("骨架")) ? "PR" : (companion ? "PGPR" : "PG"));
     strong = true;
   } else {
-    type = focus; plan = "A"; strong = companion || (sorted[0]-sorted[1] <= 1);
+    type = focus; plan = "A"; strong = companion || other || (sorted[0]-sorted[1] <= 1);
   }
-  return {s,type,focus,plan,companion,strong};
+  return {s,type,focus,plan,companion,strong,other,otherNotes};
 }
 function tagOf(id){ const q=Q.find(x=>x.id===id); return (ans[id]||[]).filter(i=>i>=0).map(i=>q.opts[i].t).join("、"); }
 function textOf(id){ const q=Q.find(x=>x.id===id); return (ans[id]||[]).map(i=>i===-1?"以上都沒有":(i===-2?"其他："+(ans[id+"_o"]||"（未填寫）"):q.opts[i].x)).join("｜"); }
@@ -456,7 +459,8 @@ $("#submitBtn").onclick=async()=>{
     result:TYPES[type].stage, branch: PLAN_LABEL[R.plan], plan:R.plan,
     focus: TYPES[R.focus].stage, companion: R.companion ? "陪伴型" : "自主型", strong: R.strong ? "是" : "",
     score_萌芽:s.B, score_初綻:s.H, score_含苞:s.S, score_成束:s.C,
-    q9_想法:tagOf("q9") };
+    q9_想法:tagOf("q9"),
+    other: R.other ? "是" : "", other_notes: R.otherNotes.join("｜") };
   const ids=ACTIVE().map(q=>q.id); Q.forEach(q=>payload[q.id]= (ids.includes(q.id) && ans[q.id]) ? textOf(q.id) : "");
   PRE.concat(PROFILE).forEach(f=>payload[f.id]=prof[f.id]||"");
   payload.optin = prof.email ? "是（填寫時已告知，可取消）" : "";

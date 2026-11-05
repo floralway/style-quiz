@@ -33,7 +33,7 @@ const HEADER_LABELS = {
   q1: 'Q1 照鏡子', q2: 'Q2 買衣服', q3: 'Q3 別人怎麼說', q4: 'Q4 看到別人', q5: 'Q5 出門前',
   q6: 'Q6 正式穿搭', q7: 'Q7 換季整理', q8: 'Q8 最想改變', q9: 'Q9 想法', q10: 'Q10 狀態',
   age: '年齡', gender: '性別', role: '身分', region: '居住地區',
-  name: '稱呼', email: 'Email', src: '來源', line_name: 'LINE 名稱', line_uid: 'LINE 用戶 ID'
+  name: '稱呼', email: 'Email', other: '選了其他', other_notes: '其他：自己寫的內容', src: '來源', line_name: 'LINE 名稱', line_uid: 'LINE 用戶 ID'
 };
 
 function doPost(e) {
@@ -87,6 +87,7 @@ function doPost(e) {
 function onOpen() {
   SpreadsheetApp.getUi().createMenu('花路問卷')
     .addItem('統計講座版類型分布', 'showLectureSummary')
+    .addItem('整理可寄送的 Email 名單', 'buildMailingList')
     .addToUi();
 }
 
@@ -231,10 +232,14 @@ const STRONG = {
   zh: { B: '你已經做過分析，卻還是卡在「怎麼用」。這通常不是你不夠努力，而是分析結果還沒對上你的衣櫃和生活。建議先預約<b>免費 30 分鐘預諮詢</b>，我們一起看看問題出在哪，再決定最適合你的下一步。',
         companion: '你希望有人陪你一起判斷，這很正常。建議先預約<b>免費 30 分鐘預諮詢</b>，我們先聊聊你現在的狀況，再一起決定從哪裡開始最適合你。',
         close: '你的回答裡，不只一個地方讓你卡住。這種情況自己很難判斷先處理哪一塊，建議先預約<b>免費 30 分鐘預諮詢</b>，我們一起排出最適合你的順序。',
+        other: '有注意到你在測驗裡選了「其他」。題目框不住的部分，往往正是最值得好好聊的地方。建議先預約<b>免費 30 分鐘預諮詢</b>，把你的狀況說得更完整，老師也能直接針對你的問題給你建議。',
+        otherQ: n => `你寫下的是：「${n}」`,
         title: '建議你先免費聊 30 分鐘', btn: '預約免費預諮詢' },
   en: { B: 'You’ve already had an analysis, yet you’re still stuck on “how to use it.” That’s rarely about effort — usually the results just haven’t met your wardrobe and life yet. We suggest booking a <b>free 30-minute pre-consultation</b> first, so we can find where it’s stuck and choose the right next step.',
         companion: 'Wanting someone to help you decide is completely normal. We suggest booking a <b>free 30-minute pre-consultation</b> first — we’ll talk through where you are and decide together where to start.',
         close: 'Your answers show more than one thing holding you back, which makes it hard to know where to begin. We suggest booking a <b>free 30-minute pre-consultation</b> so we can map out the right order for you.',
+        other: 'We noticed you chose “Other” in the quiz. The parts a question can’t capture are often exactly what’s most worth talking about. We suggest booking a <b>free 30-minute pre-consultation</b> so you can explain your situation fully and get advice for your specific question.',
+        otherQ: n => `You wrote: “${n}”`,
         title: 'Let’s talk for 30 minutes first — free', btn: 'Book a free pre-consultation' },
 };
 
@@ -293,6 +298,11 @@ function sendResultMail(data) {
   if (!routeB && companion) t.dir += '<br><br>' + ADDON[lang][g];
   if (g === 'M' && TR_M[lang][key]) t.tr = TR_M[lang][key];
   t.strong = data.strong === '是' ? (routeB ? STRONG[lang].B : (companion ? STRONG[lang].companion : STRONG[lang].close)) : '';
+  if (data.other === '是') {
+    const notes = String(data.other_notes || '').split('｜').filter(Boolean).slice(0, 2).map(esc).join('」「');
+    const otherTxt = STRONG[lang].other + (notes ? '<br><span style="color:#A08070">' + STRONG[lang].otherQ(notes) + '</span>' : '');
+    t.strong = (!routeB && !companion) ? otherTxt : otherTxt + '<br><br>' + t.strong;
+  }
   const rawName = data.name || M.you;
   const plain = s => String(s).replace(/<[^>]+>/g, '');
   GmailApp.sendEmail(data.email, M.subject(rawName),
@@ -356,4 +366,79 @@ function testMail() {
 }
 function testMailRouteB() {
   sendResultMail({ type: 'C', plan: 'PR', route: 'B 做過分析', focus: '初綻期', companion: '自主型', strong: '是', version: 'website', name: '測試B', email: Session.getActiveUser().getEmail() });
+}
+
+
+/* ================= 花路通信：取消訂閱 ================= */
+/* 信件底部放這個網址（就是這支程式的網頁應用程式網址）：客人輸入 Email 後，
+   試算表會自動把他標成「已取消訂閱」，並記錄在「取消訂閱」工作表。 */
+function doGet(e) {
+  const html = `<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<style>body{margin:0;background:#FAF6F3;font-family:'Noto Sans TC',sans-serif;color:#3A2E28}
+.w{max-width:420px;margin:60px auto;padding:32px 24px;background:#fff;border-radius:18px;box-shadow:0 6px 24px rgba(58,46,40,.06)}
+h1{font-size:20px;font-weight:600;margin:0 0 10px}p{font-size:14.5px;line-height:1.8;color:#6B5A52}
+input{width:100%;box-sizing:border-box;border:1px solid #EADCD2;border-radius:12px;padding:13px 14px;font-size:15px;margin:10px 0 14px}
+button{width:100%;background:#E8784A;color:#fff;border:0;border-radius:999px;padding:13px;font-size:15px;cursor:pointer}
+#m{margin-top:14px;font-size:14px;color:#E8784A}</style></head><body><div class="w">
+<h1>取消訂閱花路通信</h1><p>輸入收信的 Email，之後就不會再收到穿搭分享信。謝謝你這段時間的閱讀。</p>
+<input id="e" type="email" placeholder="name@example.com"><button id="b">確認取消訂閱</button><div id="m"></div></div>
+<script>document.getElementById('b').onclick=function(){var v=document.getElementById('e').value.trim();var m=document.getElementById('m');
+if(!/^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$/.test(v)){m.textContent='Email 格式好像不太對，再確認一下';return;}
+this.disabled=true;m.textContent='處理中…';
+google.script.run.withSuccessHandler(function(){m.textContent='已幫你取消訂閱。謝謝你，祝你在自己的花路上走得自在。';})
+.withFailureHandler(function(){m.textContent='系統忙碌中，請稍後再試，或直接回信告訴我們。';document.getElementById('b').disabled=false;}).unsubscribe(v);};</script></body></html>`;
+  return HtmlService.createHtmlOutput(html).setTitle('取消訂閱｜質穎形象顏究室').addMetaTag('viewport', 'width=device-width, initial-scale=1');
+}
+
+function unsubscribe(email) {
+  const target = String(email || '').trim().toLowerCase();
+  if (!target || target.indexOf('@') < 0) return 0;
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const stamp = Utilities.formatDate(new Date(), 'Asia/Taipei', 'yyyy/MM/dd');
+  let n = 0;
+  ['website', 'lecture'].forEach(name => {
+    const sh = ss.getSheetByName(name);
+    if (!sh || sh.getLastRow() < 3) return;
+    const keys = sh.getRange(1, 1, 1, sh.getLastColumn()).getValues()[0].map(String);
+    const ec = keys.indexOf('email'), oc = keys.indexOf('optin');
+    if (ec < 0 || oc < 0) return;
+    const vals = sh.getRange(3, 1, sh.getLastRow() - 2, sh.getLastColumn()).getValues();
+    vals.forEach((r, i) => {
+      if (String(r[ec]).trim().toLowerCase() === target) {
+        sh.getRange(i + 3, oc + 1).setValue('已取消訂閱 ' + stamp).setFontColor('#B0A098');
+        n++;
+      }
+    });
+  });
+  const log = ss.getSheetByName('取消訂閱') || ss.insertSheet('取消訂閱');
+  if (log.getLastRow() === 0) log.appendRow(['Email', '取消日期', '問卷中找到的筆數']);
+  log.appendRow([target, stamp, n]);
+  return n;
+}
+
+/* 選單：整理可寄送名單（只收同意且沒有取消訂閱的人），寫到「寄送名單」工作表 */
+function buildMailingList() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const unsub = new Set();
+  const log = ss.getSheetByName('取消訂閱');
+  if (log && log.getLastRow() > 1) log.getRange(2, 1, log.getLastRow() - 1, 1).getValues().forEach(r => unsub.add(String(r[0]).trim().toLowerCase()));
+  const list = new Map();
+  ['website', 'lecture'].forEach(name => {
+    const sh = ss.getSheetByName(name);
+    if (!sh || sh.getLastRow() < 3) return;
+    const keys = sh.getRange(1, 1, 1, sh.getLastColumn()).getValues()[0].map(String);
+    const ec = keys.indexOf('email'), oc = keys.indexOf('optin'), nc = keys.indexOf('name');
+    if (ec < 0) return;
+    sh.getRange(3, 1, sh.getLastRow() - 2, sh.getLastColumn()).getValues().forEach(r => {
+      const em = String(r[ec]).trim().toLowerCase();
+      const ok = oc >= 0 && /^(是|願意)/.test(String(r[oc]));
+      if (em && ok && !unsub.has(em)) list.set(em, nc >= 0 ? r[nc] : '');
+    });
+  });
+  const out = ss.getSheetByName('寄送名單') || ss.insertSheet('寄送名單');
+  out.clear();
+  out.appendRow(['Email', '稱呼']);
+  if (list.size) out.getRange(2, 1, list.size, 2).setValues([...list].map(([e, n]) => [e, n]));
+  out.getRange(1, 4).setValue('更新時間：' + Utilities.formatDate(new Date(), 'Asia/Taipei', 'yyyy/MM/dd HH:mm'));
+  SpreadsheetApp.getUi().alert('可寄送名單已更新：共 ' + list.size + ' 位（已排除取消訂閱的人）');
 }
