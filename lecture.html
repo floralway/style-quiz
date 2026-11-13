@@ -186,7 +186,7 @@ const UI = {
     beforeTitle: "填寫前", beforeText: "約 3 分鐘，共 10 題。<br>沒有標準答案，選最直覺的那一個就好。",
     aboutStep: "開始之前", aboutTitle: "先認識你一下", aboutHint: "讓結果和建議更貼近你。", aboutNext: "開始作答",
     start: "開始", back: "← 上一題", next: "下一題", nextLast: "下一步",
-    qnum: n => "第 " + n + " 題", single: "單選", multi: n => "可複選，最多 " + n + " 項", none: "以上都沒有", other: "其他（自己寫）", otherPh: "簡單寫下你的狀況就好",
+    qnum: n => "第 " + n + " 題", single: "單選", multi: n => "可複選，最多 " + n + " 項", none: "這題我都沒有", other: "都不太像我，我想自己說", otherPh: "一句話就好，老師會親自看",
     lastStep: "最後一步", required: "必填", submit: "寄出我的結果", sending: "正在寄出你的結果……",
     errReq: f => "請填寫「" + f + "」", errEmail: "Email 格式好像不太對，再確認一下",
     thanks: "謝謝你的填寫", sentTitle: "你的結果已寄出",
@@ -199,7 +199,7 @@ const UI = {
     beforeTitle: "Before you start", beforeText: "About 3 minutes, 10 questions.<br>There are no right answers — go with your first instinct.",
     aboutStep: "Before we begin", aboutTitle: "First, a little about you", aboutHint: "So your result and suggestions fit you better.", aboutNext: "Start the quiz",
     start: "Start", back: "← Back", next: "Next", nextLast: "Next step",
-    qnum: n => "Question " + n, single: "Choose one", multi: n => "Choose up to " + n, none: "None of the above", other: "Other (write your own)", otherPh: "Just a few words about your situation",
+    qnum: n => "Question " + n, single: "Choose one", multi: n => "Choose up to " + n, none: "None of the above", other: "None of these sound like me — let me say it", otherPh: "One sentence is enough — Evelyn reads every one",
     lastStep: "Last step", required: "Required", submit: "Send my result", sending: "Sending your result…",
     errReq: f => "Please fill in “" + f + "”", errEmail: "That email doesn’t look quite right — please check it.",
     thanks: "Thank you!", sentTitle: "Your result is on its way",
@@ -212,68 +212,62 @@ const UI = {
 /* ---------- 題目 ---------- */
 // t: 類型代號 B=萌芽 S=舒枝 H=含苞 C=成束 ； x=中文 e=English
 const Q = [
-  { id:"q0", route:"AB", title:"你做過色彩、骨架或風格分析嗎？", en:"Have you ever had a color, body-type or style analysis?", score:false, opts:[
-    {t:"A", x:"沒做過，或只做過網路上的小測驗", e:"No — or only online quizzes"},
-    {t:"B", x:"做過（任何一種都算）", e:"Yes (any kind counts)"} ]},
-  { id:"b1", route:"B", title:"做完分析之後，你最卡的是？", en:"Since your analysis, where do you feel most stuck?", score:false, other:true, opts:[
-    {t:"PG", x:"知道自己適合什麼，但逛街時還是不知道怎麼挑", e:"I know what suits me, but I still don’t know what to pick when shopping"},
-    {t:"PG", x:"不確定怎麼把結果用在每天的穿搭上", e:"I’m not sure how to use the results in my everyday outfits"},
-    {t:"PR", x:"結果跟現有的衣櫃對不上，又不想全部重買", e:"The results don’t match my wardrobe, and I don’t want to rebuy everything"},
-    {t:"PR", x:"結果太像一個結論，沒辦法落地到生活裡", e:"The results felt like a verdict — hard to apply to real life"},
-    {t:"PR", x:"做了跟沒做差不多，有點空虛", e:"It feels like nothing changed — a bit empty"} ]},
+  { id:"q0", route:"AB", title:"有沒有人曾經專業地幫你分析過：你適合什麼顏色、什麼版型？", en:"Has anyone ever professionally analyzed which colors and cuts suit you?", score:false, opts:[
+    {t:"A", x:"「沒做過，只做過網路上的 AI 分析和小測驗。」", e:"“Not yet — only online AI tools and quizzes.”"},
+    {t:"B", x:"「有，但好像還差了什麼。」", e:"“Yes, but something still seems to be missing.”"} ]},
+  { id:"b1", route:"B", title:"做完分析後，你遇到的狀況是……", en:"After your analysis, what happened was…", score:false, other:true, opts:[
+    {t:"PG", x:"「懂是懂了，可是一進店裡還是不知道怎麼挑。」", e:"“I get it — but once I’m in a store, I still don’t know what to pick.”"},
+    {t:"PG", x:"「建議都很好，但我出門前還是不知道要穿什麼。」", e:"“The advice is great, but I still don’t know what to wear in the morning.”"},
+    {t:"PR", x:"「自己的衣櫃和分析結果對不起來，難道只能重買嗎？」", e:"“My wardrobe doesn’t match the results — do I have to buy everything again?”"},
+    {t:"PR", x:"「知道自己的類型了，然後呢？要怎麼做？」", e:"“I know my type now… so what do I actually do?”"},
+    {t:"PR", x:"「老實說，做完好像也沒什麼改變。」", e:"“Honestly, nothing much changed afterwards.”"} ]},
   { id:"b2", route:"B", title:"你做過哪些分析？", en:"Which analyses have you had?", score:false, multi:5, opts:[
     {t:"色彩", x:"個人色彩", e:"Personal color"},
     {t:"骨架", x:"骨架／骨骼", e:"Body type (skeletal)"},
     {t:"臉型", x:"臉型", e:"Face shape"},
     {t:"風格", x:"風格", e:"Style"},
     {t:"其他", x:"其他", e:"Other"} ]},
-  { id:"q1", route:"AB", title:"照鏡子的時候，最常讓你想換掉衣服的原因是？", en:"Looking in the mirror, what most often makes you want to change?", multi:2, none:true, other:true, opts:[
-    {t:"S", x:"肩膀、腰、腿的比例怪怪的，看起來比實際胖或矮", e:"My shoulders, waist or legs look off — I look heavier or shorter than I am"},
-    {t:"H", x:"臉色看起來暗沉、很累，像沒睡飽", e:"My face looks dull and tired, like I didn’t sleep"},
-    {t:"C", x:"單看每件都不錯，搭在一起就是不對", e:"Each piece looks fine alone, but together it just doesn’t work"},
-    {t:"B", x:"衣服很好看，但穿上去不像平常的自己，像在扮演別人", e:"The clothes are nice, but I don’t look like myself — like I’m playing someone else"} ]},
-  { id:"q2", route:"AB", title:"買衣服的時候，你最常卡在？", en:"When shopping for clothes, where do you usually get stuck?", multi:2, none:true, other:true, opts:[
-    {t:"B", x:"跟著流行或網紅買，穿上身卻不像自己", e:"I follow trends or influencers, but it doesn’t look like me"},
-    {t:"C", x:"買回家才發現，不知道怎麼跟其他衣服搭", e:"I get home and realize I don’t know what to wear it with"},
-    {t:"H", x:"只敢買黑、白、灰、深藍這些安全色", e:"I only dare to buy safe colors — black, white, gray, navy"},
-    {t:"S", x:"版型很難選：寬鬆的顯胖，合身的又太緊繃", e:"Cuts are hard: loose looks bulky, fitted feels too tight"} ]},
-  { id:"q3", route:"A", title:"別人常怎麼說你？", en:"What do people often say about you?", multi:2, none:true, other:true, opts:[
-    {t:"C", x:"「很整齊、不會出錯，但好像有點普通」", e:"“Neat and safe — but a little plain”"},
-    {t:"H", x:"「你今天看起來好累喔」", e:"“You look tired today”"},
-    {t:"B", x:"「你看起來好兇」「好孩子氣」或「不太好親近」", e:"“You look strict,” “young,” or “hard to approach”"},
-    {t:"S", x:"「這件好像有點撐不起來」或「這件有點顯壯」", e:"“That doesn’t quite fit you” or “That makes you look bulky”"} ]},
-  { id:"q4", route:"A", title:"看到別人穿得很好看時，你通常會想？", en:"When you see someone dressed beautifully, you usually think…", other:true, opts:[
-    {t:"S", x:"換成我的身材，應該穿不出那個效果", e:"It wouldn’t look like that on my body"},
-    {t:"B", x:"好看是好看，但那不是我想要的樣子", e:"It’s nice, but it’s not the look I want"},
-    {t:"H", x:"同樣的顏色，我穿起來大概會沒精神", e:"That color would probably make me look washed out"},
-    {t:"C", x:"會想用自己衣櫃的衣服搭搭看，但不確定搭出來是不是一樣好看", e:"I’d try to recreate it with my own clothes, but I’m not sure it would look as good"} ]},
-  { id:"q5", route:"AB", title:"早上出門前，最花你時間的是？", en:"Getting ready in the morning, what takes you the longest?", other:true, opts:[
-    {t:"B", x:"重要場合前一晚就開始煩惱，不知道該穿得正式還是輕鬆", e:"Before important days I start worrying the night before — formal or casual?"},
-    {t:"H", x:"換了好幾件，還是找不到讓氣色好的那一件", e:"I change several times and still can’t find one that makes me look fresh"},
-    {t:"C", x:"單品明明很多，卻要想很久才搭得出一套", e:"I have plenty of pieces, but it takes forever to put an outfit together"},
-    {t:"S", x:"一直照鏡子調整，怎麼穿都覺得比例怪怪的", e:"I keep adjusting in the mirror — the proportions always look off"},
-    {t:"-", ns:true, x:"其實不太花時間，通常隨手拿了就出門", e:"Not much, honestly — I usually grab something and go"} ]},
-  { id:"q6", route:"AB", title:"穿正式一點的衣服時（襯衫、西裝外套、洋裝），你最常覺得？", en:"When you dress more formally (shirts, blazers, dresses), you usually feel…",
-    titleM:"穿正式一點的衣服時（襯衫、西裝外套、西裝褲），你最常覺得？", enM:"When you dress more formally (shirts, blazers, suit trousers), you usually feel…", other:true, opts:[
-    {t:"S", x:"肩線、腰身總是不太合，看起來不夠挺", e:"The shoulders or waist never quite fit, so it doesn’t look sharp"},
-    {t:"C", x:"就那一兩套，換來換去還是差不多", e:"I only have one or two outfits, so it always looks the same"},
-    {t:"H", x:"顏色太深太重，整個人看起來更累", e:"The colors are too dark and heavy — I look even more tired"},
-    {t:"B", x:"太像業務員或太老氣，不像我", e:"I look like a salesperson or too old — not like me"} ]},
-  { id:"q7", route:"AB", title:"每到換季整理衣服時，你常發現什麼？", en:"When you sort your wardrobe at the change of season, what do you often find?", multi:2, none:true, other:true, opts:[
-    {t:"C", x:"衣服不少，常穿的卻只有那幾件", e:"I have plenty of clothes, but I only wear a few of them"},
-    {t:"B", x:"衣服的風格很雜，看不出自己到底喜歡什麼", e:"My clothes are all over the place — I can’t tell what I actually like"},
-    {t:"S", x:"很多衣服其實不合身，買了卻很少穿", e:"Many pieces don’t really fit, so I barely wear them"},
-    {t:"H", x:"很多衣服穿起來沒精神，卻捨不得丟", e:"Many pieces make me look dull, but I can’t bring myself to let them go"} ]},
-  { id:"q8", route:"AB", title:"如果只能先改變一件事，你最想要？", en:"If you could change just one thing first, what would it be?", weight:2, other:true, opts:[
-    {t:"H", x:"找到讓氣色變好的顏色", e:"Find colors that make my complexion glow"},
-    {t:"C", x:"把現有的衣服和學過的建議，真的用進生活", e:"Actually use the clothes and advice I already have"},
-    {t:"S", x:"讓衣服穿起來更挺、比例更好看", e:"Make my clothes look sharper, with better proportions"},
-    {t:"B", x:"讓別人一眼就感覺到我想給的印象，例如專業、親切、有質感", e:"Let people instantly sense the impression I want — professional, warm, refined"} ]},
+  { id:"s1", route:"AB", title:"當你用心穿搭後照鏡子時，你心裡最常冒出的那句話是？", en:"After putting real effort into an outfit, what do you most often think in front of the mirror?", multi:2, none:true, other:true, opts:[
+    {t:"S", x:"「怎麼整個人看起來比例不太好、臃腫？」", e:"“Why do my proportions look off — kind of bulky?”"},
+    {t:"H", x:"「整個人看起來灰灰的，好像少了點什麼。」", e:"“I look a bit dull, like something’s missing.”"},
+    {t:"C", x:"「單看衣服都好看，但搭起來就怪怪的。」", e:"“Each piece looks fine alone, but together it’s just off.”"},
+    {t:"B", x:"「好看是好看，但總覺得不像我。」", e:"“It looks nice, but it doesn’t feel like me.”"},
+    {t:"-", ns:true, x:"「沒在照的，隨手抓一件就出門。」", e:"“I don’t really check — I just grab something and go.”"} ]},
+  { id:"s2", route:"A", title:"朋友看到你的穿搭，最常說的是哪一句？", en:"When friends see your outfit, what do they most often say?", multi:2, none:true, other:true, opts:[
+    {t:"C", x:"「不會不好看啊，就很基本、很安全。」", e:"“It’s not bad — just very basic and safe.”"},
+    {t:"H", x:"「你好像每次都穿差不多的顏色欸。」", e:"“You always seem to wear the same colors.”"},
+    {t:"B", x:"「你看起來好兇」或「好孩子氣」——但你明明不是那樣的人", e:"“You look so strict” or “so young” — though that’s not who you are"},
+    {t:"S", x:"「這件好像有點撐不起來。」或「這件有點顯壯。」", e:"“That doesn’t quite fit you” or “That makes you look bulky.”"} ]},
+  { id:"s3", route:"AB", title:"每次要買衣服，你最常在想什麼？", en:"When you shop for clothes, what’s usually on your mind?", other:true, opts:[
+    {t:"B", x:"「人家穿好看就跟著買，但穿上身好像不是我。」", e:"“If it looks good on others I buy it — but on me it doesn’t feel like me.”"},
+    {t:"C", x:"「先買再說，回家再想要搭什麼。」（然後就一直掛著）", e:"“Buy now, figure out what to wear it with later.” (Then it just hangs there.)"},
+    {t:"H", x:"「這個顏色好喜歡……算了，還是拿黑、灰、白好搭。」", e:"“I love this color… never mind, black, gray or white is easier.”"},
+    {t:"S", x:"「寬的怕顯胖、合身的又怕太緊，試穿到最後乾脆不買。」", e:"“Loose looks bulky, fitted feels too tight — I end up buying nothing.”"} ]},
+  { id:"s4", route:"AB", title:"遇到重要場合（見客戶、上台報告、喝喜酒），你最常煩惱什麼？", en:"For important occasions (meeting clients, presenting, weddings), what do you worry about most?", other:true, opts:[
+    {t:"S", x:"「正式的衣服一穿，不是太緊就是太垮。」", e:"“Formal clothes are either too tight or too loose on me.”"},
+    {t:"H", x:"「穿太低調怕沒存在感，穿亮一點又怕太顯眼。」", e:"“Too low-key and I disappear; a bit brighter and I stand out too much.”"},
+    {t:"C", x:"「翻來翻去，還是只有那一兩套能穿。」", e:"“I dig through everything and still end up with the same one or two outfits.”"},
+    {t:"B", x:"「不知道該穿得正式還是輕鬆，怕穿錯場合。」", e:"“I’m never sure whether to go formal or casual — I’m afraid of getting it wrong.”"} ]},
+  { id:"s5", route:"AB", title:"換季整理衣櫃時，你最常發現什麼？", en:"When you sort your wardrobe at the change of season, what do you usually find?", multi:2, none:true, other:true, opts:[
+    {t:"C", x:"「衣服堆成山，常穿的卻只有那五件。」", e:"“A mountain of clothes, but I only wear the same five pieces.”"},
+    {t:"B", x:"「風格大雜燴，完全看不出我到底喜歡什麼。」", e:"“A total mix of styles — I can’t tell what I actually like.”"},
+    {t:"S", x:"「好多件其實不合身，吊牌都還在。」", e:"“Lots of pieces don’t really fit — some still have tags on.”"},
+    {t:"H", x:"「同一個顏色的衣服買了好幾件，自己都沒發現。」", e:"“I’ve bought several pieces in the same color without even noticing.”"} ]},
+  { id:"s6", route:"AB", title:"看到別人拍的合照，你心裡第一個想法是？", en:"When you see a group photo someone else took, what’s your first thought?", other:true, opts:[
+    {t:"S", x:"「怎麼看起來比本人胖、又矮？」", e:"“Why do I look heavier and shorter than in real life?”"},
+    {t:"H", x:"「跟大家站在一起，我好像變成背景了。」", e:"“Next to everyone else, I kind of fade into the background.”"},
+    {t:"C", x:"「整套看起來好雜，沒有搭在一起。」", e:"“My outfit looks messy — nothing ties together.”"},
+    {t:"B", x:"「看起來不太像我想給人的感覺。」", e:"“It’s not quite the impression I want to give.”"} ]},
+  { id:"s7", route:"AB", title:"如果有一個穿搭願望可以馬上實現，你會選哪一個？", en:"If one style wish could come true right now, which would you choose?", weight:2, other:true, opts:[
+    {t:"H", x:"「想嘗試更多顏色，而且自然、不突兀。」", e:"“To try more colors — and have them look natural, not loud.”"},
+    {t:"C", x:"「現有的衣服就能搭出很多套，不用一直買新的。」", e:"“To make lots of outfits from what I already own, without buying more.”"},
+    {t:"S", x:"「衣服穿上身剛剛好，不用一直拉、一直調整。」", e:"“For clothes to just fit — no more tugging and adjusting.”"},
+    {t:"B", x:"「別人一眼就看出我是怎樣的人：專業、親切，或有質感。」", e:"“For people to see at a glance who I am — professional, warm, or refined.”"} ]},
   { id:"q9", route:"AB", title:"關於穿搭，哪一句最像你現在的想法？", en:"Which sentence sounds most like you right now?", score:false, other:true, opts:[
-    {t:"自主-需要確認", x:"我大概知道自己適合什麼，但心裡還是覺得不踏實", e:"I roughly know what suits me, but I still don’t feel sure"},
-    {t:"陪伴-判斷力", x:"我想要有自己的判斷力，不再一下就腦波弱", e:"I want my own judgment, instead of being swayed so easily"},
-    {t:"自主-享受探索", x:"我喜歡自己慢慢摸索，雖然會踩雷，但對我來說很有樂趣", e:"I like figuring it out myself — even the misses are part of the fun"},
-    {t:"陪伴-推一把", x:"我知道要改變，但需要有人推我一把", e:"I know I need to change, but I need someone to give me a push"} ]},
+    {t:"自主-需要確認", x:"「我大概知道自己適合什麼，但心裡還是覺得不踏實。」", e:"“I roughly know what suits me, but I still don’t feel sure.”"},
+    {t:"陪伴-判斷力", x:"「我想要有自己的判斷力，不再一下就腦波弱。」", e:"“I want my own judgment, instead of being swayed so easily.”"},
+    {t:"自主-享受探索", x:"「我喜歡自己慢慢摸索，雖然會踩雷，但很有樂趣。」", e:"“I like figuring it out myself — even the misses are fun.”"},
+    {t:"陪伴-推一把", x:"「我知道要改變，但需要有人推我一把。」", e:"“I know I need to change, but I need someone to give me a push.”"} ]},
 ];
 const route = () => { const a = ans.q0; return a && a.length ? Q[0].opts[a[0]].t : "A"; };
 const ACTIVE = () => Q.filter(q => q.id==="q0" || q.route.includes(route()));

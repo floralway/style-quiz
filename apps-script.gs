@@ -27,6 +27,7 @@ const SETTINGS = {
 };
 
 const HEADER_LABELS = {
+  s1: 'S1 照鏡子', s2: 'S2 朋友說', s3: 'S3 買衣服', s4: 'S4 重要場合', s5: 'S5 整理衣櫃', s6: 'S6 看合照', s7: 'S7 穿搭願望',
   time: '填寫時間', version: '版本', result: '結果類型', branch: '成束支線',
   'score_萌芽': '萌芽分數', 'score_舒枝': '舒枝分數', 'score_含苞': '含苞分數', 'score_成束': '成束分數',
   type: '類型代號', lang: '語言', route: '路線', plan: '方案代號', focus: '主要卡點', companion: '自主／陪伴', strong: '強烈建議預諮詢', 'score_初綻': '初綻分數', q0: 'Q0 做過分析', b1: 'B1 分析後卡關', b2: 'B2 做過哪些分析', 'q9_想法': 'Q9 想法分類', 'q10_狀態': 'Q10 狀態分類', optin: '願意收穿搭分享信', mail_sent: '結果信寄出',
