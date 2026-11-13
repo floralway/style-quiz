@@ -463,6 +463,7 @@ $("#submitBtn").onclick=async()=>{
     score_萌芽:s.B, score_初綻:s.H, score_含苞:s.S, score_成束:s.C,
     q9_想法:tagOf("q9"),
     other: R.other ? "是" : "", other_notes: R.otherNotes.join("｜") };
+  payload.qa = ACTIVE().map((q,i)=>({n:i+1, q:(prof.gender==="男"&&q.titleM)?q.titleM:q.title, a:textOf(q.id)}));
   const ids=ACTIVE().map(q=>q.id); Q.forEach(q=>payload[q.id]= (ids.includes(q.id) && ans[q.id]) ? textOf(q.id) : "");
   PRE.concat(PROFILE).forEach(f=>payload[f.id]=prof[f.id]||"");
   payload.optin = prof.email ? "是（填寫時已告知，可取消）" : "";

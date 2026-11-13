@@ -41,6 +41,7 @@ function doPost(e) {
   lock.waitLock(10000);
   try {
     const data = JSON.parse(e.postData.contents);
+    const qa = data.qa || []; delete data.qa;
     const ss = SpreadsheetApp.getActiveSpreadsheet();
     const sheetName = data.version === 'lecture' ? 'lecture' : 'website';   // 官網版與 LINE 版同一張表，用「來源」區分
     const sheet = ss.getSheetByName(sheetName) || ss.insertSheet(sheetName);
@@ -65,6 +66,7 @@ function doPost(e) {
       if (data.email) { sendResultMail(data); sent = '已寄出'; }
     } catch (mailErr) { sent = '寄送失敗：' + mailErr; }
     data.mail_sent = sent;
+    try { notifyOwner(data, qa); } catch (nErr) { data.mail_sent = sent + '｜通知失敗：' + nErr; }
     if (keys.indexOf('mail_sent') === -1) {
       keys.push('mail_sent');
       sheet.getRange(1, 1, 1, keys.length).setValues([keys]);
@@ -441,4 +443,54 @@ function buildMailingList() {
   if (list.size) out.getRange(2, 1, list.size, 2).setValues([...list].map(([e, n]) => [e, n]));
   out.getRange(1, 4).setValue('更新時間：' + Utilities.formatDate(new Date(), 'Asia/Taipei', 'yyyy/MM/dd HH:mm'));
   SpreadsheetApp.getUi().alert('可寄送名單已更新：共 ' + list.size + ' 位（已排除取消訂閱的人）');
+}
+
+
+/* ================= 通知 Evelyn：每份新問卷寄一封摘要信，並自動加上 Gmail 標籤 ================= */
+/* 收件信箱存在「專案設定 → 指令碼屬性」的 NOTIFY_EMAIL（不寫在程式碼裡，避免公開）。 */
+const NOTIFY_LABEL = '穿搭方向測驗';
+
+function notifyOwner(data, qa) {
+  const to = PropertiesService.getScriptProperties().getProperty('NOTIFY_EMAIL');
+  if (!to) return;
+  const SRC = { lecture: '講座版', website: '官網版', line: 'LINE 版' };
+  const ver = data.src || SRC[data.version] || data.version || '';
+  const name = data.name || '（未填稱呼）';
+  const stage = data.result || '';
+  const tags = [data.branch, data.companion, data.strong === '是' ? '建議預諮詢' : '', data.other === '是' ? '選了其他' : ''].filter(Boolean).join('・');
+  const subject = '【穿搭測驗】' + name + '｜' + stage + (data.branch ? '・' + data.branch : '') + '（' + ver + '）';
+
+  const row = (k, v) => v ? '<tr><td style="padding:6px 12px 6px 0;color:#A08070;white-space:nowrap;vertical-align:top">' + esc(k) + '</td><td style="padding:6px 0;color:#3A2E28">' + esc(v) + '</td></tr>' : '';
+  const info = [
+    row('稱呼', data.name), row('時期', stage), row('標記', tags), row('路線', data.route),
+    row('Email', data.email || '（未填）'), row('LINE 名稱', data.line_name),
+    row('性別', data.gender), row('年齡', data.age), row('身分', data.role), row('地區', data.region || data.area || data.location),
+    row('來源', ver), row('分數', '萌芽 ' + (data['score_萌芽'] || 0) + '／初綻 ' + (data['score_初綻'] || 0) + '／含苞 ' + (data['score_含苞'] || 0) + '／成束 ' + (data['score_成束'] || 0)),
+    row('結果信', data.mail_sent)
+  ].join('');
+  const qaHtml = (qa || []).map(x =>
+    '<tr><td style="padding:10px 0;border-top:1px solid #F1E8E0"><div style="font-size:13px;color:#A08070">Q' + x.n + '　' + esc(x.q) + '</div>' +
+    '<div style="font-size:15px;color:#3A2E28;margin-top:4px">' + esc(x.a || '（未作答）') + '</div></td></tr>').join('');
+  const other = data.other === '是' ? '<div style="background:#FBEEE6;border-radius:10px;padding:12px 14px;margin:14px 0;color:#3A2E28;font-size:14px">他選了「其他」，自己寫的內容：' + esc(data.other_notes || '（沒有寫）') + '</div>' : '';
+  const html = '<div style="max-width:620px;font-family:\'Noto Sans TC\',sans-serif;color:#3A2E28">' +
+    '<div style="font-size:18px;font-weight:600;margin-bottom:12px">' + esc(name) + ' 剛完成穿搭方向測驗</div>' +
+    '<table style="font-size:14px;border-collapse:collapse">' + info + '</table>' + other +
+    '<div style="font-size:15px;font-weight:600;margin:20px 0 4px">每一題的回答</div>' +
+    '<table style="width:100%;border-collapse:collapse">' + qaHtml + '</table>' +
+    '<div style="font-size:13px;color:#A08070;margin-top:18px">完整資料在試算表：<a href="' + SpreadsheetApp.getActiveSpreadsheet().getUrl() + '">打開試算表</a>' +
+    (data.email ? '　｜　直接回覆這封信就會寄給客人' : '') + '</div></div>';
+  const plain = subject + '\n\n' + (qa || []).map(x => 'Q' + x.n + ' ' + x.q + '\n→ ' + (x.a || '（未作答）')).join('\n\n');
+
+  const opts = { htmlBody: html, name: '穿搭方向測驗通知' };
+  if (data.email) opts.replyTo = data.email;
+  const msg = GmailApp.createDraft(to, subject, plain, opts).send();
+  const label = GmailApp.getUserLabelByName(NOTIFY_LABEL) || GmailApp.createLabel(NOTIFY_LABEL);
+  msg.getThread().addLabel(label);
+}
+
+function testNotify() {
+  notifyOwner({ name: '測試小安', result: '初綻期', branch: '', companion: '陪伴型', strong: '是', other: '是', other_notes: '常常拖到最後一刻才出門',
+    route: 'A 未做過分析', email: '', gender: '女', age: '30–39 歲', role: '上班族', region: '台灣－中部', src: '官網版', version: 'website',
+    'score_萌芽': 2, 'score_初綻': 5, 'score_含苞': 3, 'score_成束': 1, mail_sent: '已寄出' },
+    [{ n: 1, q: '你做過色彩、骨架或風格分析嗎？', a: '沒有' }, { n: 6, q: '早上出門前，最花你時間的是？', a: '其他：常常拖到最後一刻才出門' }]);
 }
